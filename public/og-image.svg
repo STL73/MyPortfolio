@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#080d1a"/>
+
+  <!-- Subtle radial glow -->
+  <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+    <stop offset="0%" stop-color="#6366f1" stop-opacity="0.15"/>
+    <stop offset="100%" stop-color="#080d1a" stop-opacity="0"/>
+  </radialGradient>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+
+  <!-- Top accent line -->
+  <linearGradient id="line" x1="0%" y1="0%" x2="100%" y2="0%">
+    <stop offset="0%" stop-color="transparent"/>
+    <stop offset="50%" stop-color="#6366f1"/>
+    <stop offset="100%" stop-color="transparent"/>
+  </linearGradient>
+  <rect x="0" y="0" width="1200" height="2" fill="url(#line)"/>
+
+  <!-- Corner decorators -->
+  <rect x="48" y="48" width="24" height="2" fill="#6366f1" opacity="0.5"/>
+  <rect x="48" y="48" width="2" height="24" fill="#6366f1" opacity="0.5"/>
+  <rect x="1128" y="48" width="24" height="2" fill="#6366f1" opacity="0.5"/>
+  <rect x="1150" y="48" width="2" height="24" fill="#6366f1" opacity="0.5"/>
+  <rect x="48" y="580" width="24" height="2" fill="#6366f1" opacity="0.5"/>
+  <rect x="48" y="558" width="2" height="24" fill="#6366f1" opacity="0.5"/>
+  <rect x="1128" y="580" width="24" height="2" fill="#6366f1" opacity="0.5"/>
+  <rect x="1150" y="558" width="2" height="24" fill="#6366f1" opacity="0.5"/>
+
+  <!-- Available badge -->
+  <rect x="516" y="170" width="168" height="28" rx="14" fill="#6366f115" stroke="#6366f133" stroke-width="1"/>
+  <circle cx="535" cy="184" r="4" fill="#6366f1"/>
+  <text x="548" y="189" font-family="system-ui, sans-serif" font-size="12" fill="#a5b4fc" font-weight="500">Available for work</text>
+
+  <!-- Name -->
+  <text x="600" y="280" font-family="system-ui, sans-serif" font-size="72" font-weight="800" fill="#f1f5f9" text-anchor="middle" letter-spacing="-2">Slav Lambov</text>
+
+  <!-- Role -->
+  <text x="600" y="340" font-family="system-ui, sans-serif" font-size="28" font-weight="600" fill="#6366f1" text-anchor="middle" letter-spacing="0.5">Frontend Developer</text>
+
+  <!-- Divider -->
+  <rect x="480" y="368" width="240" height="1" fill="#1e293b"/>
+
+  <!-- Location -->
+  <text x="600" y="400" font-family="system-ui, sans-serif" font-size="16" fill="#94a3b8" text-anchor="middle">Manchester, UK · Open to remote</text>
+
+  <!-- Tech badges -->
+  <rect x="288" y="430" width="76" height="26" rx="4" fill="#0f172a" stroke="#1e293b" stroke-width="1"/>
+  <text x="326" y="447" font-family="system-ui, sans-serif" font-size="12" fill="#94a3b8" text-anchor="middle" font-weight="500">React</text>
+
+  <rect x="376" y="430" width="96" height="26" rx="4" fill="#0f172a" stroke="#1e293b" stroke-width="1"/>
+  <text x="424" y="447" font-family="system-ui, sans-serif" font-size="12" fill="#94a3b8" text-anchor="middle" font-weight="500">JavaScript</text>
+
+  <rect x="484" y="430" width="100" height="26" rx="4" fill="#0f172a" stroke="#1e293b" stroke-width="1"/>
+  <text x="534" y="447" font-family="system-ui, sans-serif" font-size="12" fill="#94a3b8" text-anchor="middle" font-weight="500">Tailwind CSS</text>
+
+  <rect x="596" y="430" width="60" height="26" rx="4" fill="#0f172a" stroke="#1e293b" stroke-width="1"/>
+  <text x="626" y="447" font-family="system-ui, sans-serif" font-size="12" fill="#94a3b8" text-anchor="middle" font-weight="500">GSAP</text>
+
+  <rect x="668" y="430" width="50" height="26" rx="4" fill="#0f172a" stroke="#1e293b" stroke-width="1"/>
+  <text x="693" y="447" font-family="system-ui, sans-serif" font-size="12" fill="#94a3b8" text-anchor="middle" font-weight="500">Vite</text>
+
+  <rect x="730" y="430" width="82" height="26" rx="4" fill="#0f172a" stroke="#1e293b" stroke-width="1"/>
+  <text x="771" y="447" font-family="system-ui, sans-serif" font-size="12" fill="#94a3b8" text-anchor="middle" font-weight="500">Node.js</text>
+
+  <!-- Site URL -->
+  <text x="600" y="560" font-family="system-ui, sans-serif" font-size="14" fill="#6366f1" text-anchor="middle" opacity="0.7">slavlambov.github.io/my-portfolio</text>
+</svg>
