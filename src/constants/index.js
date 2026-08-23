@@ -1,5 +1,4 @@
 import {
-  headerLogo,
   FaLinkedinIn,
   FaGithub,
   FaInstagram,
@@ -15,17 +14,17 @@ import {
   SiExpress,
   SiPhp,
 } from "../assets/icons"
-import placeholderImg from "../assets/images/placeholder.svg"
+import mossShot from "../assets/images/projects/moss-storefront.jpg"
 
 const base = import.meta.env.BASE_URL
 
 export const PERSONAL = {
-  email: "slavi.lambov73@gmail.com",
+  email: "hello@spireforge.co.uk",
   linkedin: "https://www.linkedin.com/in/slavi-lambov-a69a65229",
   github: "https://github.com/STL73",
   cv: `${base}resume/CV.pdf`,
-  site: "https://slavlambov.github.io/my-portfolio/",
-  gmailCompose: "https://mail.google.com/mail/?view=cm&fs=1&to=slavi.lambov73@gmail.com",
+  site: "https://spireforge.co.uk",
+  gmailCompose: "https://mail.google.com/mail/?view=cm&fs=1&to=hello@spireforge.co.uk",
   location: "UK · Open to remote (incl. Bulgaria)",
   workStatus: "Open to work",
   tagline: "Frontend Developer building fast, accessible web experiences.",
@@ -165,48 +164,51 @@ export const skillsData = [
 export const projectsData = [
   {
     id: 1,
-    year: "2024",
-    title: "Portfolio Redesign",
+    year: "2026",
+    title: "Moss — preserved-moss storefront",
     description:
-      "Performance-first portfolio with custom animations, smooth navigation, and a clear storytelling flow.",
-    technologies: ["React", "Vite", "Tailwind", "GSAP"],
-    image: headerLogo,
+      "A storefront for a preserved-moss decorations business, deployed and running on a custom domain. React 19 client with every route lazy-loaded, a mock catalogue held behind a single API module so the swap to real data is one file, and a colour-contrast contract asserted in tests against the stylesheet itself. The Express API is half-built: authentication works, the product and order routes are still stubs.",
+    technologies: ["React 19", "Vite", "Tailwind", "Express", "MongoDB", "Vitest"],
+    image: mossShot,
     status: "live",
-    liveUrl: "https://slavlambov.github.io/my-portfolio/",
-    githubUrl: "https://github.com/STL73",
+    liveUrl: "https://mossart.spireforge.co.uk",
+    githubUrl: "https://github.com/STL73/Moss",
   },
   {
     id: 2,
-    year: "2023",
-    title: "E-Commerce UI",
-    description: "Product listing, filters, and checkout flow optimized for conversion.",
-    technologies: ["React", "Redux", "Stripe"],
-    image: placeholderImg,
+    year: "2026",
+    title: "WorldQuiz",
+    description:
+      "A geography quiz built deliberately in vanilla PHP and MySQLi rather than a framework — 46 landmarks, a token economy, server-side progress that survives the session, and role-gated admin dashboards for managing questions and users. Runs locally under XAMPP; not deployed.",
+    technologies: ["PHP", "MySQLi", "JavaScript", "CSS"],
+    image: null,
     status: "wip",
     liveUrl: null,
-    githubUrl: null,
+    githubUrl: "https://github.com/STL73/WorldQuiz",
   },
   {
     id: 3,
-    year: "2022",
-    title: "Event Landing",
-    description: "Bold landing page with hero motion and CTA-driven layout.",
-    technologies: ["Next.js", "Tailwind", "Framer"],
-    image: placeholderImg,
-    status: "wip",
+    year: "2025",
+    title: "Manchester Event Portal",
+    description:
+      "Final-year Computing project: an events portal with event CRUD, ticketing status, user management, contact handling and an admin statistics dashboard, written in PHP against MySQL. Graded First Class. Repository is private because it is assessed coursework.",
+    technologies: ["PHP", "MySQL", "Tailwind", "XAMPP"],
+    image: null,
+    status: "private",
     liveUrl: null,
     githubUrl: null,
   },
   {
     id: 4,
-    year: "2021",
-    title: "SaaS Dashboard",
-    description: "Data-rich dashboard with clean hierarchy and reusable components.",
-    technologies: ["React", "Chart.js", "Tailwind"],
-    image: placeholderImg,
+    year: "2026",
+    title: "This portfolio",
+    description:
+      "The site you are reading. React 19 and Vite, everything below the fold code-split behind a Suspense boundary, GSAP scroll animations that respect prefers-reduced-motion, and all copy centralised in one constants file. Source is public; it is not yet deployed to its own domain.",
+    technologies: ["React 19", "Vite", "Tailwind v4", "GSAP"],
+    image: null,
     status: "wip",
     liveUrl: null,
-    githubUrl: null,
+    githubUrl: "https://github.com/STL73/MyPortfolio",
   },
 ]
 
@@ -253,8 +255,8 @@ export const footerLinks = [
     title: "Connect",
     links: [
       {
-        name: "slavi.lambov73@gmail.com",
-        link: "mailto:slavi.lambov73@gmail.com",
+        name: "hello@spireforge.co.uk",
+        link: "mailto:hello@spireforge.co.uk",
       },
       {
         name: "LinkedIn Profile",

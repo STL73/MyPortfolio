@@ -17,6 +17,7 @@ const STATUS_CONFIG = {
 }
 
 const ProjectCard = ({
+  id,
   title,
   description,
   technologies = [],
@@ -265,7 +266,7 @@ const ProjectCard = ({
                 letterSpacing: "-1px",
               }}
             >
-              {String(technologies.length + 2).padStart(2, "0")}
+              {String(id ?? 0).padStart(2, "0")}
             </span>
           </>
         )}

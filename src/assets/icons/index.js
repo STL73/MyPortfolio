@@ -1,4 +1,3 @@
-import headerLogo from "./STL_MEDIA_logo_with_background/STL-logo.png"
 import { FaFacebookF } from "react-icons/fa6"
 import { FaXTwitter } from "react-icons/fa6"
 import { FaInstagram } from "react-icons/fa6"
@@ -23,7 +22,6 @@ import { SiExpress } from "react-icons/si"
 import { SiPhp } from "react-icons/si"
 
 export {
-  headerLogo,
   FaFacebookF,
   FaXTwitter,
   FaInstagram,
