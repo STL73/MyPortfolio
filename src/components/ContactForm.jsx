@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { PERSONAL } from "../constants/index"
+import { primaryAction } from "../lib/actionStyles"
 
 // Not a secret. Anything prefixed VITE_ is inlined into the client bundle at
 // build time, and a Formspree form ID is a public endpoint by design -- it
@@ -97,7 +98,7 @@ const ContactForm = () => {
             required
             value={form[field.name]}
             onChange={handleChange}
-            className="rounded-md border border-line bg-night-900 px-4 py-3 text-ink transition-colors duration-150 focus:border-accent"
+            className="rounded-sm border border-line bg-night-900 px-4 py-3 text-ink transition-colors duration-150 focus:border-accent"
           />
         </div>
       ))}
@@ -116,14 +117,14 @@ const ContactForm = () => {
           required
           value={form.message}
           onChange={handleChange}
-          className="resize-y rounded-md border border-line bg-night-900 px-4 py-3 text-ink transition-colors duration-150 focus:border-accent"
+          className="resize-y rounded-sm border border-line bg-night-900 px-4 py-3 text-ink transition-colors duration-150 focus:border-accent"
         />
       </div>
 
       <button
         type="submit"
         disabled={isSending}
-        className="self-start rounded-md bg-accent px-6 py-3 font-semibold text-on-accent transition-all duration-150 hover:-translate-y-0.5 hover:bg-aurora-400 hover:shadow-[0_6px_20px_-6px_var(--sf-aurora-500)] disabled:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60 disabled:shadow-none"
+        className={`self-start ${primaryAction()} disabled:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60 disabled:shadow-none`}
       >
         {isSending ? "Sending…" : "Send message"}
       </button>

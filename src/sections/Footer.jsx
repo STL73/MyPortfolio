@@ -99,7 +99,7 @@ const Footer = () => (
                 rel="noreferrer noopener"
                 // 44px hit area around a 16px glyph. WCAG 2.2 asks for 24
                 // and a thumb wants more than that.
-                className="grid size-11 place-items-center rounded-md text-ink-muted transition-colors duration-150 hover:bg-surface hover:text-ink"
+                className="grid size-11 place-items-center rounded-sm text-ink-muted transition-colors duration-150 hover:bg-surface hover:text-ink"
               >
                 <social.src aria-hidden="true" />
                 <span className="sr-only">{social.label}</span>

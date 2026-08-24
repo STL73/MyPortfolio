@@ -2,6 +2,7 @@ import { useRef } from "react"
 import gsap from "gsap"
 import { useGSAP } from "@gsap/react"
 import CareerTracks from "../components/CareerTracks"
+import { primaryAction, secondaryAction } from "../lib/actionStyles"
 import { HERO, PERSONAL, careerTracks } from "../constants/index"
 
 /**
@@ -99,13 +100,13 @@ const Hero = () => {
         <div data-hero="cta" className="mt-16 flex flex-wrap items-center gap-4">
           <a
             href="#projects"
-            className="rounded-md bg-accent px-6 py-3 font-semibold text-on-accent transition-all duration-150 hover:-translate-y-0.5 hover:bg-aurora-400 hover:shadow-[0_6px_20px_-6px_var(--sf-aurora-500)]"
+            className={primaryAction()}
           >
             See the work
           </a>
           <a
             href={PERSONAL.cv}
-            className="rounded-md border border-line px-6 py-3 font-semibold text-ink transition-all duration-150 hover:-translate-y-0.5 hover:border-accent/50 hover:bg-surface"
+            className={secondaryAction()}
           >
             Download CV
           </a>

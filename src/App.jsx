@@ -12,6 +12,11 @@ const Footer = lazy(() => import("./sections/Footer"))
 const MossCaseStudy = lazy(() => import("./pages/projects/Moss"))
 const NotFound = lazy(() => import("./pages/NotFound"))
 
+// Variant comparison page. Registered only in development, so it is never in a
+// production bundle and never reachable on the live site. Delete it, and the
+// route below, once the choices it exists to settle have been made.
+const Lab = import.meta.env.DEV ? lazy(() => import("./pages/Lab")) : null
+
 function App() {
   return (
     <>
@@ -19,7 +24,7 @@ function App() {
           order so it is the first thing a keyboard reaches. */}
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-accent focus:text-on-accent focus:rounded-md focus:font-semibold"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-accent focus:text-on-accent focus:rounded-sm focus:font-semibold"
       >
         Skip to main content
       </a>
@@ -38,6 +43,7 @@ function App() {
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/projects/moss" element={<MossCaseStudy />} />
+              {Lab && <Route path="/lab" element={<Lab />} />}
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </RouteTransition>

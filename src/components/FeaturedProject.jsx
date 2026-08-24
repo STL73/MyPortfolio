@@ -1,5 +1,6 @@
 import { Link } from "react-router"
 import ProjectStatus from "./ProjectStatus"
+import { primaryAction, secondaryAction } from "../lib/actionStyles"
 
 /**
  * The one project that gets the full treatment.
@@ -52,7 +53,7 @@ const FeaturedProject = ({ project }) => (
         {project.caseStudyUrl && (
           <Link
             to={project.caseStudyUrl}
-            className="rounded-md bg-accent px-5 py-2.5 text-sm font-semibold text-on-accent transition-all duration-150 hover:-translate-y-0.5 hover:bg-aurora-400 hover:shadow-[0_6px_20px_-6px_var(--sf-aurora-500)]"
+            className={primaryAction("sm")}
           >
             Read the case study &#8594;
           </Link>
@@ -62,7 +63,7 @@ const FeaturedProject = ({ project }) => (
             href={project.liveUrl}
             target="_blank"
             rel="noreferrer noopener"
-            className="rounded-md border border-line px-5 py-2.5 text-sm font-semibold text-ink transition-all duration-150 hover:-translate-y-0.5 hover:border-accent/50 hover:bg-surface"
+            className={secondaryAction("sm")}
           >
             Visit the site &#8594;
           </a>
@@ -72,7 +73,7 @@ const FeaturedProject = ({ project }) => (
             href={project.githubUrl}
             target="_blank"
             rel="noreferrer noopener"
-            className="rounded-md border border-line px-5 py-2.5 text-sm font-semibold text-ink transition-colors duration-150 hover:border-ink-low hover:bg-surface"
+            className={secondaryAction("sm")}
           >
             Source &#8594;
           </a>

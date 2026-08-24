@@ -1,4 +1,5 @@
 import { Link } from "react-router"
+import { primaryAction } from "../lib/actionStyles"
 
 /**
  * The 404.
@@ -23,7 +24,7 @@ const NotFound = () => (
 
       <Link
         to="/"
-        className="mt-10 inline-block rounded-md bg-accent px-6 py-3 font-semibold text-on-accent transition-colors duration-150 hover:bg-aurora-400"
+        className={`mt-10 ${primaryAction()}`}
       >
         Back to the homepage
       </Link>

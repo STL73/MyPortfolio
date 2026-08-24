@@ -190,7 +190,7 @@ const Nav = () => {
               rather than as a rectangle someone forgot to style. */}
           <SectionLink
             href="#contact"
-            className="rounded-md border border-accent/50 px-4 py-2 text-sm font-semibold text-accent transition-colors duration-150 hover:border-accent hover:bg-accent hover:text-on-accent max-sm:hidden"
+            className="rounded-sm border border-accent/50 px-4 py-2 text-sm font-semibold text-accent transition-colors duration-150 hover:border-accent hover:bg-accent hover:text-on-accent max-sm:hidden"
             onNavigate={handleNavigate}
           >
             Get in touch
@@ -203,7 +203,7 @@ const Nav = () => {
             aria-controls="mobile-menu"
             aria-label={isMenuOpen ? "Close menu" : "Open menu"}
             // 44px square. WCAG 2.2 asks for 24; a thumb wants more.
-            className="grid size-11 place-items-center rounded-md text-ink transition-colors duration-150 hover:bg-surface lg:hidden"
+            className="grid size-11 place-items-center rounded-sm text-ink transition-colors duration-150 hover:bg-surface lg:hidden"
           >
             {isMenuOpen ? <FiX size={20} /> : <FiMenu size={20} />}
           </button>
@@ -232,7 +232,7 @@ const Nav = () => {
             <li className="sm:hidden">
               <SectionLink
                 href="#contact"
-                className="mt-2 mb-3 block rounded-md bg-accent px-4 py-3 text-center text-sm font-semibold text-on-accent"
+                className="mt-2 mb-3 block rounded-sm bg-accent px-4 py-3 text-center text-sm font-semibold text-on-accent"
                 onNavigate={handleNavigate}
               >
                 Get in touch
