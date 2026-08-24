@@ -62,11 +62,16 @@ const Nav = () => {
 
   // Section tracking only means anything on the homepage; the sections do not
   // exist anywhere else.
+  //
+  // The sections are lazy-loaded, and that is what broke the first version of
+  // this: it queried `section[id]` once on mount, when the only one in the
+  // document was the Hero. The other five arrived later and were never
+  // observed, so Home was the only link that could ever light up. A
+  // MutationObserver registers each one as it appears.
   useEffect(() => {
     if (!isHome) return
 
-    const sections = document.querySelectorAll("section[id]")
-    const observer = new IntersectionObserver(
+    const sectionObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting && !isScrollingRef.current) {
@@ -79,13 +84,31 @@ const Nav = () => {
       { rootMargin: "-20% 0px -60% 0px", threshold: 0 },
     )
 
-    sections.forEach((section) => observer.observe(section))
-    const timer = scrollTimerRef.current
+    const registered = new WeakSet()
+    const registerSections = () => {
+      document.querySelectorAll("section[id]").forEach((section) => {
+        if (registered.has(section)) return
+        registered.add(section)
+        sectionObserver.observe(section)
+      })
+    }
+
+    registerSections()
+    const domObserver = new MutationObserver(registerSections)
+    domObserver.observe(document.body, { childList: true, subtree: true })
+
     return () => {
-      observer.disconnect()
-      clearTimeout(timer)
+      domObserver.disconnect()
+      sectionObserver.disconnect()
     }
   }, [isHome])
+
+  // Kept separate so the tracking effect above does not have to reason about a
+  // timer whose value changes after it was set up.
+  useEffect(() => {
+    const timer = scrollTimerRef
+    return () => clearTimeout(timer.current)
+  }, [])
 
   const handleNavigate = () => {
     setIsMenuOpen(false)
@@ -96,11 +119,17 @@ const Nav = () => {
     }, 700)
   }
 
+  const isActive = (href) => isHome && activeLink === href
+
+  // The active link is marked twice over: in accent, and with a rule beneath
+  // it. Colour alone would be the only signal for anyone who cannot separate
+  // aurora from muted ink, and `aria-current` carries it to a screen reader,
+  // which sees no colour at all.
   const linkClass = (href) =>
-    `text-sm transition-colors duration-150 ${
-      isHome && activeLink === href
-        ? "text-accent"
-        : "text-ink-muted hover:text-ink"
+    `relative text-sm transition-colors duration-150 after:absolute after:-bottom-1.5 after:left-0 after:h-px after:bg-accent after:transition-all after:duration-200 ${
+      isActive(href)
+        ? "text-accent after:w-full"
+        : "text-ink-muted after:w-0 hover:text-ink hover:after:w-full"
     }`
 
   return (
@@ -142,6 +171,7 @@ const Nav = () => {
                   href={link.href}
                   className={linkClass(link.href)}
                   onNavigate={handleNavigate}
+                  current={isActive(link.href)}
                 >
                   {link.label}
                 </SectionLink>
@@ -151,14 +181,16 @@ const Nav = () => {
         </nav>
 
         <div className="flex items-center gap-2">
-          {/* Outlined, not filled. A filled version of this sat above the
-              fold alongside the hero's "See the work", which is also aurora
-              and also the primary action -- two accent fills on one screen,
-              competing, saying almost the same thing. The accent belongs on
-              one element per view, so the hero keeps it and this steps back. */}
+          {/* Ghost to solid, in the accent.
+
+              This was `border-line` on Night, which is #261A54 on #0A0619 --
+              technically a border and practically invisible. It is still not
+              filled at rest, so it does not compete with the hero's solid
+              call to action above the fold, but it now reads as a button
+              rather than as a rectangle someone forgot to style. */}
           <SectionLink
             href="#contact"
-            className="rounded-md border border-line px-4 py-2 text-sm font-semibold text-ink transition-colors duration-150 hover:border-ink-low hover:bg-surface max-sm:hidden"
+            className="rounded-md border border-accent/50 px-4 py-2 text-sm font-semibold text-accent transition-colors duration-150 hover:border-accent hover:bg-accent hover:text-on-accent max-sm:hidden"
             onNavigate={handleNavigate}
           >
             Get in touch
@@ -191,6 +223,7 @@ const Nav = () => {
                   href={link.href}
                   className={`block py-3 ${linkClass(link.href)}`}
                   onNavigate={handleNavigate}
+                  current={isActive(link.href)}
                 >
                   {link.label}
                 </SectionLink>

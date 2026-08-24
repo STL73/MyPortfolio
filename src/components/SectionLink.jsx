@@ -15,19 +15,29 @@ import { Link, useLocation } from "react-router"
  * the same anchor would silently do nothing. Those need a real navigation to
  * "/" first, which is what ScrollToTop then resolves the hash against.
  */
-const SectionLink = ({ href, className, children, onNavigate }) => {
+const SectionLink = ({ href, className, children, onNavigate, current }) => {
   const { pathname } = useLocation()
 
   if (pathname === "/") {
     return (
-      <a href={href} className={className} onClick={onNavigate}>
+      <a
+        href={href}
+        className={className}
+        onClick={onNavigate}
+        aria-current={current ? "location" : undefined}
+      >
         {children}
       </a>
     )
   }
 
   return (
-    <Link to={`/${href}`} className={className} onClick={onNavigate}>
+    <Link
+      to={`/${href}`}
+      className={className}
+      onClick={onNavigate}
+      aria-current={current ? "location" : undefined}
+    >
       {children}
     </Link>
   )
