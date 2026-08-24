@@ -1,3 +1,4 @@
+import { Link } from "react-router"
 import ProjectStatus from "./ProjectStatus"
 
 /**
@@ -45,12 +46,23 @@ const FeaturedProject = ({ project }) => (
       </p>
 
       <div className="mt-auto flex flex-wrap gap-3 pt-8">
+        {/* The case study is the primary action here, not the live site. A
+            reader who opens the shop leaves for someone else's domain; one who
+            reads the write-up is still being persuaded. */}
+        {project.caseStudyUrl && (
+          <Link
+            to={project.caseStudyUrl}
+            className="rounded-md bg-accent px-5 py-2.5 text-sm font-semibold text-on-accent transition-colors duration-150 hover:bg-aurora-400"
+          >
+            Read the case study &#8594;
+          </Link>
+        )}
         {project.liveUrl && (
           <a
             href={project.liveUrl}
             target="_blank"
             rel="noreferrer noopener"
-            className="rounded-md bg-accent px-5 py-2.5 text-sm font-semibold text-on-accent transition-colors duration-150 hover:bg-aurora-400"
+            className="rounded-md border border-line px-5 py-2.5 text-sm font-semibold text-ink transition-colors duration-150 hover:border-ink-low hover:bg-surface"
           >
             Visit the site &#8594;
           </a>

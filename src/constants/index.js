@@ -277,6 +277,7 @@ export const projectsData = [
     technologies: ["React 19", "Vite", "Tailwind", "Express", "MongoDB", "Vitest"],
     image: mossShot,
     status: "live",
+    caseStudyUrl: "/projects/moss",
     liveUrl: "https://mossart.spireforge.co.uk",
     githubUrl: "https://github.com/STL73/Moss",
   },

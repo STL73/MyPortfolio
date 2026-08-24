@@ -8,6 +8,7 @@ import { SectionThemeProvider } from "./context/SectionThemeContext"
 // Home is eager: it is the route almost every visit starts on, so splitting it
 // would only add a round trip before the first paint. Everything else is not.
 const Footer = lazy(() => import("./sections/Footer"))
+const MossCaseStudy = lazy(() => import("./pages/projects/Moss"))
 const NotFound = lazy(() => import("./pages/NotFound"))
 
 function App() {
@@ -34,6 +35,7 @@ function App() {
           <Suspense fallback={<div className="min-h-screen" aria-hidden="true" />}>
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/projects/moss" element={<MossCaseStudy />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
