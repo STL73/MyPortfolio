@@ -44,7 +44,7 @@ const Hero = () => {
             "-=0.28",
           )
           .from('[data-hero="spark"]', { autoAlpha: 0, scale: 0.4, duration: 0.24 }, "-=0.08")
-          .from('[data-hero="cta"]', { autoAlpha: 0, y: 10, stagger: 0.06 }, "-=0.2")
+          .from('[data-hero="cta"]', { autoAlpha: 0, y: 10 }, "-=0.2")
       })
     },
     { scope: root },
@@ -55,7 +55,7 @@ const Hero = () => {
       id="home"
       ref={root}
       aria-labelledby="hero-heading"
-      className="flex min-h-svh items-center px-6 pt-24 pb-16 sm:px-10 lg:px-16"
+      className="sf-textured flex min-h-svh items-center px-6 pt-24 pb-16 sm:px-10 lg:px-16"
     >
       <div className="w-full max-w-wide">
         <p
@@ -87,18 +87,25 @@ const Hero = () => {
           <CareerTracks tracks={careerTracks} />
         </div>
 
-        <div className="mt-16 flex flex-wrap items-center gap-4">
+        {/* The entrance animates this wrapper, not the buttons inside it.
+
+            GSAP and CSS must not own the same properties on the same element.
+            The buttons carry `transition` and a hover lift; GSAP was animating
+            their opacity, visibility and transform, so the two re-interpolated
+            each other every frame and the tween stuck at its start state --
+            both calls to action invisible on every load. GSAP also leaves an
+            inline transform behind, which would have overridden the hover
+            lift even if the tween had finished. One element, one owner. */}
+        <div data-hero="cta" className="mt-16 flex flex-wrap items-center gap-4">
           <a
-            data-hero="cta"
             href="#projects"
-            className="rounded-md bg-accent px-6 py-3 font-semibold text-on-accent transition-colors duration-150 hover:bg-aurora-400"
+            className="rounded-md bg-accent px-6 py-3 font-semibold text-on-accent transition-all duration-150 hover:-translate-y-0.5 hover:bg-aurora-400 hover:shadow-[0_6px_20px_-6px_var(--sf-aurora-500)]"
           >
             See the work
           </a>
           <a
-            data-hero="cta"
             href={PERSONAL.cv}
-            className="rounded-md border border-line px-6 py-3 font-semibold text-ink transition-colors duration-150 hover:border-ink-low hover:bg-surface"
+            className="rounded-md border border-line px-6 py-3 font-semibold text-ink transition-all duration-150 hover:-translate-y-0.5 hover:border-accent/50 hover:bg-surface"
           >
             Download CV
           </a>

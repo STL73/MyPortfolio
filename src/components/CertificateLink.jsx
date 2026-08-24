@@ -12,9 +12,9 @@ const CertificateLink = ({ certificate }) => (
       href={certificate.fileUrl}
       target="_blank"
       rel="noreferrer noopener"
-      className="group flex flex-wrap items-baseline gap-x-6 gap-y-1 py-4 transition-colors duration-150 hover:bg-surface"
+      className="group flex flex-wrap items-baseline gap-x-6 gap-y-1 px-2 py-4 transition-colors duration-150 hover:bg-surface"
     >
-      <span className="flex-1 text-ink group-hover:text-accent">
+      <span className="flex-1 text-ink transition-colors duration-150 group-hover:text-accent">
         {certificate.title}
       </span>
       <span className="text-sm text-ink-muted">{certificate.issuer}</span>

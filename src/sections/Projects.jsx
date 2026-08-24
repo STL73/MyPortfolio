@@ -1,3 +1,4 @@
+import { useSectionReveal } from "../hooks/useSectionReveal"
 import FeaturedProject from "../components/FeaturedProject"
 import ProjectRow from "../components/ProjectRow"
 import SectionHeading from "../components/SectionHeading"
@@ -8,8 +9,12 @@ import { projectsData } from "../constants/index"
 const liveCount = projectsData.filter((project) => project.status === "live").length
 const [featured, ...rest] = projectsData
 
-const Projects = () => (
+const Projects = () => {
+  const scope = useSectionReveal()
+
+  return (
   <section
+    ref={scope}
     id="projects"
     aria-labelledby="projects-heading"
     className="px-6 py-24 sm:px-10 lg:px-16"
@@ -21,7 +26,7 @@ const Projects = () => (
         meta={`${projectsData.length} projects · ${liveCount} live`}
       />
 
-      <div className="mt-12">
+      <div data-reveal className="mt-12">
         <FeaturedProject project={featured} />
       </div>
 
@@ -32,6 +37,7 @@ const Projects = () => (
       </div>
     </div>
   </section>
-)
+  )
+}
 
 export default Projects

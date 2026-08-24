@@ -43,7 +43,7 @@ const Moss = () => (
             href={moss.liveUrl}
             target="_blank"
             rel="noreferrer noopener"
-            className="rounded-md bg-accent px-5 py-2.5 text-sm font-semibold text-on-accent transition-colors duration-150 hover:bg-aurora-400"
+            className="rounded-md bg-accent px-5 py-2.5 text-sm font-semibold text-on-accent transition-all duration-150 hover:-translate-y-0.5 hover:bg-aurora-400 hover:shadow-[0_6px_20px_-6px_var(--sf-aurora-500)]"
           >
             Visit the site &#8594;
           </a>
@@ -51,7 +51,7 @@ const Moss = () => (
             href={moss.githubUrl}
             target="_blank"
             rel="noreferrer noopener"
-            className="rounded-md border border-line px-5 py-2.5 text-sm font-semibold text-ink transition-colors duration-150 hover:border-ink-low hover:bg-surface"
+            className="rounded-md border border-line px-5 py-2.5 text-sm font-semibold text-ink transition-all duration-150 hover:-translate-y-0.5 hover:border-accent/50 hover:bg-surface"
           >
             Source &#8594;
           </a>

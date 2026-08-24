@@ -1,6 +1,7 @@
 import { lazy, Suspense } from "react"
 import { Route, Routes } from "react-router"
 import Nav from "./components/Nav"
+import RouteTransition from "./components/RouteTransition"
 import ScrollToTop from "./components/ScrollToTop"
 import Home from "./pages/Home"
 import { SectionThemeProvider } from "./context/SectionThemeContext"
@@ -33,11 +34,13 @@ function App() {
           {/* The fallback reserves a full viewport so the page does not jump
               as chunks arrive. */}
           <Suspense fallback={<div className="min-h-screen" aria-hidden="true" />}>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/projects/moss" element={<MossCaseStudy />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
+            <RouteTransition>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/projects/moss" element={<MossCaseStudy />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </RouteTransition>
           </Suspense>
         </main>
 

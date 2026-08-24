@@ -1,4 +1,5 @@
 import SectionHeading from "../components/SectionHeading"
+import { useSectionReveal } from "../hooks/useSectionReveal"
 import { SKILLS } from "../constants/index"
 
 /**
@@ -14,8 +15,12 @@ import { SKILLS } from "../constants/index"
  * it is what makes the other three tiers credible, and it is the answer to a
  * question an interviewer was going to ask anyway.
  */
-const Skills = () => (
+const Skills = () => {
+  const scope = useSectionReveal()
+
+  return (
   <section
+    ref={scope}
     id="skills"
     aria-labelledby="skills-heading"
     className="px-6 py-24 sm:px-10 lg:px-16"
@@ -27,16 +32,21 @@ const Skills = () => (
         meta={`${SKILLS.tiers.length} tiers`}
       />
 
-      <p className="mt-8 max-w-measure text-lg text-ink-muted">{SKILLS.note}</p>
+      <p data-reveal className="mt-8 max-w-measure text-lg text-ink-muted">
+        {SKILLS.note}
+      </p>
 
       <dl className="mt-12">
         {SKILLS.tiers.map((tier) => (
           <div
             key={tier.id}
-            className="grid gap-3 border-t border-line py-8 md:grid-cols-12 md:gap-8"
+            data-reveal
+            className="group grid gap-3 border-t border-line py-8 transition-colors duration-200 hover:border-ink-low md:grid-cols-12 md:gap-8"
           >
             <dt className="md:col-span-4">
-              <span className="text-lg text-ink">{tier.label}</span>
+              <span className="text-lg text-ink transition-colors duration-200 group-hover:text-accent">
+                {tier.label}
+              </span>
               <span className="mt-1 block text-sm text-ink-low">{tier.note}</span>
             </dt>
 
@@ -51,6 +61,7 @@ const Skills = () => (
       </dl>
     </div>
   </section>
-)
+  )
+}
 
 export default Skills

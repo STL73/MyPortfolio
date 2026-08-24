@@ -1,5 +1,6 @@
 import ContactForm from "../components/ContactForm"
 import SectionHeading from "../components/SectionHeading"
+import { useSectionReveal } from "../hooks/useSectionReveal"
 import { CONTACT, PERSONAL } from "../constants/index"
 
 const DIRECT_LINKS = [
@@ -16,11 +17,15 @@ const DIRECT_LINKS = [
  * usually wants an address they can paste into their own client. Making them
  * scroll past a form to find one costs enquiries for no reason.
  */
-const Contact = () => (
+const Contact = () => {
+  const scope = useSectionReveal()
+
+  return (
   <section
+    ref={scope}
     id="contact"
     aria-labelledby="contact-heading"
-    className="px-6 py-24 sm:px-10 lg:px-16"
+    className="sf-textured px-6 py-24 sm:px-10 lg:px-16"
   >
     <div className="mx-auto max-w-wide">
       <SectionHeading
@@ -30,7 +35,7 @@ const Contact = () => (
       />
 
       <div className="mt-12 grid gap-12 lg:grid-cols-12 lg:gap-16">
-        <div className="lg:col-span-5">
+        <div data-reveal className="lg:col-span-5">
           <p className="max-w-measure text-lg text-ink-muted">{CONTACT.intro}</p>
 
           <dl className="mt-10">
@@ -58,12 +63,13 @@ const Contact = () => (
           </dl>
         </div>
 
-        <div className="lg:col-span-6 lg:col-start-7">
+        <div data-reveal className="lg:col-span-6 lg:col-start-7">
           <ContactForm />
         </div>
       </div>
     </div>
   </section>
-)
+  )
+}
 
 export default Contact

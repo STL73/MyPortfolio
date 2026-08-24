@@ -1,5 +1,6 @@
 import CertificateLink from "../components/CertificateLink"
 import SectionHeading from "../components/SectionHeading"
+import { useSectionReveal } from "../hooks/useSectionReveal"
 import {
   certificatesData,
   degreeLevels,
@@ -21,8 +22,12 @@ const [degree, ...priorEducation] = educationData
  * to open the transcript is worth more than another paragraph asserting the
  * grade.
  */
-const Education = () => (
+const Education = () => {
+  const scope = useSectionReveal()
+
+  return (
   <section
+    ref={scope}
     id="education"
     aria-labelledby="education-heading"
     className="px-6 py-24 sm:px-10 lg:px-16"
@@ -35,7 +40,7 @@ const Education = () => (
       />
 
       <div className="mt-12 grid gap-12 lg:grid-cols-12 lg:gap-16">
-        <div className="lg:col-span-7">
+        <div data-reveal className="lg:col-span-7">
           <h3 className="text-xl text-ink">{degree.title}</h3>
           <p className="mt-1 text-ink-muted">{degree.institution}</p>
           <p className="mt-2 font-mono text-xs tracking-mono text-ink-low">
@@ -72,7 +77,7 @@ const Education = () => (
           ))}
         </div>
 
-        <div className="lg:col-span-5">
+        <div data-reveal className="lg:col-span-5">
           <h3 className="font-mono text-xs tracking-caps text-ink-low uppercase">
             Certificates
           </h3>
@@ -85,6 +90,7 @@ const Education = () => (
       </div>
     </div>
   </section>
-)
+  )
+}
 
 export default Education

@@ -14,9 +14,21 @@ import ProjectStatus from "./ProjectStatus"
  * deployed") the first thing cut, which is exactly backwards.
  */
 const ProjectRow = ({ project }) => (
-  <article className="grid gap-4 border-t border-line py-8 md:grid-cols-12 md:gap-8">
+  // The row picks up an aurora edge on hover and slides a few pixels right.
+  // It is a row, not a card, so it has no border to light up -- the left edge
+  // has to be drawn to give the hover somewhere to happen.
+  <article
+    data-reveal
+    className="group relative grid gap-4 border-t border-line py-8 pl-0 transition-[padding-left] duration-200 hover:pl-4 md:grid-cols-12 md:gap-8"
+  >
+    <span
+      aria-hidden="true"
+      className="absolute top-8 bottom-8 left-0 w-px scale-y-0 bg-accent transition-transform duration-200 group-hover:scale-y-100"
+    />
     <div className="md:col-span-4">
-      <h3 className="text-lg text-ink">{project.title}</h3>
+      <h3 className="text-lg text-ink transition-colors duration-200 group-hover:text-accent">
+        {project.title}
+      </h3>
       <div className="mt-2 flex items-baseline gap-4">
         <ProjectStatus status={project.status} />
         <span className="font-mono text-xs tracking-mono text-ink-muted">

@@ -11,7 +11,14 @@
  * and dates, never for a claim.
  */
 const SectionHeading = ({ id, title, meta }) => (
-  <header className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 border-b border-line pb-6">
+  // The rule under the heading starts as a short aurora segment before handing
+  // over to the border colour. It is the one repeating accent on the page, it
+  // costs a pseudo-element, and it gives every section a point of colour
+  // without any of them shouting.
+  <header
+    data-reveal
+    className="relative flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 border-b border-line pb-6 after:absolute after:-bottom-px after:left-0 after:h-px after:w-16 after:bg-accent"
+  >
     <h2 id={id} className="text-2xl text-ink">
       {title}
     </h2>

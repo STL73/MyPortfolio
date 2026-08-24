@@ -123,7 +123,7 @@ const ContactForm = () => {
       <button
         type="submit"
         disabled={isSending}
-        className="self-start rounded-md bg-accent px-6 py-3 font-semibold text-on-accent transition-colors duration-150 hover:bg-aurora-400 disabled:cursor-not-allowed disabled:opacity-60"
+        className="self-start rounded-md bg-accent px-6 py-3 font-semibold text-on-accent transition-all duration-150 hover:-translate-y-0.5 hover:bg-aurora-400 hover:shadow-[0_6px_20px_-6px_var(--sf-aurora-500)] disabled:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60 disabled:shadow-none"
       >
         {isSending ? "Sending…" : "Send message"}
       </button>
