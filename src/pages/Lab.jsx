@@ -1,6 +1,8 @@
+import CareerTracks from "../components/CareerTracks"
 import ProjectStatus from "../components/ProjectStatus"
+import { primaryAction, secondaryAction } from "../lib/actionStyles"
 import portrait from "../assets/images/slav-portrait.webp"
-import { ABOUT, projectsData } from "../constants/index"
+import { ABOUT, HERO, careerTracks, projectsData } from "../constants/index"
 
 /**
  * A comparison page for motion and layout variants. Development only.
@@ -144,10 +146,53 @@ const Lab = () => (
         </p>
         <h1 className="mt-3 text-3xl text-ink">Variants</h1>
         <p className="mt-4 max-w-measure text-lg text-ink-muted">
-          Hover everything. Screenshots cannot show any of this, which is the
-          entire reason the page exists.
+          Hover everything. Screenshots cannot show any of this, which is the entire reason the page
+          exists.
         </p>
       </header>
+
+      <Group
+        title="Hero layout"
+        note="A is what ships: stacked and left-weighted, with the right side open. B moves the career tracks beside the headline, which fills the width and makes the hero shorter -- the calls to action were falling below the fold at 900px."
+      >
+        <Labelled label="A · stacked (current)">
+          <div className="w-full border border-line/50 p-8">
+            <p className="font-mono text-sm tracking-mono text-ink-muted">{HERO.eyebrow}</p>
+            <h2 className="mt-8 max-w-4xl text-3xl leading-[1.08] text-ink">
+              <span className="block">{HERO.claim}</span>
+              <span className="mt-2 block text-ink-muted">{HERO.turn}</span>
+            </h2>
+            <div className="mt-14">
+              <CareerTracks tracks={careerTracks} />
+            </div>
+            <div className="mt-16 flex flex-wrap items-center gap-4">
+              <span className={primaryAction()}>See the work</span>
+              <span className={secondaryAction()}>Download CV</span>
+            </div>
+          </div>
+        </Labelled>
+
+        <Labelled label="B · tracks beside the headline">
+          <div className="w-full border border-line/50 p-8">
+            <p className="font-mono text-sm tracking-mono text-ink-muted">{HERO.eyebrow}</p>
+            <div className="mt-8 grid items-center gap-12 lg:grid-cols-12">
+              <div className="lg:col-span-7">
+                <h2 className="text-3xl leading-[1.08] text-ink">
+                  <span className="block">{HERO.claim}</span>
+                  <span className="mt-2 block text-ink-muted">{HERO.turn}</span>
+                </h2>
+                <div className="mt-12 flex flex-wrap items-center gap-4">
+                  <span className={primaryAction()}>See the work</span>
+                  <span className={secondaryAction()}>Download CV</span>
+                </div>
+              </div>
+              <div className="lg:col-span-5">
+                <CareerTracks tracks={careerTracks} />
+              </div>
+            </div>
+          </div>
+        </Labelled>
+      </Group>
 
       <Group
         title="Buttons"
@@ -298,9 +343,7 @@ const Lab = () => (
                 className="lab-peek rounded-lg border border-line bg-night-700/40 p-6"
               >
                 <h3 className="text-lg text-ink">{project.title}</h3>
-                <p className="mt-3 text-sm text-ink-muted">
-                  {project.description}
-                </p>
+                <p className="mt-3 text-sm text-ink-muted">{project.description}</p>
               </article>
             ))}
           </div>
@@ -313,18 +356,14 @@ const Lab = () => (
       >
         <Labelled label="A · current, left-weighted">
           <div className="flex w-full gap-20">
-            <div className="max-w-measure text-lg text-ink-muted">
-              {ABOUT.paragraphs[0]}
-            </div>
+            <div className="max-w-measure text-lg text-ink-muted">{ABOUT.paragraphs[0]}</div>
             <img src={portrait} alt="" className="h-64 w-auto rounded-lg border border-line" />
           </div>
         </Labelled>
 
         <Labelled label="B · three columns, full width">
           <div className="grid w-full grid-cols-12 gap-8">
-            <div className="col-span-5 text-lg text-ink-muted">
-              {ABOUT.paragraphs[0]}
-            </div>
+            <div className="col-span-5 text-lg text-ink-muted">{ABOUT.paragraphs[0]}</div>
             <img
               src={portrait}
               alt=""
@@ -333,9 +372,7 @@ const Lab = () => (
             <dl className="col-span-3 col-start-10 flex flex-col gap-6">
               {ABOUT.facts.map((fact) => (
                 <div key={fact.label} className="border-t border-line pt-4">
-                  <dt className="font-mono text-xs tracking-mono text-ink-low">
-                    {fact.label}
-                  </dt>
+                  <dt className="font-mono text-xs tracking-mono text-ink-low">{fact.label}</dt>
                   <dd className="mt-1 text-ink">{fact.value}</dd>
                 </div>
               ))}
