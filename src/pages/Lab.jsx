@@ -2,7 +2,7 @@ import CareerTracks from "../components/CareerTracks"
 import ProjectStatus from "../components/ProjectStatus"
 import { primaryAction, secondaryAction } from "../lib/actionStyles"
 import portrait from "../assets/images/slav-portrait.webp"
-import { ABOUT, HERO, careerTracks, projectsData } from "../constants/index"
+import { ABOUT, HERO, SKILLS, careerTracks, projectsData } from "../constants/index"
 
 /**
  * A comparison page for motion and layout variants. Development only.
@@ -126,6 +126,37 @@ const Lab = () => (
       .lab-draw::after { right: 0; bottom: 0; border-bottom: 1px solid var(--sf-text-mid); border-right: 1px solid var(--sf-text-mid); }
       .lab-draw:hover::before,
       .lab-draw:hover::after { width: 100%; height: 100%; }
+
+      /* Status indicator options. The slow pulse is what the pre-redesign
+         site had; a motion audit flags any looped pulse on a status element
+         as the single most recognisable AI-slop pattern there is, so it is
+         here to be compared rather than assumed. */
+      @keyframes lab-status-pulse {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.45; transform: scale(0.82); }
+      }
+      .lab-dot {
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        border-radius: 9999px;
+        background: var(--sf-aurora-500);
+      }
+      .lab-dot-pulse { animation: lab-status-pulse 2s ease-in-out infinite; }
+      .lab-dot-ring {
+        position: relative;
+      }
+      .lab-dot-ring::after {
+        content: "";
+        position: absolute;
+        inset: -4px;
+        border-radius: 9999px;
+        border: 1px solid var(--sf-aurora-500);
+        opacity: 0.35;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .lab-dot-pulse { animation: none; }
+      }
 
       /* His idea, built honestly: a card showing a slice until hovered. */
       .lab-peek { max-height: 5.5rem; overflow: hidden; transition: max-height 320ms cubic-bezier(0.22, 1, 0.36, 1); }
@@ -345,6 +376,101 @@ const Lab = () => (
                 <h3 className="text-lg text-ink">{project.title}</h3>
                 <p className="mt-3 text-sm text-ink-muted">{project.description}</p>
               </article>
+            ))}
+          </div>
+        </Labelled>
+      </Group>
+
+      <Group
+        title="The Live status"
+        note="The pre-redesign site pulsed this. A motion audit flags any looped pulse on a status element as the most recognisable AI-slop pattern there is -- so all four are here rather than one being assumed."
+      >
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+          <Labelled label="A · plain text (current)">
+            <span className="font-mono text-xs tracking-mono text-accent">Live</span>
+          </Labelled>
+
+          <Labelled label="B · static dot">
+            <span className="inline-flex items-baseline gap-2 font-mono text-xs tracking-mono text-accent">
+              <span className="lab-dot" />
+              Live
+            </span>
+          </Labelled>
+
+          <Labelled label="C · dot with a ring">
+            <span className="inline-flex items-baseline gap-2 font-mono text-xs tracking-mono text-accent">
+              <span className="lab-dot lab-dot-ring" />
+              Live
+            </span>
+          </Labelled>
+
+          <Labelled label="D · slow pulse (what you had)">
+            <span className="inline-flex items-baseline gap-2 font-mono text-xs tracking-mono text-accent">
+              <span className="lab-dot lab-dot-pulse" />
+              Live
+            </span>
+          </Labelled>
+        </div>
+      </Group>
+
+      <Group
+        title="Skills layout"
+        note="Four tiers, three arrangements. The fourth tier names the gaps and is the most valuable block, so whichever layout wins has to keep it as readable as the first three."
+      >
+        <Labelled label="A · rows (current)">
+          <dl className="w-full">
+            {SKILLS.tiers.map((tier) => (
+              <div
+                key={tier.id}
+                className="grid gap-3 border-t border-line py-6 md:grid-cols-12 md:gap-8"
+              >
+                <dt className="md:col-span-4">
+                  <span className="text-lg text-ink">{tier.label}</span>
+                  <span className="mt-1 block text-sm text-ink-muted">{tier.note}</span>
+                </dt>
+                <dd className="font-mono text-sm tracking-mono text-ink-muted md:col-span-8">
+                  {tier.items.join(" · ")}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </Labelled>
+
+        <Labelled label="B · four columns">
+          <div className="grid w-full gap-6 md:grid-cols-2 lg:grid-cols-4">
+            {SKILLS.tiers.map((tier) => (
+              <div key={tier.id} className="border-t border-line pt-4">
+                <h3 className="text-ink">{tier.label}</h3>
+                <p className="mt-1 text-sm text-ink-muted">{tier.note}</p>
+                <ul className="mt-4 flex list-none flex-col gap-2">
+                  {tier.items.map((item) => (
+                    <li key={item} className="font-mono text-xs tracking-mono text-ink-muted">
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </Labelled>
+
+        <Labelled label="C · cards, gaps tier accented">
+          <div className="grid w-full gap-4 md:grid-cols-2">
+            {SKILLS.tiers.map((tier) => (
+              <div
+                key={tier.id}
+                className={`rounded-md border p-6 ${
+                  tier.id === "learning"
+                    ? "border-accent/40 bg-accent/5"
+                    : "border-line bg-night-700/40"
+                }`}
+              >
+                <h3 className="text-lg text-ink">{tier.label}</h3>
+                <p className="mt-1 text-sm text-ink-muted">{tier.note}</p>
+                <p className="mt-4 font-mono text-xs tracking-mono text-ink-muted">
+                  {tier.items.join(" · ")}
+                </p>
+              </div>
             ))}
           </div>
         </Labelled>
