@@ -1,104 +1,90 @@
-import { useEffect, useRef } from "react"
-import gsap from "gsap"
-import { ScrollTrigger } from "gsap/ScrollTrigger"
-import { educationData, certificatesData } from "../constants"
-import EduCard from "../components/EduCard"
-import CertificateCard from "../components/CertificateCard"
+import CertificateLink from "../components/CertificateLink"
+import SectionHeading from "../components/SectionHeading"
+import {
+  certificatesData,
+  degreeLevels,
+  educationData,
+} from "../constants/index"
 
-const Education = () => {
-  const sectionRef = useRef(null)
+const [degree, ...priorEducation] = educationData
 
-  useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
+/**
+ * Education, and the paperwork that backs it.
+ *
+ * The degree gets the weight and the three levels sit under it as a sequence,
+ * which is the one place on this site where ordinal labels earn their keep:
+ * Level 6 genuinely cannot precede Level 4, so the order carries information
+ * rather than decorating a list.
+ *
+ * The certificates are real files rather than a claim that they exist. For
+ * someone whose strongest evidence is graded coursework, a reader being able
+ * to open the transcript is worth more than another paragraph asserting the
+ * grade.
+ */
+const Education = () => (
+  <section
+    id="education"
+    aria-labelledby="education-heading"
+    className="px-6 py-24 sm:px-10 lg:px-16"
+  >
+    <div className="mx-auto max-w-wide">
+      <SectionHeading
+        id="education-heading"
+        title="Education"
+        meta="First Class · 77.7% · 2025"
+      />
 
-    const ctx = gsap.context(() => {
-      gsap
-        .timeline({
-          defaults: { ease: "power3.out" },
-          scrollTrigger: { trigger: sectionRef.current, start: "top 80%", once: true },
-        })
-        .fromTo(".edu-title", { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8 })
-        .fromTo(
-          ".edu-card",
-          { y: 24, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.7, stagger: 0.12 },
-          0.3
-        )
-        .fromTo(
-          ".cert-card",
-          { y: 24, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.7, stagger: 0.1 },
-          0.5
-        )
-    }, sectionRef)
+      <div className="mt-12 grid gap-12 lg:grid-cols-12 lg:gap-16">
+        <div className="lg:col-span-7">
+          <h3 className="text-xl text-ink">{degree.title}</h3>
+          <p className="mt-1 text-ink-muted">{degree.institution}</p>
+          <p className="mt-2 font-mono text-xs tracking-mono text-ink-low">
+            {degree.period}
+          </p>
 
-    return () => ctx.revert()
-  }, [])
-
-  return (
-    <section
-      id="education"
-      aria-labelledby="education-heading"
-      ref={sectionRef}
-      style={{ padding: "80px 24px", maxWidth: "1100px", margin: "0 auto" }}
-    >
-      <div className="section-label">Background</div>
-      <h2 id="education-heading" className="section-title edu-title">
-        Education &amp; <span>Credentials</span>
-      </h2>
-
-      {/* Timeline */}
-      <div
-        style={{
-          position: "relative",
-          display: "flex",
-          flexDirection: "column",
-          marginBottom: "64px",
-        }}
-      >
-        {/* Vertical line */}
-        <div
-          aria-hidden="true"
-          style={{
-            position: "absolute",
-            top: 0,
-            bottom: 0,
-            left: "20px",
-            width: "1px",
-            background:
-              "linear-gradient(to bottom, transparent, #6366f144 10%, #6366f144 90%, transparent)",
-          }}
-        />
-        {educationData.map((item) => (
-          <EduCard key={item.id} {...item} />
-        ))}
-      </div>
-
-      {/* Certificates */}
-      {certificatesData?.length > 0 && (
-        <>
-          <div
-            style={{
-              fontSize: "12px",
-              color: "#94a3b8",
-              letterSpacing: "3px",
-              textTransform: "uppercase",
-              fontWeight: 500,
-              marginBottom: "24px",
-              fontFamily: "var(--font-dm-sans)",
-            }}
-          >
-            Certificates
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {certificatesData.map((cert) => (
-              <CertificateCard key={cert.id} {...cert} />
+          <ol className="mt-8 list-none">
+            {degreeLevels.map((level) => (
+              <li
+                key={level.id}
+                className="grid gap-2 border-t border-line py-5 sm:grid-cols-12 sm:gap-6"
+              >
+                <span className="font-mono text-xs tracking-mono text-ink-low sm:col-span-4">
+                  {level.period}
+                </span>
+                <div className="sm:col-span-8">
+                  <span className="block text-ink">{level.title}</span>
+                  <span className="mt-1 block text-sm text-ink-muted">
+                    {level.description}
+                  </span>
+                </div>
+              </li>
             ))}
-          </div>
-        </>
-      )}
-    </section>
-  )
-}
+          </ol>
+
+          {priorEducation.map((entry) => (
+            <div key={entry.id} className="mt-10 border-t border-line pt-5">
+              <h3 className="text-ink">{entry.title}</h3>
+              <p className="mt-1 text-sm text-ink-muted">{entry.institution}</p>
+              <p className="mt-2 font-mono text-xs tracking-mono text-ink-low">
+                {entry.period}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        <div className="lg:col-span-5">
+          <h3 className="font-mono text-xs tracking-caps text-ink-low uppercase">
+            Certificates
+          </h3>
+          <ul className="mt-4 list-none">
+            {certificatesData.map((certificate) => (
+              <CertificateLink key={certificate.id} certificate={certificate} />
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+)
 
 export default Education

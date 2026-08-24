@@ -2,17 +2,6 @@ import {
   FaLinkedinIn,
   FaGithub,
   FaInstagram,
-  FaXTwitter,
-  FaTiktok,
-  FaFacebookF,
-  FaReact,
-  FaNode,
-  SiTailwindcss,
-  SiGreensock,
-  SiJavascript,
-  SiGit,
-  SiExpress,
-  SiPhp,
 } from "../assets/icons"
 import mossShot from "../assets/images/projects/moss-storefront.jpg"
 
@@ -75,6 +64,102 @@ export const careerTracks = [
   },
 ]
 
+/**
+ * About copy.
+ *
+ * Every figure here is checked against the record rather than rounded up:
+ * thirteen years across retail and warehouse management, eight of them as
+ * Store Manager at BILLA in Bulgaria, a department at KAUFLAND before that,
+ * and a BSc (Hons) Computing from Arden at First Class, 77.7%, 2021-2025.
+ *
+ * The current job is named. A recruiter reads an unexplained gap worse than
+ * they read warehouse work, and the whole argument of this page is that the
+ * degree was done on top of a full-time job rather than instead of one --
+ * which does not hold if the full-time job is quietly left out.
+ *
+ * The third paragraph gives the limit away before the reader finds it. That is
+ * the same move the GitHub profile and the Moss README make, and it is the
+ * reason anything else here gets believed.
+ */
+export const ABOUT = {
+  heading: "How I got here",
+  meta: "BSc (Hons) Computing · First Class, 77.7% · 2025",
+  paragraphs: [
+    "I spent thirteen years in retail and warehouse management — eight of them running a BILLA store in Bulgaria, and a department at KAUFLAND before that. Running a shop is logistics under time pressure: stock that has to be on the shelf, rotas that have to work, and a floor that opens at seven whether or not last night went to plan.",
+    "I started the Computing degree at Arden in 2021 and finished it in 2025 with a First at 77.7%, studying in the evenings without taking time off work. I am still working full time, currently as a warehouse operative at Great Bear in Manchester, and building in the hours around it.",
+    "None of that is a substitute for commercial development experience and I would not claim it is. What it does mean is that deadlines, handovers and being the person answerable when something breaks are not new to me. Only the tools are.",
+    "I am looking for a junior developer role, and I take freelance work as Spireforge alongside it.",
+  ],
+  facts: [
+    { label: "Based", value: "Manchester, UK" },
+    { label: "Languages", value: "Bulgarian, English" },
+    { label: "Looking for", value: "A junior developer role" },
+    { label: "Freelance", value: "As Spireforge" },
+  ],
+}
+
+/**
+ * Skills, in tiers, because a flat list is a claim that everything on it is
+ * equally true.
+ *
+ * The previous version listed Testing, SEO, Branding, Handoff, Prototyping and
+ * REST APIs twice, none of which survives contact with the repository. One
+ * inflated claim costs the reader their trust in every other line on the page,
+ * and this page is asking to be believed about a career change.
+ *
+ * The split is the one already used on the GitHub profile README, and the
+ * fourth tier is the point of the whole thing: naming what is missing is what
+ * makes the first three tiers worth reading.
+ *
+ * Contents are taken from the skills audit done against 18 graded Arden
+ * submissions rather than from memory, which is why Java, Python for data
+ * science and Azure CI/CD appear at all -- an earlier version of this list
+ * both omitted them and invented other things.
+ */
+export const SKILLS = {
+  heading: "What I can actually do",
+  note: "Split by how I know it, not by category. Everything in the third tier is evidenced by graded coursework rather than by a payslip, and I would rather say which is which than let someone find out in an interview.",
+  tiers: [
+    {
+      id: "comfortable",
+      label: "Comfortable",
+      note: "Reach for these without looking things up",
+      items: ["HTML", "CSS", "JavaScript", "Tailwind CSS", "PHP", "MySQL", "SQL"],
+    },
+    {
+      id: "working",
+      label: "Working in",
+      note: "Used on the projects above, still building fluency",
+      items: ["React", "Vite", "Node.js", "Express", "MongoDB", "PostgreSQL", "Git", "GSAP"],
+    },
+    {
+      id: "academic",
+      label: "From the degree, not from a job",
+      note: "Built and graded, never shipped commercially",
+      items: [
+        "Java (OOP)",
+        "Python for data science",
+        "pandas & scikit-learn",
+        "Advanced SQL (views, procedures, triggers, transactions)",
+        "Azure deployment with CI/CD",
+        "Authentication & role-based access control",
+        "Networking & systems security",
+      ],
+    },
+    {
+      id: "learning",
+      label: "Learning now",
+      note: "The honest gaps, and what I am working through",
+      items: ["REST API design", "ORMs", "TypeScript"],
+    },
+  ],
+}
+
+export const CONTACT = {
+  heading: "Get in touch",
+  intro: "I am looking for a junior developer role, and I take freelance work alongside it. If you have either, or just want to ask something, the form goes straight to my inbox and so does the email address.",
+}
+
 export const navLinks = [
   { href: "#home", label: "Home" },
   { href: "#projects", label: "My Projects" },
@@ -84,16 +169,6 @@ export const navLinks = [
   { href: "#contact", label: "Contact" },
 ]
 
-export const techStack = [
-  { id: 1, name: "React",      icon: FaReact },
-  { id: 2, name: "Node.js",    icon: FaNode },
-  { id: 3, name: "JavaScript", icon: SiJavascript },
-  { id: 4, name: "Tailwind",   icon: SiTailwindcss },
-  { id: 5, name: "GSAP",       icon: SiGreensock },
-  { id: 6, name: "Git",        icon: SiGit },
-  { id: 7, name: "Express",    icon: SiExpress },
-  { id: 8, name: "PHP",        icon: SiPhp },
-]
 
 export const educationData = [
   {
@@ -114,7 +189,19 @@ export const educationData = [
   },
 ]
 
-export const experienceData = [
+/**
+ * The three levels of the Arden degree.
+ *
+ * Renamed from `experienceData`, which was actively misleading: it reads as
+ * employment history and contains none, and the site went years without
+ * mentioning a thirteen-year career partly because this name made it look
+ * like that ground was already covered.
+ *
+ * Ordered newest first. The levels are a real sequence -- Level 6 cannot
+ * happen before Level 4 -- which is the one place on this site where ordinal
+ * labels carry information rather than decorate a list.
+ */
+export const degreeLevels = [
   {
     id: 1,
     period: "Level 6 (2024-2025)",
@@ -179,32 +266,6 @@ export const certificatesData = [
   },
 ]
 
-export const skillsData = [
-  {
-    id: 1,
-    title: "Frontend",
-    description: "React apps, component systems, animation, and performance tuning.",
-    skills: ["React", "Vite", "Tailwind", "JavaScript", "Node.js", "GSAP"],
-  },
-  {
-    id: 2,
-    title: "Design",
-    description: "Visual systems, prototyping, and clean, consistent UI flows.",
-    skills: ["Figma", "UI Systems", "Prototyping", "Wireframing", "Branding", "Handoff"],
-  },
-  {
-    id: 3,
-    title: "Delivery",
-    description: "Collaboration, APIs, and shipping fast without breaking quality.",
-    skills: ["Git", "REST APIs", "Performance", "Accessibility", "SEO", "Testing"],
-  },
-  {
-    id: 4,
-    title: "Backend",
-    description: "Server-side tools and data management.",
-    skills: ["Node.js", "Express", "PHP", "SQL", "MongoDB", "REST APIs", "XAMPP"],
-  },
-]
 
 export const projectsData = [
   {
@@ -258,35 +319,14 @@ export const projectsData = [
 ]
 
 // Marquee strip items for the Skills section ticker
-export const MARQUEE_ITEMS = [
-  "React",
-  "JavaScript",
-  "HTML5",
-  "CSS3",
-  "Tailwind CSS",
-  "GSAP",
-  "Vite",
-  "Figma",
-  "Node.js",
-  "Express",
-  "PHP",
-  "SQL",
-  "MongoDB",
-  "XAMPP",
-  "REST APIs",
-  "Git",
-  "GitHub",
-  "Responsive Design",
-  "Accessibility",
-]
 
 export const footerLinks = [
   {
     title: "Navigation",
     links: [
       { name: "Home", link: "#home" },
-      { name: "About Me", link: "#about" },
       { name: "My Projects", link: "#projects" },
+      { name: "About Me", link: "#about" },
       { name: "My Skills", link: "#skills" },
       { name: "Education", link: "#education" },
       { name: "Contact", link: "#contact" },
@@ -312,31 +352,24 @@ export const footerLinks = [
   },
 ]
 
+/**
+ * Social links for the footer.
+ *
+ * `label` is what a screen reader announces for the link, so it names the
+ * destination rather than the picture on the button. The previous values were
+ * "linkedin logo" and the like, which describes the icon and tells someone
+ * following the link nothing about where it goes.
+ */
 export const socialMedia = [
   {
     src: FaLinkedinIn,
-    alt: "linkedin logo",
+    label: "LinkedIn",
     link: "https://www.linkedin.com/in/slavi-lambov-a69a65229",
   },
-  { src: FaGithub, alt: "github logo", link: "https://github.com/STL73" },
+  { src: FaGithub, label: "GitHub", link: "https://github.com/STL73" },
   {
     src: FaInstagram,
-    alt: "instagram logo",
+    label: "Instagram",
     link: "https://www.instagram.com/slavitl73/",
-  },
-  {
-    src: FaXTwitter,
-    alt: "twitter logo",
-    link: "https://x.com/home/@SlaviLambov73",
-  },
-  {
-    src: FaTiktok,
-    alt: "tiktok logo",
-    link: "https://www.tiktok.com/@stlambov?is_from_webapp=1&sender_device=pc",
-  },
-  {
-    src: FaFacebookF,
-    alt: "facebook logo",
-    link: "https://www.facebook.com/rafael.rage.5",
   },
 ]

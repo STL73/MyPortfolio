@@ -1,73 +1,56 @@
-import { useEffect, useRef } from "react"
-import gsap from "gsap"
-import { ScrollTrigger } from "gsap/ScrollTrigger"
-import { skillsData, MARQUEE_ITEMS } from "../constants"
-import SkillCard from "../components/SkillCard"
+import SectionHeading from "../components/SectionHeading"
+import { SKILLS } from "../constants/index"
 
-const Skills = () => {
-  const sectionRef = useRef(null)
+/**
+ * Skills, in tiers rather than as a wall of logos.
+ *
+ * The previous version was a scrolling marquee of framework icons. A marquee
+ * says nothing a reader can act on -- every logo carries identical weight, so
+ * "used it once in a tutorial" and "built and shipped it" look the same, and
+ * the whole thing moves so it cannot even be scanned. Worse for someone
+ * changing careers, where the entire question is which is which.
+ *
+ * The fourth tier names the gaps. It is the most valuable block on the page:
+ * it is what makes the other three tiers credible, and it is the answer to a
+ * question an interviewer was going to ask anyway.
+ */
+const Skills = () => (
+  <section
+    id="skills"
+    aria-labelledby="skills-heading"
+    className="px-6 py-24 sm:px-10 lg:px-16"
+  >
+    <div className="mx-auto max-w-wide">
+      <SectionHeading
+        id="skills-heading"
+        title={SKILLS.heading}
+        meta={`${SKILLS.tiers.length} tiers`}
+      />
 
-  useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
+      <p className="mt-8 max-w-measure text-lg text-ink-muted">{SKILLS.note}</p>
 
-    const ctx = gsap.context(() => {
-      gsap
-        .timeline({
-          defaults: { ease: "power3.out" },
-          scrollTrigger: { trigger: sectionRef.current, start: "top 80%", once: true },
-        })
-        .fromTo(".skills-title", { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8 })
-        .fromTo(
-          ".skills-card",
-          { y: 24, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.7, stagger: 0.12 },
-          0.3
-        )
-    }, sectionRef)
+      <dl className="mt-12">
+        {SKILLS.tiers.map((tier) => (
+          <div
+            key={tier.id}
+            className="grid gap-3 border-t border-line py-8 md:grid-cols-12 md:gap-8"
+          >
+            <dt className="md:col-span-4">
+              <span className="text-lg text-ink">{tier.label}</span>
+              <span className="mt-1 block text-sm text-ink-low">{tier.note}</span>
+            </dt>
 
-    return () => ctx.revert()
-  }, [])
-
-  return (
-    <section
-      id="skills"
-      aria-labelledby="skills-heading"
-      ref={sectionRef}
-      style={{ padding: "80px 24px", maxWidth: "1100px", margin: "0 auto" }}
-    >
-      <div className="section-label">What I work with</div>
-      <h2 id="skills-heading" className="section-title skills-title">
-        My <span>Skills</span>
-      </h2>
-
-      {/* 2×2 Category grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        {skillsData.map((skill) => (
-          <SkillCard key={skill.id} {...skill} />
+            {/* Mono, and separated by middots rather than set as pills. Pills
+                read as badges -- eight of them look like eight awards, which
+                is the opposite of what tiering this list is for. */}
+            <dd className="font-mono text-sm tracking-mono text-ink-muted md:col-span-8">
+              {tier.items.join(" · ")}
+            </dd>
+          </div>
         ))}
-      </div>
-
-      {/* Marquee strip */}
-      <div className="marquee-wrap" aria-hidden="true">
-        <div className="marquee-inner">
-          <div className="marquee-track">
-            {MARQUEE_ITEMS.map((item) => (
-              <span key={item} className="marquee-item">
-                <span>◆</span> {item}
-              </span>
-            ))}
-          </div>
-          <div className="marquee-track">
-            {MARQUEE_ITEMS.map((item) => (
-              <span key={`${item}-2`} className="marquee-item">
-                <span>◆</span> {item}
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  )
-}
+      </dl>
+    </div>
+  </section>
+)
 
 export default Skills

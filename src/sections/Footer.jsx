@@ -1,141 +1,107 @@
-import { navLinks, socialMedia, PERSONAL } from "../constants"
+import { FaRegCopyright } from "../assets/icons"
+import Mark from "../components/Mark"
+import SectionLink from "../components/SectionLink"
+import { PERSONAL, footerLinks, socialMedia } from "../constants/index"
 
+const currentYear = new Date().getFullYear()
+
+// Section links have to route from a case study; a CV or an external profile
+// is just a link. Telling them apart by the "#" avoids passing a flag around.
+const isSectionLink = (href) => href.startsWith("#")
+
+/**
+ * The footer.
+ *
+ * This is where Spireforge is named. The header carries the mark but the
+ * person's name, because a recruiter needs to leave with that; the trading
+ * name belongs somewhere it reads as information for a prospective client
+ * rather than as a claim to be a company.
+ */
 const Footer = () => (
-  <footer
-    className="px-6 pt-12 pb-8 md:px-12"
-    style={{
-      borderTop: "1px solid #1e293b",
-      position: "relative",
-      overflow: "hidden",
-    }}
-  >
-    {/* Subtle radial glow */}
-    <div
-      aria-hidden="true"
-      style={{
-        position: "absolute",
-        bottom: 0,
-        left: "50%",
-        transform: "translateX(-50%)",
-        width: "600px",
-        height: "200px",
-        background: "radial-gradient(ellipse at bottom, #6366f10a 0%, transparent 70%)",
-        pointerEvents: "none",
-      }}
-    />
+  <footer className="border-t border-line px-6 py-16 sm:px-10 lg:px-16">
+    <div className="mx-auto max-w-wide">
+      <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
+        <div className="lg:col-span-4">
+          <div className="flex items-center gap-3">
+            <Mark className="h-7 w-7 shrink-0" decorative />
+            <span className="font-display text-lg font-semibold tracking-display text-ink">
+              Slav Lambov
+            </span>
+          </div>
 
-    <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
-      {/* Top row */}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "flex-start",
-          gap: "32px",
-          marginBottom: "40px",
-          flexWrap: "wrap",
-        }}
-      >
-        {/* Brand */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-          <a
-            href="#home"
-            style={{
-              fontFamily: "var(--font-syne)",
-              fontSize: "22px",
-              fontWeight: 800,
-              color: "#f1f5f9",
-              letterSpacing: "-0.5px",
-              textDecoration: "none",
-            }}
-          >
-            Slav<span style={{ color: "#6366f1" }}>.</span>
-          </a>
-          <p
-            style={{
-              fontSize: "13px",
-              color: "#94a3b8",
-              maxWidth: "260px",
-              lineHeight: 1.6,
-              fontFamily: "var(--font-dm-sans)",
-            }}
-          >
-            {PERSONAL.tagline}
+          <p className="mt-4 max-w-measure text-sm text-ink-muted">
+            Junior developer in Manchester, UK. Freelance work trades as
+            Spireforge.
           </p>
         </div>
 
-        {/* Nav links — two-column grid */}
-        <nav className="grid grid-cols-2 gap-x-8 gap-y-3" aria-label="Footer navigation">
-          {navLinks.map((item) => (
-            <a key={item.label} href={item.href} className="footer-link">
-              {item.label}
-            </a>
-          ))}
-        </nav>
-
-        {/* Social icons */}
-        <div style={{ display: "flex", gap: "10px" }}>
-          {socialMedia.map((item) => (
-            <a
-              key={item.alt}
-              href={item.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={item.alt}
-              className="footer-social-btn"
-            >
-              <item.src aria-hidden="true" style={{ width: "16px", height: "16px" }} />
-            </a>
-          ))}
-        </div>
+        {footerLinks.map((group) => (
+          <nav
+            key={group.title}
+            aria-label={group.title}
+            className="lg:col-span-2"
+          >
+            <h2 className="font-mono text-xs tracking-caps text-ink-low uppercase">
+              {group.title}
+            </h2>
+            <ul className="mt-4 flex list-none flex-col gap-3">
+              {group.links.map((link) => (
+                <li key={link.name}>
+                  {isSectionLink(link.link) ? (
+                    <SectionLink
+                      href={link.link}
+                      className="text-sm text-ink-muted transition-colors duration-150 hover:text-ink"
+                    >
+                      {link.name}
+                    </SectionLink>
+                  ) : (
+                    <a
+                      href={link.link}
+                      {...(link.link.startsWith("http")
+                        ? { target: "_blank", rel: "noreferrer noopener" }
+                        : {})}
+                      className="text-sm text-ink-muted transition-colors duration-150 hover:text-ink"
+                    >
+                      {link.name}
+                    </a>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </nav>
+        ))}
       </div>
 
-      {/* Divider */}
-      <div style={{ borderTop: "1px solid #1e293b", marginBottom: "24px" }} />
-
-      {/* Bottom row */}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          gap: "16px",
-          flexWrap: "wrap",
-        }}
-      >
-        <p
-          style={{
-            fontSize: "12px",
-            color: "#94a3b8",
-            fontFamily: "var(--font-dm-sans)",
-          }}
-        >
-          © {new Date().getFullYear()} <span style={{ color: "#94a3b8" }}>Slav Lambov</span>. All
-          rights reserved.
+      <div className="mt-16 flex flex-wrap items-center justify-between gap-6 border-t border-line pt-8">
+        <p className="flex items-center gap-2 font-mono text-xs tracking-mono text-ink-low">
+          <FaRegCopyright aria-hidden="true" />
+          {currentYear} Slav Lambov
         </p>
-        <button
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="footer-back-top"
+
+        <ul className="flex list-none items-center gap-2">
+          {socialMedia.map((social) => (
+            <li key={social.label}>
+              <a
+                href={social.link}
+                target="_blank"
+                rel="noreferrer noopener"
+                // 44px hit area around a 16px glyph. WCAG 2.2 asks for 24
+                // and a thumb wants more than that.
+                className="grid size-11 place-items-center rounded-md text-ink-muted transition-colors duration-150 hover:bg-surface hover:text-ink"
+              >
+                <social.src aria-hidden="true" />
+                <span className="sr-only">{social.label}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+
+        <SectionLink
+          href="#home"
+          className="font-mono text-xs tracking-mono text-ink-muted transition-colors duration-150 hover:text-ink"
         >
-          Back to top
-          <span
-            className="arrow-box"
-            style={{
-              width: "24px",
-              height: "24px",
-              background: "#0f172a",
-              border: "1px solid #1e293b",
-              borderRadius: "6px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: "12px",
-              transition: "border-color 0.2s",
-            }}
-          >
-            ↑
-          </span>
-        </button>
+          Back to top &#8593;
+        </SectionLink>
       </div>
     </div>
   </footer>
