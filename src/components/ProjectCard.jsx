@@ -37,7 +37,7 @@ const ProjectCard = ({ project }) => (
 
     {/* mt-auto pins the stack to the bottom so the cards' technology lines and
         links align across the row however unequal the descriptions are. */}
-    <p className="mt-auto pt-6 font-mono text-xs tracking-mono text-ink-low">
+    <p className="mt-auto pt-6 font-mono text-xs tracking-mono text-ink-muted">
       {project.technologies.join(" · ")}
     </p>
 

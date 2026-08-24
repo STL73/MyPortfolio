@@ -33,6 +33,15 @@
      `text-ink-mid` instead of `text-text-mid`. */
   --color-ink-hi: var(--sf-text-hi);
   --color-ink-mid: var(--sf-text-mid);
+
+  /* ink-low is NOT for text. It measures 3.53:1 on the page ground and
+     3.21:1 on a card, both below the 4.5:1 floor for small text. It is
+     legal for rules, borders and disabled states and nothing else.
+
+     This was ignored across fifteen labels in the first pass of the
+     redesign and spotted by eye before any automated check caught it,
+     which is the whole argument for the rule existing. If a label looks
+     too quiet, the answer is ink-muted at 7.42:1, not this. */
   --color-ink-low: var(--sf-text-low);
 
   /* The accent. aurora-800 is print and light-face only — it is

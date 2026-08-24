@@ -70,7 +70,7 @@ const About = () => {
                 {/* Mono on the label only. The design system gives the face
                       to code, figures and technical labels -- a label
                       qualifies, the sentence answering it does not. */}
-                <dt className="font-mono text-xs tracking-mono text-ink-low">{fact.label}</dt>
+                <dt className="font-mono text-xs tracking-mono text-ink-muted">{fact.label}</dt>
                 <dd className="mt-1 text-ink">{fact.value}</dd>
               </div>
             ))}

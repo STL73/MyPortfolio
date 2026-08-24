@@ -49,7 +49,7 @@ const Footer = () => (
             aria-label={group.title}
             className="lg:col-span-2"
           >
-            <h2 className="font-mono text-xs tracking-caps text-ink-low uppercase">
+            <h2 className="font-mono text-xs tracking-caps text-ink-muted uppercase">
               {group.title}
             </h2>
             <ul className="mt-4 flex list-none flex-col gap-3">
@@ -85,7 +85,7 @@ const Footer = () => (
             registered company, and Spireforge is neither -- it is a name Slav
             trades under. Same reasoning that leaves the GitHub Company field
             empty. */}
-        <p className="flex items-center gap-2 font-mono text-xs tracking-mono text-ink-low">
+        <p className="flex items-center gap-2 font-mono text-xs tracking-mono text-ink-muted">
           <FaRegCopyright aria-hidden="true" />
           {currentYear} Slav Lambov
         </p>

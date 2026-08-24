@@ -40,7 +40,7 @@ const Contact = () => {
                   key={link.label}
                   className="flex flex-wrap items-baseline gap-x-6 border-t border-line py-4"
                 >
-                  <dt className="w-20 font-mono text-xs tracking-mono text-ink-low">
+                  <dt className="w-20 font-mono text-xs tracking-mono text-ink-muted">
                     {link.label}
                   </dt>
                   <dd>

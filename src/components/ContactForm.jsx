@@ -86,7 +86,7 @@ const ContactForm = () => {
               are in is the one time it is gone. */}
           <label
             htmlFor={`contact-${field.name}`}
-            className="font-mono text-xs tracking-mono text-ink-low"
+            className="font-mono text-xs tracking-mono text-ink-muted"
           >
             {field.label}
           </label>
@@ -106,7 +106,7 @@ const ContactForm = () => {
       <div className="flex flex-col gap-2">
         <label
           htmlFor="contact-message"
-          className="font-mono text-xs tracking-mono text-ink-low"
+          className="font-mono text-xs tracking-mono text-ink-muted"
         >
           Message
         </label>

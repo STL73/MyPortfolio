@@ -42,7 +42,7 @@ const FeaturedProject = ({ project }) => (
       {/* Mono, because a stack is a list of checkable facts. Comma-separated
           rather than a row of pills: eight pills read as eight achievements,
           and this is one sentence's worth of information. */}
-      <p className="mt-6 font-mono text-xs tracking-mono text-ink-low">
+      <p className="mt-6 font-mono text-xs tracking-mono text-ink-muted">
         {project.technologies.join(" · ")}
       </p>
 

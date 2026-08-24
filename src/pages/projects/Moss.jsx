@@ -85,7 +85,7 @@ const Moss = () => (
       <dl className="mt-16 grid gap-px border-t border-line sm:grid-cols-2 lg:grid-cols-4">
         {moss.figures.map((figure) => (
           <div key={figure.label} className="py-6">
-            <dt className="font-mono text-xs tracking-mono text-ink-low">
+            <dt className="font-mono text-xs tracking-mono text-ink-muted">
               {figure.label}
             </dt>
             <dd className="mt-2 font-mono text-sm tracking-mono text-ink">
@@ -106,16 +106,17 @@ const Moss = () => (
       </CaseStudySection>
 
       <CaseStudySection title="Decisions worth explaining">
-        <div className="flex flex-col">
-          {moss.decisions.map((decision) => (
+        {/* No inner grid any more. The section already splits heading from
+            body, and nesting a second 4/8 split inside it squeezed each
+            decision into a third of the page. */}
+        <div className="flex flex-col gap-8">
+          {moss.decisions.map((decision, index) => (
             <div
               key={decision.heading}
-              className="grid gap-3 border-t border-line py-8 md:grid-cols-12 md:gap-8"
+              className={index === 0 ? "" : "border-t border-line pt-8"}
             >
-              <h3 className="text-lg text-ink md:col-span-4">
-                {decision.heading}
-              </h3>
-              <p className="text-ink-muted md:col-span-8">{decision.body}</p>
+              <h3 className="text-lg text-ink">{decision.heading}</h3>
+              <p className="mt-2 max-w-measure text-ink-muted">{decision.body}</p>
             </div>
           ))}
         </div>

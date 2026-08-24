@@ -47,7 +47,7 @@ const Skills = () => {
               <span className="text-lg text-ink transition-colors duration-200 group-hover:text-accent">
                 {tier.label}
               </span>
-              <span className="mt-1 block text-sm text-ink-low">{tier.note}</span>
+              <span className="mt-1 block text-sm text-ink-muted">{tier.note}</span>
             </dt>
 
             {/* Mono, and separated by middots rather than set as pills. Pills
