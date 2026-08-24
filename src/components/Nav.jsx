@@ -154,7 +154,7 @@ const Nav = () => {
         >
           {/* 28px: above the mark's 24px floor, below which the counter
               closes and the compact variant becomes mandatory. */}
-          <Mark className="h-7 w-7 shrink-0" decorative />
+          <Mark className="h-7 w-7 shrink-0" decorative animate />
           <span
             aria-hidden="true"
             className="font-display text-lg font-semibold tracking-display text-ink"

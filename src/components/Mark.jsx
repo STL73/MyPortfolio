@@ -1,3 +1,7 @@
+import { useRef } from "react"
+import gsap from "gsap"
+import { useGSAP } from "@gsap/react"
+
 /**
  * The Spireforge mark.
  *
@@ -30,8 +34,37 @@
  *   announces nothing, rather than making a link read as "Spireforge Slav
  *   Lambov, home".
  */
-const Mark = ({ className = "", decorative = false }) => (
+const Mark = ({ className = "", decorative = false, animate = false }) => {
+  const root = useRef(null)
+
+  useGSAP(
+    () => {
+      if (!animate) return
+
+      const mm = gsap.matchMedia()
+
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
+        // Draw order is the mark's own: chevron, then tip, then spark. The
+        // sequence is the logo assembling itself in the order it is specified
+        // to be painted, not an arbitrary reveal.
+        const timeline = gsap.timeline({ defaults: { ease: "power2.out" } })
+
+        timeline
+          .from('[data-mark="chevron"]', { drawSVG: 0, duration: 0.42 })
+          .from('[data-mark="tip"]', { drawSVG: 0, duration: 0.3 }, "-=0.18")
+          .from(
+            '[data-mark="spark"]',
+            { autoAlpha: 0, scale: 0.4, transformOrigin: "50% 31%", duration: 0.24 },
+            "-=0.08",
+          )
+      })
+    },
+    { scope: root, dependencies: [animate] },
+  )
+
+  return (
   <svg
+    ref={root}
     viewBox="0 0 100 100"
     className={className}
     fill="none"
@@ -40,6 +73,7 @@ const Mark = ({ className = "", decorative = false }) => (
       : { role: "img", "aria-label": "Spireforge" })}
   >
     <path
+      data-mark="chevron"
       d="M22 74 L50 48 L78 74"
       stroke="var(--sf-mark-chevron)"
       strokeWidth="11"
@@ -47,6 +81,7 @@ const Mark = ({ className = "", decorative = false }) => (
       strokeLinejoin="round"
     />
     <path
+      data-mark="tip"
       d="M34.03 56 L50 70.8 L65.97 56"
       stroke="var(--sf-mark-accent)"
       strokeWidth="9"
@@ -54,10 +89,12 @@ const Mark = ({ className = "", decorative = false }) => (
       strokeLinejoin="round"
     />
     <path
+      data-mark="spark"
       d="M50 18 Q50 31 61.26 37.5 Q50 31 38.74 37.5 Q50 31 50 18 Z"
       fill="var(--sf-mark-accent)"
     />
   </svg>
-)
+  )
+}
 
 export default Mark

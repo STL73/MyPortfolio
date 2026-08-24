@@ -3,6 +3,7 @@ import gsap from "gsap"
 import { useGSAP } from "@gsap/react"
 import CareerTracks from "../components/CareerTracks"
 import { primaryAction, secondaryAction } from "../lib/actionStyles"
+import { useEmberDrift } from "../hooks/useEmberDrift"
 import { HERO, PERSONAL, careerTracks } from "../constants/index"
 
 /**
@@ -15,6 +16,8 @@ import { HERO, PERSONAL, careerTracks } from "../constants/index"
  */
 const Hero = () => {
   const root = useRef(null)
+
+  useEmberDrift(root)
 
   useGSAP(
     () => {
@@ -39,16 +42,12 @@ const Hero = () => {
           // The rules draw left to right, in the order the tracks began. This
           // is the one moment on the page carrying meaning rather than polish,
           // so it is the only stagger long enough to notice.
-          .from(
-            '[data-hero="track-rule"]',
-            { scaleX: 0, duration: 0.42, stagger: 0.14 },
-            "-=0.28",
-          )
+          .from('[data-hero="track-rule"]', { scaleX: 0, duration: 0.42, stagger: 0.14 }, "-=0.28")
           .from('[data-hero="spark"]', { autoAlpha: 0, scale: 0.4, duration: 0.24 }, "-=0.08")
           .from('[data-hero="cta"]', { autoAlpha: 0, y: 10 }, "-=0.2")
       })
     },
-    { scope: root },
+    { scope: root }
   )
 
   return (
@@ -59,10 +58,7 @@ const Hero = () => {
       className="sf-textured flex min-h-svh items-center px-6 pt-24 pb-16 sm:px-10 lg:px-16"
     >
       <div className="w-full max-w-wide">
-        <p
-          data-hero="eyebrow"
-          className="font-mono text-sm tracking-mono text-ink-muted"
-        >
+        <p data-hero="eyebrow" className="font-mono text-sm tracking-mono text-ink-muted">
           {HERO.eyebrow}
         </p>
 
@@ -72,10 +68,7 @@ const Hero = () => {
         {/* max-w-4xl, not 3xl. The sentence is long, and a narrower measure
             costs a sixth line of 60px display type -- which was enough to push
             the calls to action off a 900px viewport entirely. */}
-        <h1
-          id="hero-heading"
-          className="mt-8 max-w-4xl text-3xl leading-[1.08] text-ink"
-        >
+        <h1 id="hero-heading" className="mt-8 max-w-4xl text-3xl leading-[1.08] text-ink">
           <span data-hero="claim" className="block">
             {HERO.claim}
           </span>
@@ -98,16 +91,10 @@ const Hero = () => {
             inline transform behind, which would have overridden the hover
             lift even if the tween had finished. One element, one owner. */}
         <div data-hero="cta" className="mt-16 flex flex-wrap items-center gap-4">
-          <a
-            href="#projects"
-            className={primaryAction()}
-          >
+          <a href="#projects" className={primaryAction()}>
             See the work
           </a>
-          <a
-            href={PERSONAL.cv}
-            className={secondaryAction()}
-          >
+          <a href={PERSONAL.cv} className={secondaryAction()}>
             Download CV
           </a>
         </div>

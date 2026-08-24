@@ -10,7 +10,7 @@ const liveCount = projectsData.filter((project) => project.status === "live").le
 const [featured, ...rest] = projectsData
 
 const Projects = () => {
-  const scope = useSectionReveal()
+  const scope = useSectionReveal({ stagger: 0.06 })
 
   return (
     <section

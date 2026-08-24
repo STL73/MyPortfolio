@@ -16,7 +16,7 @@ import { SKILLS } from "../constants/index"
  * question an interviewer was going to ask anyway.
  */
 const Skills = () => {
-  const scope = useSectionReveal()
+  const scope = useSectionReveal({ stagger: 0.06 })
 
   return (
   <section

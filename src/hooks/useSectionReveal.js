@@ -13,6 +13,13 @@ import { useGSAP } from "@gsap/react"
  * makes a sentence take three times as long to become readable as it takes to
  * read. 280ms sits inside the design system's 240-320ms entrance band.
  *
+ * Stagger is off by default, and that is the point. Every section staggered its
+ * contents in the first version of this, which a motion audit flags as exactly
+ * the uniformity that reads as machine-made -- one deliberate moment is
+ * delightful, six identical ones are a template. Only the project cards and the
+ * skills tiers ask for it now, because those two genuinely are sequences the
+ * eye reads in order. Everywhere else the section arrives as one thing.
+ *
  * Reduced motion never has the timeline built at all -- matchMedia means those
  * visitors get the finished state rather than a hurried version of the
  * animation, and GSAP reverts cleanly if the preference changes mid-session.
@@ -63,7 +70,13 @@ const warnOnStyleConflicts = (root) => {
   })
 }
 
-export const useSectionReveal = () => {
+/**
+ * @param {object} [options]
+ * @param {number} [options.stagger]
+ *   Seconds between each element. Defaults to 0 -- the section fades as one.
+ *   Pass a value only where the contents genuinely read as a sequence.
+ */
+export const useSectionReveal = ({ stagger = 0 } = {}) => {
   const scope = useRef(null)
 
   useGSAP(
@@ -78,7 +91,7 @@ export const useSectionReveal = () => {
           y: 12,
           duration: 0.28,
           ease: "power2.out",
-          stagger: 0.06,
+          stagger,
           scrollTrigger: {
             trigger: scope.current,
             start: "top 85%",

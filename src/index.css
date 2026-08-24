@@ -233,3 +233,67 @@
     animation: none;
   }
 }
+
+/* =============================================================
+   Ember drift.
+
+   The offset a textured section's ember layer is shifted by as it scrolls.
+   `inherits: true` is the load-bearing part: ::after cannot be targeted from
+   JavaScript, so the property is animated on the section and inherited down.
+
+   tokens.css is a verbatim copy of the brand's own file and is never edited
+   here, so the background-position it does not set is added on top instead.
+   ============================================================= */
+@property --sf-ember-shift {
+  syntax: "<length>";
+  initial-value: 0px;
+  inherits: true;
+}
+
+.sf-textured::after {
+  background-position: 0 var(--sf-ember-shift);
+}
+
+/* =============================================================
+   The career tracks' response to the pointer.
+
+   A soft aurora glow sits under the cursor as it crosses the two lanes. The
+   position comes from a custom property set on pointermove; the glow itself
+   is a pseudo-element so that GSAP keeps sole ownership of the rule's own
+   transform, which it scales during the hero's entrance.
+
+   Behind `hover: hover` so it never applies on a touch screen, where there is
+   no pointer to follow and the glow would either never appear or stick where
+   the last tap landed.
+   ============================================================= */
+@media (hover: hover) {
+  .sf-track-rule {
+    position: relative;
+  }
+
+  .sf-track-rule::after {
+    content: "";
+    position: absolute;
+    /* Taller than the 1px rule so the glow reads as light around the line
+       rather than as a brighter segment of it. */
+    inset: -6px 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 200ms;
+    background: radial-gradient(
+      120px 8px at var(--sf-track-x, 50%) 50%,
+      var(--sf-aurora-500),
+      transparent 70%
+    );
+  }
+
+  .sf-tracks:hover .sf-track-rule::after {
+    opacity: 0.55;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sf-track-rule::after {
+    transition: none;
+  }
+}
