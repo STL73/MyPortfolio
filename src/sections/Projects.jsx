@@ -1,58 +1,37 @@
-import { useEffect, useRef } from "react"
-import gsap from "gsap"
-import { ScrollTrigger } from "gsap/ScrollTrigger"
-import ProjectCard from "../components/ProjectCard"
-import { projectsData } from "../constants"
+import FeaturedProject from "../components/FeaturedProject"
+import ProjectRow from "../components/ProjectRow"
+import SectionHeading from "../components/SectionHeading"
+import { projectsData } from "../constants/index"
 
-const Projects = () => {
-  const sectionRef = useRef(null)
+// Derived rather than written down, so the heading cannot drift from the list
+// the way a hardcoded "4 projects" would the first time one is added.
+const liveCount = projectsData.filter((project) => project.status === "live").length
+const [featured, ...rest] = projectsData
 
-  useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
+const Projects = () => (
+  <section
+    id="projects"
+    aria-labelledby="projects-heading"
+    className="px-6 py-24 sm:px-10 lg:px-16"
+  >
+    <div className="mx-auto max-w-wide">
+      <SectionHeading
+        id="projects-heading"
+        title="The work"
+        meta={`${projectsData.length} projects · ${liveCount} live`}
+      />
 
-    const ctx = gsap.context(() => {
-      gsap
-        .timeline({
-          defaults: { ease: "power3.out" },
-          scrollTrigger: { trigger: sectionRef.current, start: "top 80%", once: true },
-        })
-        .fromTo(".projects-title", { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8 })
-        .fromTo(
-          ".projects-card",
-          { y: 24, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.7, stagger: 0.12 },
-          0.3
-        )
-    }, sectionRef)
+      <div className="mt-12">
+        <FeaturedProject project={featured} />
+      </div>
 
-    return () => ctx.revert()
-  }, [])
-
-  const [featured, ...rest] = projectsData
-
-  return (
-    <section
-      id="projects"
-      aria-labelledby="projects-heading"
-      ref={sectionRef}
-      style={{ padding: "80px 24px", maxWidth: "1100px", margin: "0 auto" }}
-    >
-      <div className="section-label">What I&apos;ve built</div>
-      <h2 id="projects-heading" className="section-title projects-title">
-        My <span>Projects</span>
-      </h2>
-
-      {featured && <ProjectCard {...featured} featured={true} />}
-
-      {rest.length > 0 && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {rest.map((project) => (
-            <ProjectCard key={project.id} {...project} />
-          ))}
-        </div>
-      )}
-    </section>
-  )
-}
+      <div className="mt-16">
+        {rest.map((project) => (
+          <ProjectRow key={project.id} project={project} />
+        ))}
+      </div>
+    </div>
+  </section>
+)
 
 export default Projects
