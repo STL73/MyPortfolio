@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://slavlambov.github.io/my-portfolio/sitemap.xml
+Sitemap: https://spireforge.co.uk/sitemap.xml

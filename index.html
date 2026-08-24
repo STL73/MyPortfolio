@@ -1,11 +1,18 @@
 <!doctype html>
-<html lang="en">
+<html lang="en-GB">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="/STL_MEDIA_Variant1_Mark_Transparent.svg" />
+    <!-- Icons. The SVG is the full mark on a Night tile at 84% and is what
+         modern browsers use; the .ico carries 16/24/32/48 for everything
+         else. Both are rasterised from the same tile, so they never drift. -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="16x16 24x24 32x32 48x48" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <!-- Night, so the browser chrome matches the page rather than framing it. -->
+    <meta name="theme-color" content="#100A28" />
 
     <!-- Primary SEO -->
     <title>Slav Lambov | Frontend Developer</title>
@@ -17,18 +24,21 @@
 
     <!-- Open Graph (social sharing) -->
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Spireforge" />
+    <meta property="og:locale" content="en_GB" />
     <meta property="og:title" content="Slav Lambov | Frontend Developer" />
     <meta
       property="og:description"
       content="Frontend Developer in Manchester, UK specialising in React, animations, and high-performance UI systems. View my portfolio."
     />
-    <meta property="og:url" content="https://slavlambov.github.io/my-portfolio/" />
-    <meta
-      property="og:image"
-      content="https://slavlambov.github.io/my-portfolio/og-image.svg"
-    />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
+    <meta property="og:url" content="https://spireforge.co.uk/" />
+
+    <!-- TODO(phase 4): og:image and twitter:image.
+         The previous card was an SVG in the retired STL Media palette quoting
+         a dead github.io URL. X, Facebook and LinkedIn do not render SVG, so
+         no preview card has ever actually worked. It is deleted rather than
+         left in place, and a 1200x630 PNG replaces it once the headline copy
+         is settled -- writing it now would only mean writing it twice. -->
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
@@ -37,17 +47,10 @@
       name="twitter:description"
       content="Frontend developer based in Manchester, UK. React, animations, design systems, and performance. Portfolio of Slav Lambov."
     />
-    <meta
-      name="twitter:image"
-      content="https://slavlambov.github.io/my-portfolio/og-image.svg"
-    />
 
     <!-- Canonical & robots -->
-    <link rel="canonical" href="https://slavlambov.github.io/my-portfolio/" />
+    <link rel="canonical" href="https://spireforge.co.uk/" />
     <meta name="robots" content="index, follow" />
-
-    <!-- Favicons -->
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
     <!-- Schema.org structured data -->
     <script type="application/ld+json">
@@ -55,7 +58,7 @@
         "@context": "https://schema.org",
         "@type": "Person",
         "name": "Slav Lambov",
-        "url": "https://slavlambov.github.io/my-portfolio/",
+        "url": "https://spireforge.co.uk/",
         "jobTitle": "Frontend Developer",
         "email": "hello@spireforge.co.uk",
         "sameAs": [
@@ -69,13 +72,10 @@
       }
     </script>
 
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap"
-      rel="stylesheet"
-    />
+    <!-- Fonts are self-hosted in src/styles/fonts.css. The design system bans
+         third-party font CDNs in production: a render-blocking request to a
+         host you do not control. The Google Fonts link that sat here loaded
+         Syne and DM Sans, both of which belonged to the retired identity. -->
   </head>
   <body>
     <div id="root"></div>

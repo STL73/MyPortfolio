@@ -1,0 +1,9 @@
+# Cloudflare Pages SPA fallback.
+#
+# Every path that does not match a built file is served index.html with a 200,
+# so react-router resolves the route on the client. Without this a hard refresh
+# on /projects/moss returns Cloudflare's own 404 rather than the page.
+#
+# The 200 matters: a 302 would send crawlers to / and cost the case study its
+# own indexed URL. Genuine 404s are the router's job, not the host's.
+/*  /index.html  200

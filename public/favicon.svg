@@ -1,0 +1,55 @@
+<svg width="32" height="32" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" fill="none" role="img" aria-label="Spireforge">
+  <!--
+    Spireforge favicon. The FULL mark on a Night tile.
+
+    Changed 2026-08-21. This previously carried the COMPACT mark, on the
+    rule that compact is mandatory below 24px. The rule is sound and the
+    application of it here was not: it optimised for the 16px case at the
+    cost of every other one, and at 16px the compact mark reads as a
+    DIFFERENT LOGO — chevron plus a dot, with the three-point spark and
+    the rhombus counter both gone. A blurry version of the real mark
+    beats a crisp version of a shape the brand does not otherwise use.
+
+    The earlier test that rejected the full mark was rigged without
+    meaning to be: it compared the compact mark at 84% of its tile
+    against icon-tile-dark, whose mark sits at 64% because it is built to
+    survive a circular avatar crop. Given the same room, the full mark
+    holds up far better — clearly legible at 24 and 32, muddy but
+    recognisably itself at 16.
+      → 08-GUIDELINES\favicon-full-mark-test_*.png, measured 2026-08-21
+
+    The mark geometry below is icon-dark VERBATIM. The wrapping <g> only
+    places it. Scale 1.254 takes the mark's 67-unit width to 84 units,
+    and the translate centres the result:
+
+      before  x [16.5, 83.5]  y [18, 79.5]
+      after   x [8, 92]       y [11.45, 88.57]
+
+    Margins land at 8 / 8 / 11.45 / 11.43 — horizontally tight, and
+    vertically balanced, which the compact version never was.
+
+    Do not retune these paths here. Change icon-dark and copy the result
+    across; the compact mark previously existed in two slightly different
+    versions because someone hand-tuned one of its copies in place.
+
+    A spark-enlarged variant was rendered too and NOT taken: it reads
+    better at 16-20px but changes the mark's internal proportions, which
+    would give the brand a third mark to keep in step for the sake of one
+    size. If the tab icon ever needs to be better at 16 specifically,
+    that variant is the place to start.
+
+    Tile filled rather than transparent because browser tab bars vary in
+    lightness and a transparent mark loses its contrast guarantee.
+    Corner radius 22 approximates the platform squircle.
+
+    icon-compact-dark is still the right choice anywhere genuinely tiny
+    and monochrome — a favicon is neither, since it gets a tile and two
+    inks.
+  -->
+  <rect width="100" height="100" rx="22" fill="#100A28"/>
+  <g transform="translate(-12.691 -11.122) scale(1.254)">
+    <path d="M22 74 L50 48 L78 74" stroke="#EDE9FF" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M34.03 56 L50 70.8 L65.97 56" stroke="#5BFFB0" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M50 18 Q50 31 61.26 37.5 Q50 31 38.74 37.5 Q50 31 50 18 Z" fill="#5BFFB0"/>
+  </g>
+</svg>
