@@ -321,6 +321,48 @@ const Lab = () => (
       </Group>
 
       <Group
+        title="Card radius"
+        note="One definition drives every card on the site, so this is a single edit in src/lib/surfaceStyles.js. The design system's scale is 2px default, 3px cards, 6px large surfaces -- 12px is outside it and is here for comparison, not as a candidate."
+      >
+        <div className="grid w-full gap-6 md:grid-cols-2 lg:grid-cols-5">
+          {[
+            { label: "0 · square", radius: "0px" },
+            { label: "2px · default", radius: "var(--sf-radius-sm)" },
+            { label: "3px · card (current)", radius: "var(--sf-radius-md)" },
+            { label: "6px · large surface", radius: "var(--sf-radius-lg)" },
+            { label: "12px · off-system", radius: "12px" },
+          ].map((shape) => (
+            <Labelled key={shape.label} label={shape.label}>
+              <div className="flex w-full flex-col gap-4">
+                <div
+                  style={{ borderRadius: shape.radius }}
+                  className="border border-line bg-night-700/40 p-6"
+                >
+                  <span className="text-lg text-ink">Comfortable</span>
+                  <span className="mt-1 block text-sm text-ink-muted">
+                    Reach for these without looking things up
+                  </span>
+                  <p className="mt-4 font-mono text-xs tracking-mono text-ink-muted">
+                    HTML · CSS · JavaScript
+                  </p>
+                </div>
+                <div
+                  style={{ borderRadius: shape.radius }}
+                  className="border border-accent/40 bg-accent/5 p-6"
+                >
+                  <span className="text-lg text-ink">Learning now</span>
+                  <span className="mt-1 block text-sm text-ink-muted">The honest gaps</span>
+                  <p className="mt-4 font-mono text-xs tracking-mono text-ink-muted">
+                    REST API design · ORMs
+                  </p>
+                </div>
+              </div>
+            </Labelled>
+          ))}
+        </div>
+      </Group>
+
+      <Group
         title="Secondary projects"
         note="Three ways to present the three projects that are not Moss."
       >
