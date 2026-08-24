@@ -1,0 +1,197 @@
+/* =============================================================
+   Spireforge design tokens — CSS custom properties
+   Generated 2026-08-20 · v1
+
+   Dark-first. Night is the brand's native state; the light face
+   exists because paper is white, not as an equal alternative.
+
+   Every pairing below was verified against WCAG 2.2. Figures in
+   comments are measured contrast ratios, not estimates.
+   ============================================================= */
+
+:root {
+  /* ---- ground scale (dark face) ---------------------------- */
+  --sf-night-900: #0A0619;  /* deepest — page edges, overlays        */
+  --sf-night-800: #100A28;  /* CANONICAL GROUND                      */
+  --sf-night-700: #1B1240;  /* raised surface — cards, panels        */
+  --sf-night-600: #261A54;  /* borders, dividers, hover fills        */
+
+  /* ---- text on the dark face ------------------------------- */
+  --sf-text-hi:   #EDE9FF;  /* 16.15 on night-800 — headings, body   */
+  --sf-text-mid:  #A79ACB;  /*  7.42 on night-800 — secondary copy   */
+  --sf-text-low:  #6E6393;  /*  3.53 on night-800 — non-text only    */
+
+  /* ---- accent ---------------------------------------------- */
+  --sf-aurora-400: #7CFFC4; /* 15.47 — hover, raised state           */
+  --sf-aurora-500: #5BFFB0; /* 14.94 — THE ACCENT                    */
+  --sf-aurora-600: #3DF5A0; /* 13.47 — pressed state                 */
+  --sf-aurora-800: #0E7A4E; /*  5.14 on paper — LIGHT FACE ONLY      */
+
+  /* ---- light face (paper, print, documents) ---------------- */
+  --sf-paper-50:  #FBFAF7;  /* document ground                       */
+  --sf-paper-100: #F1EFEA;  /* raised surface on paper               */
+
+  /* ---- semantic: dark face is the default ------------------ */
+  --sf-bg:        var(--sf-night-800);
+  --sf-surface:   var(--sf-night-700);
+  --sf-border:    var(--sf-night-600);
+  --sf-fg:        var(--sf-text-hi);
+  --sf-fg-muted:  var(--sf-text-mid);
+  --sf-accent:    var(--sf-aurora-500);
+  --sf-on-accent: var(--sf-night-800);   /* 14.94 on aurora-500      */
+
+  /* ---- mark inks ------------------------------------------- */
+  --sf-mark-chevron: var(--sf-text-hi);
+  --sf-mark-accent:  var(--sf-aurora-500);
+
+  /* ---- type ------------------------------------------------ */
+  --sf-font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --sf-font-body:    'Inter Tight', system-ui, -apple-system, sans-serif;
+  --sf-font-mono:    'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  /* Display tracking is near-zero on purpose. Fraunces is drawn to
+     set tight; the 3.5% used in early drafts was too loose. */
+  --sf-track-display: 0.01em;
+  --sf-track-caps:    0.10em;   /* only for small uppercase labels   */
+  --sf-track-mono:    0.05em;
+
+  /* ---- fluid type scale ------------------------------------ */
+  --sf-text-xs:   0.75rem;
+  --sf-text-sm:   0.875rem;
+  --sf-text-base: 1rem;
+  --sf-text-lg:   clamp(1.125rem, 0.4vw + 1rem,   1.25rem);
+  --sf-text-xl:   clamp(1.375rem, 0.9vw + 1.1rem, 1.75rem);
+  --sf-text-2xl:  clamp(1.75rem,  1.8vw + 1.2rem, 2.5rem);
+  --sf-text-3xl:  clamp(2.25rem,  3.2vw + 1.3rem, 3.75rem);
+
+  /* ---- spacing, on a 4px base ------------------------------ */
+  --sf-space-1: 0.25rem;  --sf-space-2: 0.5rem;   --sf-space-3: 0.75rem;
+  --sf-space-4: 1rem;     --sf-space-6: 1.5rem;   --sf-space-8: 2rem;
+  --sf-space-12: 3rem;    --sf-space-16: 4rem;    --sf-space-24: 6rem;
+
+  /* ---- radius ---------------------------------------------- */
+  --sf-radius-sm: 2px;
+  --sf-radius-md: 3px;
+  --sf-radius-lg: 6px;
+  --sf-radius-tile: 22%;   /* app icon and favicon tiles only        */
+
+  /* ---- measure --------------------------------------------- */
+  --sf-measure: 64ch;
+}
+
+/* -------------------------------------------------------------
+   Light face. Applied by explicit opt-in, NOT by prefers-color-scheme.
+   The brand is dark-first: a visitor whose OS is set to light does not
+   get a light Spireforge, they get the dark brand. This class exists
+   for documents, invoices, letterheads, and anything heading to paper.
+   ------------------------------------------------------------- */
+.sf-light,
+[data-sf-face="light"] {
+  --sf-bg:        var(--sf-paper-50);
+  --sf-surface:   var(--sf-paper-100);
+  --sf-border:    #DCD8D0;
+  --sf-fg:        var(--sf-night-800);   /* 18.36 on paper-50        */
+  --sf-fg-muted:  var(--sf-text-low);    /*  5.20 on paper-50        */
+  --sf-accent:    var(--sf-aurora-800);  /*  5.14 on paper-50        */
+  --sf-on-accent: var(--sf-paper-50);
+
+  --sf-mark-chevron: var(--sf-night-800);
+  --sf-mark-accent:  var(--sf-aurora-800);
+}
+
+/* -------------------------------------------------------------
+   Print. Forced regardless of face, because paper is white.
+   ------------------------------------------------------------- */
+@media print {
+  :root {
+    --sf-bg:        #FFFFFF;
+    --sf-surface:   #FFFFFF;
+    --sf-border:    #C9C6BE;
+    --sf-fg:        var(--sf-night-800);
+    --sf-fg-muted:  var(--sf-text-low);
+    --sf-accent:    var(--sf-aurora-800);
+    --sf-on-accent: #FFFFFF;
+
+    --sf-mark-chevron: var(--sf-night-800);
+    --sf-mark-accent:  var(--sf-aurora-800);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* -------------------------------------------------------------
+   Surface texture. Two layers, different jobs, not interchangeable.
+
+   Embers print; the wash does not. A press approximates a gradient in
+   halftone dots and a broad pale one bands visibly, so the wash is a
+   screen-only layer. Flat tints of a single ink are the most reliable
+   thing a press does, so the embers go anywhere.
+
+   7% on dark and 14% on light are the SAME apparent weight — a tint reads
+   about twice as strongly against near-white as a highlight does against
+   near-black. Do not "fix" them to match.
+   ------------------------------------------------------------- */
+
+:root {
+  --sf-ember-tile: 240px;
+  --sf-ember-opacity: 0.07;                /* dark face */
+  --sf-ember-opacity-light: 0.14;          /* light face, standard */
+  --sf-ember-opacity-light-strong: 0.18;   /* card backs and covers only */
+
+  --sf-ember-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cg fill='%235BFFB0'%3E%3Cpath transform='translate(26,30) scale(0.5)' d='M50%2018%20Q50%2031%2061.26%2037.5%20Q50%2031%2038.74%2037.5%20Q50%2031%2050%2018%20Z'/%3E%3Cpath transform='translate(150,66) scale(0.32)' d='M50%2018%20Q50%2031%2061.26%2037.5%20Q50%2031%2038.74%2037.5%20Q50%2031%2050%2018%20Z'/%3E%3Cpath transform='translate(78,140) scale(0.4)' d='M50%2018%20Q50%2031%2061.26%2037.5%20Q50%2031%2038.74%2037.5%20Q50%2031%2050%2018%20Z'/%3E%3Cpath transform='translate(186,168) scale(0.26)' d='M50%2018%20Q50%2031%2061.26%2037.5%20Q50%2031%2038.74%2037.5%20Q50%2031%2050%2018%20Z'/%3E%3Cpath transform='translate(6,190) scale(0.34)' d='M50%2018%20Q50%2031%2061.26%2037.5%20Q50%2031%2038.74%2037.5%20Q50%2031%2050%2018%20Z'/%3E%3C/g%3E%3C/svg%3E");
+
+  --sf-ember-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cg fill='%230E7A4E'%3E%3Cpath transform='translate(26,30) scale(0.5)' d='M50%2018%20Q50%2031%2061.26%2037.5%20Q50%2031%2038.74%2037.5%20Q50%2031%2050%2018%20Z'/%3E%3Cpath transform='translate(150,66) scale(0.32)' d='M50%2018%20Q50%2031%2061.26%2037.5%20Q50%2031%2038.74%2037.5%20Q50%2031%2050%2018%20Z'/%3E%3Cpath transform='translate(78,140) scale(0.4)' d='M50%2018%20Q50%2031%2061.26%2037.5%20Q50%2031%2038.74%2037.5%20Q50%2031%2050%2018%20Z'/%3E%3Cpath transform='translate(186,168) scale(0.26)' d='M50%2018%20Q50%2031%2061.26%2037.5%20Q50%2031%2038.74%2037.5%20Q50%2031%2050%2018%20Z'/%3E%3Cpath transform='translate(6,190) scale(0.34)' d='M50%2018%20Q50%2031%2061.26%2037.5%20Q50%2031%2038.74%2037.5%20Q50%2031%2050%2018%20Z'/%3E%3C/g%3E%3C/svg%3E");
+
+  --sf-wash: radial-gradient(58% 92% at 8% -18%, rgba(91, 255, 176, .15), transparent 62%),
+             radial-gradient(48% 78% at 94% 116%, rgba(167, 154, 203, .14), transparent 66%);
+}
+
+/* Apply to any surface. Both layers sit behind content via ::before/::after,
+   so the element needs its own stacking context. */
+.sf-textured {
+  position: relative;
+  isolation: isolate;
+}
+.sf-textured > * { position: relative; z-index: 1; }
+.sf-textured::before,
+.sf-textured::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.sf-textured::before { background: var(--sf-wash); }
+.sf-textured::after {
+  background-image: var(--sf-ember-dark);
+  background-size: var(--sf-ember-tile) var(--sf-ember-tile);
+  opacity: var(--sf-ember-opacity);
+}
+
+/* Light face: embers only, recoloured and stronger. No wash — it does not print. */
+.sf-light .sf-textured::before,
+[data-sf-face="light"] .sf-textured::before,
+.sf-textured.sf-light::before { background: none; }
+
+.sf-light .sf-textured::after,
+[data-sf-face="light"] .sf-textured::after,
+.sf-textured.sf-light::after {
+  background-image: var(--sf-ember-light);
+  opacity: var(--sf-ember-opacity-light);
+}
+
+.sf-textured.sf-strong::after { opacity: var(--sf-ember-opacity-light-strong); }
+
+/* Print: kill the wash outright, keep the embers at a tint a press can hold. */
+@media print {
+  .sf-textured::before { background: none !important; }
+  .sf-textured::after {
+    background-image: var(--sf-ember-light) !important;
+    opacity: 0.10 !important;   /* below ~5% tints drop out unpredictably */
+  }
+}
