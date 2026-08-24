@@ -30,10 +30,55 @@ export const PERSONAL = {
   tagline: "Frontend Developer building fast, accessible web experiences.",
 }
 
+/**
+ * Hero copy.
+ *
+ * The largest type on the page is a sentence, not a name. Nobody hires on the
+ * strength of a name, and every other portfolio in the pile sets it at 96px --
+ * so the space goes to the one claim that is true of Slav and almost nobody
+ * else applying for the same roles.
+ *
+ * `claim` and `turn` are two sentences rather than one string so the second can
+ * drop to muted ink: the eye takes the assertion, then the pivot.
+ */
+export const HERO = {
+  eyebrow: "Slav Lambov · Manchester",
+  claim: "For eight years I ran a supermarket.",
+  turn: "Now I build the software that would have made the job easier.",
+}
+
+/**
+ * The two career tracks, drawn as parallel lanes under the hero.
+ *
+ * They do not converge and they are not a before-and-after. Both are still
+ * running: the degree was taken in the evenings across 2021-2025 without the
+ * day job stopping, and it has not stopped now. That concurrency is the fact
+ * the rest of the page hangs off, so it gets the signature element.
+ *
+ * `offset` is where the lane's rule begins, as a percentage of the full span,
+ * so the computing lane visibly starts inside the other one. No absolute start
+ * year is shown because none is recorded anywhere -- "13 years" is the figure
+ * that is actually verifiable, and it is the one that lands harder anyway.
+ */
+export const careerTracks = [
+  {
+    id: "work",
+    label: "retail & warehouse management",
+    figure: "13 years",
+    offset: 0,
+  },
+  {
+    id: "computing",
+    label: "computing",
+    figure: "2021 →",
+    offset: 46,
+  },
+]
+
 export const navLinks = [
   { href: "#home", label: "Home" },
-  { href: "#about", label: "About Me" },
   { href: "#projects", label: "My Projects" },
+  { href: "#about", label: "About Me" },
   { href: "#skills", label: "My Skills" },
   { href: "#education", label: "Education" },
   { href: "#contact", label: "Contact" },

@@ -17,11 +17,15 @@ const Contact = lazy(() => import("../sections/Contact"))
  * across tabs -- anything that needs a click is depth, not biography. The
  * project case studies are the only pages that earn their own route.
  */
+// Projects sits above About deliberately. A recruiter wants evidence before
+// biography: the work is the argument and the story is why it is credible,
+// not the other way round. It also puts Moss -- the only live, shipped thing
+// -- immediately below the fold.
 const Home = () => (
   <>
     <Hero />
-    <About />
     <Projects />
+    <About />
     <Skills />
     <Education />
     <Contact />

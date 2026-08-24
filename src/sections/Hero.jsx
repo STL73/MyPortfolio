@@ -1,164 +1,108 @@
-import { useEffect, useRef } from "react"
+import { useRef } from "react"
 import gsap from "gsap"
-import avatarPhoto from "../assets/images/home1.png"
+import { useGSAP } from "@gsap/react"
+import CareerTracks from "../components/CareerTracks"
+import { HERO, PERSONAL, careerTracks } from "../constants/index"
 
+/**
+ * The hero states the thesis and gets out of the way.
+ *
+ * It is left-weighted rather than centred. A centred stack with an avatar in a
+ * ring is what the previous version did and what most portfolios do; reading a
+ * long sentence down the left edge is faster, and it leaves the right side to
+ * breathe rather than filling it because it is there.
+ */
 const Hero = () => {
-  const tlRef = useRef(null)
-  const heroRef = useRef(null)
+  const root = useRef(null)
 
-  // Pause ring CSS animations when Hero scrolls off-screen to save compositor frames
-  useEffect(() => {
-    const section = heroRef.current
-    if (!section) return
-    const observer = new IntersectionObserver(
-      ([entry]) => section.classList.toggle("rings-paused", !entry.isIntersecting),
-      { threshold: 0 }
-    )
-    observer.observe(section)
-    return () => observer.disconnect()
-  }, [])
+  useGSAP(
+    () => {
+      // matchMedia is what makes reduced motion correct rather than merely
+      // handled: the timeline is never built for those users, so the finished
+      // state is what renders, and GSAP reverts it if the preference changes
+      // mid-session.
+      const mm = gsap.matchMedia()
 
-  useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
+        const tl = gsap.timeline({
+          defaults: { ease: "power3.out", duration: 0.32 },
+        })
 
-    tlRef.current = gsap.timeline({ defaults: { ease: "power3.out" } })
-    tlRef.current
-      .fromTo(".hero-badge", { opacity: 0, y: -12 }, { opacity: 1, y: 0, duration: 0.6 })
-      .fromTo(".hero-avatar", { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.7 }, 0.2)
-      .fromTo(".hero-name", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.7 }, 0.4)
-      .fromTo(".hero-role", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.5 }, 0.55)
-      .fromTo(".hero-tagline", { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.5 }, 0.65)
-      .fromTo(".hero-ctas", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.5 }, 0.75)
-      .fromTo(".hero-badges", { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.5 }, 0.85)
-
-    return () => tlRef.current?.kill()
-  }, [])
+        tl.from('[data-hero="eyebrow"]', { autoAlpha: 0, y: 8, duration: 0.24 })
+          // The sentence rises as one block. Animating it word by word is the
+          // stock "AI wrote this page" move, and it makes a claim take three
+          // times as long to become readable as it does to read.
+          .from('[data-hero="claim"]', { autoAlpha: 0, y: 14 }, "-=0.1")
+          .from('[data-hero="turn"]', { autoAlpha: 0, y: 14 }, "-=0.22")
+          .from('[data-hero="track-meta"]', { autoAlpha: 0, y: 6, stagger: 0.08 }, "-=0.14")
+          // The rules draw left to right, in the order the tracks began. This
+          // is the one moment on the page carrying meaning rather than polish,
+          // so it is the only stagger long enough to notice.
+          .from(
+            '[data-hero="track-rule"]',
+            { scaleX: 0, duration: 0.42, stagger: 0.14 },
+            "-=0.28",
+          )
+          .from('[data-hero="spark"]', { autoAlpha: 0, scale: 0.4, duration: 0.24 }, "-=0.08")
+          .from('[data-hero="cta"]', { autoAlpha: 0, y: 10, stagger: 0.06 }, "-=0.2")
+      })
+    },
+    { scope: root },
+  )
 
   return (
     <section
-      ref={heroRef}
       id="home"
+      ref={root}
       aria-labelledby="hero-heading"
-      className="hero-section"
+      className="flex min-h-svh items-center px-6 pt-24 pb-16 sm:px-10 lg:px-16"
     >
-      {/* Background radial glow — decorative, kept inline */}
-      <div
-        aria-hidden="true"
-        style={{
-          position: "absolute",
-          top: "30%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          width: "600px",
-          height: "600px",
-          borderRadius: "50%",
-          background: "radial-gradient(circle, #6366f120 0%, transparent 65%)",
-          pointerEvents: "none",
-        }}
-      />
-
-      {/* Available badge */}
-      <div className="hero-badge">
-        <span className="available-dot" />
-        Available for work
-      </div>
-
-      {/* Avatar */}
-      <div className="hero-avatar">
-        <div className="avatar-ring-outer" aria-hidden="true" />
-        <div className="avatar-ring-inner" aria-hidden="true" />
-        <img
-          src={avatarPhoto}
-          alt="Slav Lambov — Frontend Developer"
-          width="140"
-          height="140"
-        />
-      </div>
-
-      {/* Name */}
-      <h1 id="hero-heading" className="hero-name">
-        Slav Lambov
-      </h1>
-
-      {/* Role */}
-      <p className="hero-role">Frontend Developer</p>
-
-      {/* Location — local SEO signal */}
-      <p className="hero-location">
-        <span aria-hidden="true">📍</span> Manchester, UK · Open to remote
-      </p>
-
-      {/* Tagline */}
-      <p className="hero-tagline">
-        Building fast, accessible web experiences with a sharp eye for design and performance.
-      </p>
-
-      {/* CTA buttons */}
-      <div className="hero-ctas">
-        <a
-          href="#contact"
-          className="ds-btn-primary"
-          style={{ fontSize: "14px", padding: "12px 28px", borderRadius: "8px" }}
+      <div className="w-full max-w-wide">
+        <p
+          data-hero="eyebrow"
+          className="font-mono text-sm tracking-mono text-ink-muted"
         >
-          Hire Me
-        </a>
-        <a
-          href="#projects"
-          className="ds-btn-ghost"
-          style={{ fontSize: "14px", padding: "12px 28px", borderRadius: "8px" }}
-        >
-          View Projects ↓
-        </a>
-      </div>
+          {HERO.eyebrow}
+        </p>
 
-      {/* Tech badges */}
-      <div className="hero-badges">
-        {["React", "JavaScript", "Tailwind CSS", "GSAP", "Vite"].map((tech) => (
-          <span key={tech} className="hero-tech-badge">{tech}</span>
-        ))}
-      </div>
-
-      {/* Scroll indicator — decorative, kept inline */}
-      <div
-        aria-hidden="true"
-        style={{
-          position: "absolute",
-          bottom: "32px",
-          left: "50%",
-          transform: "translateX(-50%)",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: "6px",
-          color: "#94a3b8",
-          fontSize: "11px",
-          letterSpacing: "2px",
-          textTransform: "uppercase",
-          fontFamily: "var(--font-dm-sans)",
-        }}
-      >
-        <div
-          style={{
-            width: "22px",
-            height: "34px",
-            border: "1px solid #94a3b8",
-            borderRadius: "999px",
-            display: "flex",
-            justifyContent: "center",
-            paddingTop: "6px",
-          }}
+        {/* One heading, two sentences. The turn drops to muted ink so the eye
+            takes the assertion first and the pivot second -- hierarchy from
+            colour rather than from a second size, which keeps the block solid. */}
+        {/* max-w-4xl, not 3xl. The sentence is long, and a narrower measure
+            costs a sixth line of 60px display type -- which was enough to push
+            the calls to action off a 900px viewport entirely. */}
+        <h1
+          id="hero-heading"
+          className="mt-8 max-w-4xl text-3xl leading-[1.08] text-ink"
         >
-          <div
-            style={{
-              width: "3px",
-              height: "6px",
-              background: "#6366f1",
-              borderRadius: "999px",
-              animation: "scroll-wheel-new 1.5s ease-in-out infinite",
-            }}
-          />
+          <span data-hero="claim" className="block">
+            {HERO.claim}
+          </span>
+          <span data-hero="turn" className="mt-2 block text-ink-muted">
+            {HERO.turn}
+          </span>
+        </h1>
+
+        <div className="mt-14">
+          <CareerTracks tracks={careerTracks} />
         </div>
-        <span>scroll</span>
+
+        <div className="mt-16 flex flex-wrap items-center gap-4">
+          <a
+            data-hero="cta"
+            href="#projects"
+            className="rounded-md bg-accent px-6 py-3 font-semibold text-on-accent transition-colors duration-150 hover:bg-aurora-400"
+          >
+            See the work
+          </a>
+          <a
+            data-hero="cta"
+            href={PERSONAL.cv}
+            className="rounded-md border border-line px-6 py-3 font-semibold text-ink transition-colors duration-150 hover:border-ink-low hover:bg-surface"
+          >
+            Download CV
+          </a>
+        </div>
       </div>
     </section>
   )
