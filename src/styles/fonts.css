@@ -1,0 +1,51 @@
+/* =============================================================
+   Spireforge type — self-hosted.
+
+   The design system forbids third-party font CDNs in production:
+   a render-blocking request to a host you do not control. These
+   four files ship with the bundle instead, ~143 kB for all of it.
+
+   Sources are the OFL originals in MY-BRAND/OUTPUTS/09-FONTS/,
+   subsetted to latin and converted to WOFF2. To regenerate, see
+   the note in DESIGN.md — the axes below are pinned deliberately.
+   ============================================================= */
+
+/* Display. Two axes kept: weight 400-700 and optical size 9-144.
+   SOFT is pinned to 0 and WONK to 1, which is how the brand kit
+   renders it. font-optical-sizing is left at its default (auto),
+   so headings pick up the display cut without being asked. */
+@font-face {
+  font-family: "Fraunces";
+  src: url("../assets/fonts/fraunces-variable.woff2") format("woff2");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Body and UI. Weight 300-700; the system uses 400-600 of it. */
+@font-face {
+  font-family: "Inter Tight";
+  src: url("../assets/fonts/inter-tight-variable.woff2") format("woff2");
+  font-weight: 300 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Code, figures and reference numbers. Never running prose.
+   Static cuts rather than variable — IBM Plex Mono ships as
+   separate files and only two weights are ever used. */
+@font-face {
+  font-family: "IBM Plex Mono";
+  src: url("../assets/fonts/ibm-plex-mono-400.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "IBM Plex Mono";
+  src: url("../assets/fonts/ibm-plex-mono-500.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
