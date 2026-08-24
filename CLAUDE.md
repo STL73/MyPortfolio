@@ -37,8 +37,9 @@ identities out of date.** One chevron carrying a trimmed tip with a three-point 
 angle derived from a single 26/28 slope; Night `#100A28` ground, aurora green `#5BFFB0`, near-white
 `#EDE9FF` ink; Fraunces display, Inter Tight body, IBM Plex Mono code. Manrope is retired. The
 canonical spec is `MY-BRAND\OUTPUTS\08-GUIDELINES\design-system_2026-08-20_v1.md` — copy it to this
-repo root as `DESIGN.md` when the brand actually gets applied here. **It has not been applied yet:
-the nav and favicons are still retired STL Media assets.**
+repo root as `DESIGN.md`. It **is now applied** — copied to the repo root as `DESIGN.md` and to
+`src/styles/tokens.css` on 2026-08-24. Both are verbatim copies: change them in the kit and copy
+across, never hand-edit them here. Nothing of the STL Media identity remains.
 
 ---
 
@@ -50,9 +51,11 @@ the nav and favicons are still retired STL Media assets.**
 - Auth: none
 - Testing: `@playwright/test` **is installed** (^1.59.1) but no test file has been written yet.
   *This line previously said "none installed yet"; checked against `package.json` 2026-08-24.*
-- Deployment: **not deployed.** `vite.config.js` still sets `base: "/my-portfolio/"` from an
-  abandoned GitHub Pages attempt, and that base has to change to `"/"` for any root-domain host.
-  *There is no `decisions.md` in the vault — the previous pointer went nowhere.*
+- Deployment: **not deployed**, but ready for a root domain — `base` is `"/"` as of 2026-08-24 and
+  every URL points at `spireforge.co.uk`. Target is a **Cloudflare Worker serving static assets**,
+  following `Moss`, *not* Pages: Cloudflare no longer creates Pages projects from the dashboard, and
+  a Worker needs `not_found_handling: "single-page-application"` in `wrangler.jsonc` or every deep
+  link 404s. `public/_redirects` is the Pages mechanism and stays only until that switch is made.
 - Package manager: npm
 
 ---
