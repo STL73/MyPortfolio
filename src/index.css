@@ -250,8 +250,20 @@
   inherits: true;
 }
 
-.sf-textured::after {
+/* The page-wide ember field. Same tile and same 7% the brand specifies for
+   the dark face, drawn once behind everything instead of per section. */
+.sf-page-embers {
+  background-image: var(--sf-ember-dark);
+  background-size: var(--sf-ember-tile) var(--sf-ember-tile);
   background-position: 0 var(--sf-ember-shift);
+  opacity: var(--sf-ember-opacity);
+}
+
+/* Sections that want the wash take `sf-textured sf-wash-only`. Without the
+   modifier they would carry a second copy of the embers on top of the page
+   layer, at double the specified density. */
+.sf-wash-only::after {
+  display: none;
 }
 
 /* =============================================================

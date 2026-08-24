@@ -1,6 +1,5 @@
 import ContactForm from "../components/ContactForm"
 import SectionHeading from "../components/SectionHeading"
-import { useEmberDrift } from "../hooks/useEmberDrift"
 import { useSectionReveal } from "../hooks/useSectionReveal"
 import { CONTACT, PERSONAL } from "../constants/index"
 
@@ -21,14 +20,12 @@ const DIRECT_LINKS = [
 const Contact = () => {
   const scope = useSectionReveal()
 
-  useEmberDrift(scope)
-
   return (
     <section
       ref={scope}
       id="contact"
       aria-labelledby="contact-heading"
-      className="sf-textured px-6 py-24 sm:px-10 lg:px-16"
+      className="sf-textured sf-wash-only px-6 py-24 sm:px-10 lg:px-16"
     >
       <div className="mx-auto max-w-wide">
         <SectionHeading id="contact-heading" title={CONTACT.heading} meta={PERSONAL.email} />

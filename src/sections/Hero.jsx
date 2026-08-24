@@ -3,7 +3,6 @@ import gsap from "gsap"
 import { useGSAP } from "@gsap/react"
 import CareerTracks from "../components/CareerTracks"
 import { primaryAction, secondaryAction } from "../lib/actionStyles"
-import { useEmberDrift } from "../hooks/useEmberDrift"
 import { HERO, PERSONAL, careerTracks } from "../constants/index"
 
 /**
@@ -16,8 +15,6 @@ import { HERO, PERSONAL, careerTracks } from "../constants/index"
  */
 const Hero = () => {
   const root = useRef(null)
-
-  useEmberDrift(root)
 
   useGSAP(
     () => {
@@ -55,7 +52,7 @@ const Hero = () => {
       id="home"
       ref={root}
       aria-labelledby="hero-heading"
-      className="sf-textured flex min-h-svh items-center px-6 pt-24 pb-16 sm:px-10 lg:px-16"
+      className="sf-textured sf-wash-only flex min-h-svh items-center px-6 pt-24 pb-16 sm:px-10 lg:px-16"
     >
       <div className="w-full max-w-wide">
         <p data-hero="eyebrow" className="font-mono text-sm tracking-mono text-ink-muted">

@@ -1,6 +1,7 @@
 import { lazy, Suspense } from "react"
 import { Route, Routes } from "react-router"
 import Nav from "./components/Nav"
+import PageTexture from "./components/PageTexture"
 import RouteTransition from "./components/RouteTransition"
 import ScrollToTop from "./components/ScrollToTop"
 import Home from "./pages/Home"
@@ -29,6 +30,7 @@ function App() {
         Skip to main content
       </a>
 
+      <PageTexture />
       <ScrollToTop />
       <Nav />
 
