@@ -1,4 +1,5 @@
 import ProjectStatus from "./ProjectStatus"
+import { cardSurface } from "../lib/surfaceStyles"
 
 /**
  * One of the projects that is not the featured one.
@@ -22,7 +23,7 @@ import ProjectStatus from "./ProjectStatus"
  */
 const ProjectCard = ({ project }) => (
   <article
-    className="group flex h-full w-full flex-col rounded-md border border-line bg-night-700/40 p-6 transition-[transform,border-color] duration-200 hover:-translate-y-1 hover:border-accent/50"
+    className={`group flex h-full w-full flex-col ${cardSurface({ interactive: true })}`}
   >
     <div className="flex items-baseline gap-4">
       <ProjectStatus status={project.status} />

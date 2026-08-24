@@ -1,4 +1,5 @@
 import SectionHeading from "../components/SectionHeading"
+import { cardSurface } from "../lib/surfaceStyles"
 import { useSectionReveal } from "../hooks/useSectionReveal"
 import { SKILLS } from "../constants/index"
 
@@ -36,26 +37,34 @@ const Skills = () => {
         {SKILLS.note}
       </p>
 
-      <dl className="mt-12">
+      {/* Cards rather than rows, and the same card the projects section uses.
+          A card here and a card there are the same kind of object, so they get
+          one definition -- the difference between the sections comes from
+          content and scale, not from each inventing its own container. */}
+      <dl className="mt-12 grid gap-4 md:grid-cols-2">
         {SKILLS.tiers.map((tier) => (
-          <div
-            key={tier.id}
-            data-reveal
-            className="group grid gap-3 border-t border-line py-8 transition-colors duration-200 hover:border-ink-low md:grid-cols-12 md:gap-8"
-          >
-            <dt className="md:col-span-4">
-              <span className="text-lg text-ink transition-colors duration-200 group-hover:text-accent">
-                {tier.label}
-              </span>
-              <span className="mt-1 block text-sm text-ink-muted">{tier.note}</span>
-            </dt>
+          <div key={tier.id} data-reveal className="flex">
+            {/* The gaps tier is the accented one. It is the block that makes
+                the other three believable, so it is the block that should draw
+                the eye -- and it is the only one accented, because emphasis on
+                everything is emphasis on nothing. */}
+            <div
+              className={`w-full ${cardSurface({ accented: tier.id === "learning" })}`}
+            >
+              <dt>
+                <span className="text-lg text-ink">{tier.label}</span>
+                <span className="mt-1 block text-sm text-ink-muted">
+                  {tier.note}
+                </span>
+              </dt>
 
-            {/* Mono, and separated by middots rather than set as pills. Pills
-                read as badges -- eight of them look like eight awards, which
-                is the opposite of what tiering this list is for. */}
-            <dd className="font-mono text-sm tracking-mono text-ink-muted md:col-span-8">
-              {tier.items.join(" · ")}
-            </dd>
+              {/* Mono, and separated by middots rather than set as pills. Pills
+                  read as badges -- eight of them look like eight awards, which
+                  is the opposite of what tiering this list is for. */}
+              <dd className="mt-4 font-mono text-sm tracking-mono text-ink-muted">
+                {tier.items.join(" · ")}
+              </dd>
+            </div>
           </div>
         ))}
       </dl>
