@@ -156,3 +156,80 @@
     scroll-margin-top: --spacing(20);
   }
 }
+
+/* =============================================================
+   The conic border on secondary actions.
+
+   Four quadrants: aurora top and bottom, muted violet left and right. A conic
+   gradient starts at twelve o'clock, so 315-45deg is the top, 45-135 the
+   right, and so on. Hard stops rather than a blend would keep the quadrants
+   crisper as it turns; this blends them, which was the choice made.
+
+   It turns only while hovered. A border that turns forever is the clearest
+   "2024 landing page" tell there is, and perpetual motion on a small element
+   is the first thing a motion audit flags.
+
+   The mask pair is what makes a gradient act as a border: paint the whole box,
+   then subtract the content box so only the 1px padding ring survives. There
+   is no way to put a gradient in `border-color`.
+   ============================================================= */
+
+/* Without a declared type the browser treats a custom property as a string,
+   and strings do not interpolate -- they swap. This is the whole reason the
+   angle can animate at all. */
+@property --sf-conic-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes sf-conic-turn {
+  to {
+    --sf-conic-angle: 360deg;
+  }
+}
+
+.sf-conic {
+  position: relative;
+  isolation: isolate;
+}
+
+.sf-conic::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(
+    from var(--sf-conic-angle),
+    var(--sf-aurora-500),
+    var(--sf-text-mid) 90deg,
+    var(--sf-aurora-500) 180deg,
+    var(--sf-text-mid) 270deg,
+    var(--sf-aurora-500) 360deg
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  opacity: 0.7;
+  transition: opacity 150ms;
+}
+
+.sf-conic:hover::before {
+  opacity: 1;
+  animation: sf-conic-turn 2.2s linear infinite;
+}
+
+/* The border stays, it just stops moving. Removing it entirely would leave the
+   button with no visible edge for anyone who has asked for less motion. */
+@media (prefers-reduced-motion: reduce) {
+  .sf-conic:hover::before {
+    animation: none;
+  }
+}
