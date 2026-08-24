@@ -29,6 +29,40 @@ import { useGSAP } from "@gsap/react"
  * never fires leaves a section permanently blank; firing early costs nothing
  * and removes that failure mode from anything already near the fold.
  */
+/**
+ * Shouts, in development only, when an element this hook animates also has a
+ * CSS transition on a property the hook owns.
+ *
+ * This has now caused three separate "content is permanently invisible" bugs:
+ * two systems interpolating the same opacity or transform every frame, with the
+ * tween losing. It is invisible in code review because the two halves live in
+ * different files -- a Tailwind class on the component and a tween in here.
+ */
+const warnOnStyleConflicts = (root) => {
+  if (!root) return
+  root.querySelectorAll("[data-reveal]").forEach((el) => {
+    const { transitionProperty, transitionDuration } = getComputedStyle(el)
+    // Split rather than match. A regex here needs backslash escapes, and
+    // this file has already been corrupted once by them -- the word
+    // boundaries arrived as literal backspace characters.
+    const owned = transitionProperty
+      .split(",")
+      .map((property) => property.trim())
+      .some((property) =>
+        ["all", "opacity", "transform", "visibility"].includes(property),
+      )
+    const running = transitionDuration !== "0s"
+    if (owned && running) {
+      console.warn(
+        "[useSectionReveal] CSS transitions a property this hook animates:",
+        el,
+        `(${transitionProperty} / ${transitionDuration}).`,
+        "Move the reveal to a wrapper, or narrow the transition.",
+      )
+    }
+  })
+}
+
 export const useSectionReveal = () => {
   const scope = useRef(null)
 
@@ -37,6 +71,8 @@ export const useSectionReveal = () => {
       const mm = gsap.matchMedia()
 
       mm.add("(prefers-reduced-motion: no-preference)", () => {
+        if (import.meta.env.DEV) warnOnStyleConflicts(scope.current)
+
         gsap.from("[data-reveal]", {
           autoAlpha: 0,
           y: 12,

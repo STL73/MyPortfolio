@@ -33,20 +33,18 @@ const About = () => {
       className="px-6 py-24 sm:px-10 lg:px-16"
     >
       <div className="mx-auto max-w-wide">
-        <SectionHeading
-          id="about-heading"
-          title={ABOUT.heading}
-          meta={ABOUT.meta}
-        />
+        <SectionHeading id="about-heading" title={ABOUT.heading} meta={ABOUT.meta} />
 
-        {/* Left-weighted with the right side open, which is the shape the hero
-            sets. Pushing the two columns to opposite edges left a few hundred
-            pixels of dead space between things that belong next to each other. */}
-        <div className="mt-12 flex flex-col gap-12 lg:flex-row lg:gap-20">
+        {/* Three columns across the full width: prose, portrait, facts.
+            Left-weighting this the way the hero is left about 540px of dead
+            space to the right of the portrait, which read as unfinished rather
+            than as the page's shape. Nothing here is invented to fill it --
+            it is the same three things, spread. */}
+        <div className="mt-12 grid gap-8 lg:grid-cols-12 lg:gap-12">
           {/* The measure is capped in ch rather than px. Running text stops
               being comfortable somewhere around 75 characters regardless of
               how wide the column happens to be. */}
-          <div data-reveal className="flex max-w-measure flex-col gap-6">
+          <div data-reveal className="flex flex-col gap-6 lg:col-span-5">
             {ABOUT.paragraphs.map((paragraph) => (
               <p key={paragraph.slice(0, 32)} className="text-lg text-ink-muted">
                 {paragraph}
@@ -54,7 +52,7 @@ const About = () => {
             ))}
           </div>
 
-          <div data-reveal className="flex shrink-0 flex-col gap-8 lg:w-72">
+          <div data-reveal className="lg:col-span-3">
             <img
               src={portrait}
               alt="Slav Lambov in cap and gown at his 2026 Arden University graduation, holding his degree"
@@ -62,23 +60,21 @@ const About = () => {
               height={900}
               loading="lazy"
               decoding="async"
-              className="w-full max-w-72 rounded-lg border border-line"
+              className="w-full rounded-lg border border-line"
             />
+          </div>
 
-            <dl className="flex flex-col gap-6">
-              {ABOUT.facts.map((fact) => (
-                <div key={fact.label} className="border-t border-line pt-4">
-                  {/* Mono on the label only. The design system gives the face
+          <dl data-reveal className="flex flex-col gap-6 lg:col-span-3 lg:col-start-10">
+            {ABOUT.facts.map((fact) => (
+              <div key={fact.label} className="border-t border-line pt-4">
+                {/* Mono on the label only. The design system gives the face
                       to code, figures and technical labels -- a label
                       qualifies, the sentence answering it does not. */}
-                  <dt className="font-mono text-xs tracking-mono text-ink-low">
-                    {fact.label}
-                  </dt>
-                  <dd className="mt-1 text-ink">{fact.value}</dd>
-                </div>
-              ))}
-            </dl>
-          </div>
+                <dt className="font-mono text-xs tracking-mono text-ink-low">{fact.label}</dt>
+                <dd className="mt-1 text-ink">{fact.value}</dd>
+              </div>
+            ))}
+          </dl>
         </div>
       </div>
     </section>
