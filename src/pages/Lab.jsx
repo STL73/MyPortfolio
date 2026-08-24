@@ -1,4 +1,7 @@
 import CareerTracks from "../components/CareerTracks"
+import DeepLinkDiagram from "../components/diagrams/DeepLinkDiagram"
+import ModuleBoundaryDiagram from "../components/diagrams/ModuleBoundaryDiagram"
+import ThemeOrderDiagram from "../components/diagrams/ThemeOrderDiagram"
 import ProjectStatus from "../components/ProjectStatus"
 import { primaryAction, secondaryAction } from "../lib/actionStyles"
 import portrait from "../assets/images/slav-portrait.webp"
@@ -181,6 +184,29 @@ const Lab = () => (
           exists.
         </p>
       </header>
+
+      <Group
+        title="Case study diagrams"
+        note="Three, for the three places a picture explains faster than the paragraph does. Every fact on them was read out of the Moss repository first -- the importer list, the inline script, the wrangler setting. A diagram that is confidently wrong is worse than no diagram."
+      >
+        <Labelled label="1 · the module boundary  (Decisions: the catalogue sits behind one module)">
+          <div className="w-full max-w-3xl">
+            <ModuleBoundaryDiagram />
+          </div>
+        </Labelled>
+
+        <Labelled label="2 · theme before paint  (Decisions: the theme is applied before React mounts)">
+          <div className="w-full max-w-3xl">
+            <ThemeOrderDiagram />
+          </div>
+        </Labelled>
+
+        <Labelled label="3 · the deep-link trap  (How it deploys)">
+          <div className="w-full max-w-3xl">
+            <DeepLinkDiagram />
+          </div>
+        </Labelled>
+      </Group>
 
       <Group
         title="Hero layout"

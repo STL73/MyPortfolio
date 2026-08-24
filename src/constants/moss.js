@@ -43,6 +43,7 @@ export const mossCaseStudy = {
   decisions: [
     {
       heading: "The catalogue sits behind one module",
+      diagram: "moduleBoundary",
       body: "Every component asks the same API module for products; today that module returns a mock catalogue. When there is a real database behind it, the swap is one file rather than a hunt through every component that happened to import the data directly. It cost nothing to do at the start and it is the difference between a port and a rewrite.",
     },
     {
@@ -51,6 +52,7 @@ export const mossCaseStudy = {
     },
     {
       heading: "The theme is applied before React mounts",
+      diagram: "themeOrder",
       body: "Reading a saved theme inside an effect means the wrong one paints first and corrects itself a frame later, which is a white flash on every reload for anyone using dark mode. A small script reads the preference before the app boots, so the first paint is already correct.",
     },
     {
