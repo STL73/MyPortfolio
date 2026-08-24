@@ -21,15 +21,23 @@ const Footer = () => (
   <footer className="border-t border-line px-6 py-16 sm:px-10 lg:px-16">
     <div className="mx-auto max-w-wide">
       <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
+        {/* The header and the footer carry different names on purpose.
+            Up top a recruiter needs the person; down here, where someone has
+            read the whole page and might be thinking about hiring for work
+            rather than for a role, the trading name is the useful one. The
+            person's name sits directly beneath it so the two are never
+            separated. */}
         <div className="lg:col-span-4">
           <div className="flex items-center gap-3">
             <Mark className="h-7 w-7 shrink-0" decorative />
             <span className="font-display text-lg font-semibold tracking-display text-ink">
-              Slav Lambov
+              Spireforge
             </span>
           </div>
 
-          <p className="mt-4 max-w-measure text-sm text-ink-muted">
+          <p className="mt-3 text-ink">Slav Lambov</p>
+
+          <p className="mt-2 max-w-measure text-sm text-ink-muted">
             Junior developer in Manchester, UK. Freelance work trades as
             Spireforge.
           </p>
@@ -73,6 +81,10 @@ const Footer = () => (
       </div>
 
       <div className="mt-16 flex flex-wrap items-center justify-between gap-6 border-t border-line pt-8">
+        {/* The person, not the trading name. Copyright vests in a human or a
+            registered company, and Spireforge is neither -- it is a name Slav
+            trades under. Same reasoning that leaves the GitHub Company field
+            empty. */}
         <p className="flex items-center gap-2 font-mono text-xs tracking-mono text-ink-low">
           <FaRegCopyright aria-hidden="true" />
           {currentYear} Slav Lambov

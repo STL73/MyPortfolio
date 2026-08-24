@@ -31,7 +31,7 @@ export const PERSONAL = {
  * drop to muted ink: the eye takes the assertion, then the pivot.
  */
 export const HERO = {
-  eyebrow: "Slav Lambov · Manchester",
+  eyebrow: "Manchester, UK · open to work",
   claim: "For eight years I ran a supermarket.",
   turn: "Now I build the software that would have made the job easier.",
 }
@@ -179,14 +179,6 @@ export const educationData = [
     institution: "Arden University, Manchester",
     description: "Software engineering, web development, UI/UX foundations.",
   },
-  {
-    id: 2,
-    period: "1986 - 1991",
-    type: "Diploma",
-    title: "High School Diploma",
-    institution: "Secondary School 'Kliment Ohridski', Bulgaria",
-    description: "Mathematics, physics, and general education curriculum.",
-  },
 ]
 
 /**
@@ -255,14 +247,6 @@ export const certificatesData = [
     date: "2025",
     fileUrl: `${base}certificates/results.pdf`,
     fileSize: "409KB",
-  },
-  {
-    id: 4,
-    title: "High School Diploma",
-    issuer: "Secondary School 'Kliment Ohridski'",
-    date: "1991",
-    fileUrl: `${base}certificates/diploma-BG.pdf`,
-    fileSize: "210KB",
   },
 ]
 
