@@ -74,8 +74,26 @@ const Nav = () => {
     const sectionObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting && !isScrollingRef.current) {
-            setActiveLink(`#${entry.target.id}`)
+          if (!entry.isIntersecting || isScrollingRef.current) return
+
+          const id = `#${entry.target.id}`
+          setActiveLink(id)
+
+          // Keep the address bar honest about what is on screen.
+          //
+          // Without this the hash only ever changes when a link is clicked, so
+          // clicking "My Projects" and then scrolling back to the top leaves
+          // the URL saying #projects while the hero fills the window -- and a
+          // browser refresh then jumps to a section the reader had already
+          // left. Syncing it means reload always returns you to where you
+          // actually were.
+          //
+          // replaceState rather than pushState: scrolling is not navigation,
+          // and a history entry per section would make the back button walk up
+          // the page one section at a time.
+          const next = entry.target.id === "home" ? window.location.pathname : id
+          if (window.location.hash !== (entry.target.id === "home" ? "" : id)) {
+            window.history.replaceState(null, "", next)
           }
         })
       },
