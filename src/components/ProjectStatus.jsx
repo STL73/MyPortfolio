@@ -20,12 +20,26 @@ const ProjectStatus = ({ status }) => {
   const label = STATUS_LABELS[status]
   if (!label) return null
 
+  const isLive = status === "live"
+
   return (
     <span
-      className={`font-mono text-xs tracking-mono ${
-        status === "live" ? "text-accent" : "text-ink-muted"
+      className={`inline-flex items-baseline gap-2 font-mono text-xs tracking-mono ${
+        isLive ? "text-accent" : "text-ink-muted"
       }`}
     >
+      {/* A dot, and a still one.
+          Only the live project gets it, so it marks the single thing a reader
+          can go and use rather than decorating every status. It does not pulse:
+          a looped pulse on a status element is the most recognisable AI-slop
+          motion pattern there is, and a motion audit flags any instance of it.
+          The colour and the dot together are enough. */}
+      {isLive && (
+        <span
+          aria-hidden="true"
+          className="size-1.5 shrink-0 self-center rounded-full bg-accent"
+        />
+      )}
       {label}
     </span>
   )
