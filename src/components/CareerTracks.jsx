@@ -14,7 +14,7 @@ import { useRef } from "react"
  * decoration stops registering it in the header where it matters.
  *
  * The lanes are decorative; the labels and figures are real text, so a screen
- * reader gets "retail & warehouse management, 13 years" and reads the same
+ * reader gets "retail & warehouse operations, 20 years" and reads the same
  * information the rules encode visually.
  */
 const CareerTracks = ({ tracks }) => {

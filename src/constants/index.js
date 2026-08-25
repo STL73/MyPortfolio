@@ -46,14 +46,21 @@ export const HERO = {
  *
  * `offset` is where the lane's rule begins, as a percentage of the full span,
  * so the computing lane visibly starts inside the other one. No absolute start
- * year is shown because none is recorded anywhere -- "13 years" is the figure
- * that is actually verifiable, and it is the one that lands harder anyway.
+ * year is shown because the lane covers four employers across two countries.
+ *
+ * The figure was "13 years" and it was wrong in both directions. It was true
+ * in 2019 and was carried forward unchanged from there. Against the dates on
+ * the CV: KAUFLAND Jun 2006 - Jul 2008 and BILLA Aug 2008 - Aug 2016 is ten
+ * years and one month of management; adding the UK relocation roles and eight
+ * years at Great Bear makes nineteen years and eleven months across retail and
+ * warehouse. So thirteen overstated the managing and hid seven years of the
+ * total. Twenty is the honest number and the stronger one.
  */
 export const careerTracks = [
   {
     id: "work",
-    label: "retail & warehouse management",
-    figure: "13 years",
+    label: "retail & warehouse operations",
+    figure: "20 years",
     offset: 0,
   },
   {
@@ -68,8 +75,9 @@ export const careerTracks = [
  * About copy.
  *
  * Every figure here is checked against the record rather than rounded up:
- * thirteen years across retail and warehouse management, eight of them as
- * Store Manager at BILLA in Bulgaria, a department at KAUFLAND before that,
+ * twenty years across retail and warehouse operations, ten of them managing --
+ * eight as Store Manager at BILLA in Bulgaria, a department at KAUFLAND before
+ * that,
  * and a BSc (Hons) Computing from Arden at First Class, 77.7%, 2021-2025.
  *
  * The current job is named. A recruiter reads an unexplained gap worse than
@@ -89,7 +97,7 @@ export const ABOUT = {
   // meta is for counts and dates, never for a claim -- a classification is a
   // claim, and it belongs to the section that owns it.
   paragraphs: [
-    "I spent thirteen years in retail and warehouse management — eight of them running a BILLA store in Bulgaria, and a department at KAUFLAND before that. Running a shop is logistics under time pressure: stock that has to be on the shelf, rotas that have to work, and a floor that opens at seven whether or not last night went to plan.",
+    "I spent twenty years in retail and warehouse operations, ten of them managing — eight running a BILLA store in Bulgaria, and a department at KAUFLAND before that. Running a shop is logistics under time pressure: stock that has to be on the shelf, rotas that have to work, and a floor that opens at seven whether or not last night went to plan.",
     "I started the Computing degree at Arden in 2021 and finished it in 2025 with a First at 77.7%, studying in the evenings without taking time off work. I am still working full time, currently as a warehouse operative at Great Bear in Manchester, and building in the hours around it.",
     "None of that is a substitute for commercial development experience and I would not claim it is. What it does mean is that deadlines, handovers and being the person answerable when something breaks are not new to me. Only the tools are.",
     "I am looking for a junior developer role, and I take freelance work as Spireforge alongside it.",

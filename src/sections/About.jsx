@@ -7,7 +7,7 @@ import { ABOUT } from "../constants/index"
  * The section that explains the hero.
  *
  * The hero makes a claim in four words; this is where it is evidenced, in the
- * order a sceptical reader would ask for it: what the thirteen years actually
+ * order a sceptical reader would ask for it: what the twenty years actually
  * were, when the degree happened and under what conditions, what that is and
  * is not worth, and what the ask is.
  *
