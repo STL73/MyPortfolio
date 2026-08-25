@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <title>OG card source</title>
+    <style>
+      /* Source for public/og-image.png.
+
+         To regenerate: `npm run dev`, open /tools/og-card.html, screenshot the
+         page, then crop to (1200 x devicePixelRatio) and downscale to exactly
+         1200x630. Rendering it here rather than drawing it in an image editor
+         is what keeps the card on the real fonts and the real tokens -- change
+         a colour in the kit and the card follows by being remade, not by being
+         redrawn from memory.
+
+         It lives in tools/ and NOT in public/, because everything in public/
+         is copied verbatim into dist/ and this would otherwise ship as a
+         crawlable page on the live site. Vite's dev server still serves it
+         from the project root, which is all it needs.
+
+         Fonts are referenced from src/ for the same reason: this file is only
+         ever opened against the dev server. */
+      @font-face {
+        font-family: "Fraunces";
+        src: url("/src/assets/fonts/fraunces-variable.woff2") format("woff2");
+        font-weight: 400 700;
+      }
+      @font-face {
+        font-family: "Inter Tight";
+        src: url("/src/assets/fonts/inter-tight-variable.woff2") format("woff2");
+        font-weight: 300 700;
+      }
+      @font-face {
+        font-family: "IBM Plex Mono";
+        src: url("/src/assets/fonts/ibm-plex-mono-400.woff2") format("woff2");
+        font-weight: 400;
+      }
+
+      :root {
+        --night-900: #0a0619;
+        --night-800: #100a28;
+        --night-600: #261a54;
+        --text-hi: #ede9ff;
+        --text-mid: #a79acb;
+        --aurora-500: #5bffb0;
+      }
+
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { background: #000; }
+
+      #card {
+        width: 1200px;
+        height: 630px;
+        background: var(--night-800);
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 64px 76px;
+        font-family: "Inter Tight", system-ui, sans-serif;
+      }
+
+      /* The site's own ground treatment: a wash from the deepest night in one
+         corner so the card is not a flat rectangle at feed size. */
+      #card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(900px 520px at 88% 8%, rgba(91, 255, 176, 0.07), transparent 70%),
+          radial-gradient(700px 500px at 4% 96%, var(--night-900), transparent 72%);
+      }
+
+      .row { position: relative; display: flex; align-items: center; gap: 18px; }
+
+      .wordmark {
+        font-family: "Fraunces", Georgia, serif;
+        font-size: 30px;
+        font-weight: 600;
+        color: var(--text-hi);
+        letter-spacing: -0.01em;
+      }
+
+      h1 {
+        position: relative;
+        font-family: "Fraunces", Georgia, serif;
+        font-size: 52px;
+        line-height: 1.1;
+        font-weight: 600;
+        letter-spacing: -0.015em;
+        color: var(--text-hi);
+        max-width: 960px;
+      }
+      h1 .turn { display: block; color: var(--text-mid); margin-top: 10px; max-width: none; }
+
+      .foot {
+        position: relative;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        border-top: 1px solid var(--night-600);
+        padding-top: 26px;
+      }
+      .who { font-size: 25px; color: var(--text-hi); }
+      .who span { display: block; margin-top: 6px; font-size: 20px; color: var(--text-mid); }
+      .url {
+        font-family: "IBM Plex Mono", monospace;
+        font-size: 22px;
+        letter-spacing: 0.04em;
+        color: var(--aurora-500);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="card">
+      <div class="row">
+        <!-- Paths copied verbatim from the Mark component, which copies them
+             from 01-LOGO-CORE/icon-dark.svg. Never redrawn by eye. -->
+        <svg viewBox="0 0 100 100" width="52" height="52" fill="none" aria-hidden="true">
+          <path
+            d="M22 74 L50 48 L78 74"
+            stroke="var(--text-hi)"
+            stroke-width="11"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M34.03 56 L50 70.8 L65.97 56"
+            stroke="var(--aurora-500)"
+            stroke-width="9"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M50 18 Q50 31 61.26 37.5 Q50 31 38.74 37.5 Q50 31 50 18 Z"
+            fill="var(--aurora-500)"
+          />
+        </svg>
+        <span class="wordmark">Spireforge</span>
+      </div>
+
+      <!-- The hero's own two-part sentence and its own hierarchy: the claim in
+           full ink, the turn in muted. Repeating the site's structure means the
+           card and the page it opens read as one thing. -->
+      <h1>
+        For eight years I ran a supermarket.
+        <span class="turn">Now I build the software that would have made the job easier.</span>
+      </h1>
+
+      <div class="foot">
+        <div class="who">
+          Slav Lambov
+          <span>Junior developer &#183; Manchester, UK</span>
+        </div>
+        <div class="url">spireforge.co.uk</div>
+      </div>
+    </div>
+  </body>
+</html>

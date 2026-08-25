@@ -33,12 +33,25 @@
     />
     <meta property="og:url" content="https://spireforge.co.uk/" />
 
-    <!-- TODO(phase 4): og:image and twitter:image.
-         The previous card was an SVG in the retired STL Media palette quoting
-         a dead github.io URL. X, Facebook and LinkedIn do not render SVG, so
-         no preview card has ever actually worked. It is deleted rather than
-         left in place, and a 1200x630 PNG replaces it once the headline copy
-         is settled -- writing it now would only mean writing it twice. -->
+    <!-- The card. PNG, because the one this replaces was an SVG in the retired
+         STL Media palette quoting a dead github.io URL, and X, Facebook and
+         LinkedIn do not render SVG -- so no preview has ever actually worked.
+
+         The URL is absolute and not relative: crawlers fetch it without the
+         page's base, and a relative path is the single most common reason a
+         card silently renders blank.
+
+         1200x630 is the size every platform crops from. It is rendered from
+         tools/og-card.html with the real fonts and the real tokens rather than
+         redrawn by eye -- see that file to regenerate. -->
+    <meta property="og:image" content="https://spireforge.co.uk/og-image.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="Spireforge. For eight years I ran a supermarket. Now I build the software that would have made the job easier. Slav Lambov, junior developer, Manchester, UK."
+    />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
@@ -46,6 +59,11 @@
     <meta
       name="twitter:description"
       content="Frontend developer based in Manchester, UK. React, animations, design systems, and performance. Portfolio of Slav Lambov."
+    />
+    <meta name="twitter:image" content="https://spireforge.co.uk/og-image.png" />
+    <meta
+      name="twitter:image:alt"
+      content="Spireforge. For eight years I ran a supermarket. Now I build the software that would have made the job easier. Slav Lambov, junior developer, Manchester, UK."
     />
 
     <!-- Canonical & robots -->
