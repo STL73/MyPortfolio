@@ -79,6 +79,12 @@ const ContactForm = () => {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+      {/* Hover at half accent, focus at full. The fields had a focus state and
+          no hover at all, so a pointer crossing them got no answer to "is this
+          interactive?" until it clicked -- the one control on the site that
+          stayed silent. Half strength keeps the distinction: hover says the
+          field is live, focus says you are in it. It is the same two-step the
+          cards use in `surfaceStyles`. */}
       {FIELDS.map((field) => (
         <div key={field.name} className="flex flex-col gap-2">
           {/* Real labels, not placeholders. A placeholder disappears the moment
@@ -98,7 +104,7 @@ const ContactForm = () => {
             required
             value={form[field.name]}
             onChange={handleChange}
-            className="rounded-sm border border-line bg-night-900 px-4 py-3 text-ink transition-colors duration-150 focus:border-accent"
+            className="rounded-sm border border-line bg-night-900 px-4 py-3 text-ink transition-colors duration-150 hover:border-accent/50 focus:border-accent"
           />
         </div>
       ))}
@@ -117,7 +123,7 @@ const ContactForm = () => {
           required
           value={form.message}
           onChange={handleChange}
-          className="resize-y rounded-sm border border-line bg-night-900 px-4 py-3 text-ink transition-colors duration-150 focus:border-accent"
+          className="resize-y rounded-sm border border-line bg-night-900 px-4 py-3 text-ink transition-colors duration-150 hover:border-accent/50 focus:border-accent"
         />
       </div>
 
