@@ -1,11 +1,51 @@
 import CareerTracks from "../components/CareerTracks"
+import CaseStudyFigure from "../components/CaseStudyFigure"
+import CertificateLink from "../components/CertificateLink"
+import DegreeTimeline from "../components/DegreeTimeline"
+import { FaBriefcase, FaLocationDot, FaLanguage, FaRegStar } from "react-icons/fa6"
+import {
+  SiCss3,
+  SiExpress,
+  SiGit,
+  SiGreensock,
+  SiHtml5,
+  SiJavascript,
+  SiMongodb,
+  SiMysql,
+  SiNodedotjs,
+  SiOpenjdk,
+  SiPandas,
+  SiPhp,
+  SiPostgresql,
+  SiPython,
+  SiReact,
+  SiScikitlearn,
+  SiTailwindcss,
+  SiTypescript,
+  SiVite,
+  SiXampp,
+  SiOracle,
+  SiGithub,
+  SiNextdotjs,
+} from "react-icons/si"
+import { VscAzure } from "react-icons/vsc"
 import DeepLinkDiagram from "../components/diagrams/DeepLinkDiagram"
 import ModuleBoundaryDiagram from "../components/diagrams/ModuleBoundaryDiagram"
 import ThemeOrderDiagram from "../components/diagrams/ThemeOrderDiagram"
 import ProjectStatus from "../components/ProjectStatus"
 import { primaryAction, secondaryAction } from "../lib/actionStyles"
+import { cardSurface } from "../lib/surfaceStyles"
 import portrait from "../assets/images/slav-portrait.webp"
-import { ABOUT, HERO, SKILLS, careerTracks, projectsData } from "../constants/index"
+import {
+  ABOUT,
+  HERO,
+  SKILLS,
+  careerTracks,
+  certificatesData,
+  degreeLevels,
+  projectsData,
+} from "../constants/index"
+import { mossCaseStudy as moss } from "../constants/moss"
 
 /**
  * A comparison page for motion and layout variants. Development only.
@@ -20,9 +60,45 @@ import { ABOUT, HERO, SKILLS, careerTracks, projectsData } from "../constants/in
  * works on this page.
  */
 
+// `?only=<id>` renders a single block and nothing else. It exists so the page
+// can embed itself in an iframe at a phone width: Tailwind's breakpoints read
+// the viewport, not the container, so a 375px-wide div on a desktop page still
+// gets desktop styles and shows nothing useful. An iframe has its own viewport
+// and therefore its own breakpoints.
+const only = new URLSearchParams(window.location.search).get("only")
+
 const secondary = projectsData.slice(1)
 
-const Lab = () => (
+// Shared by the four layout variants below so the only thing differing
+// between them is the layout.
+const DEEP_LINK_CAPTION =
+  "A deep link has no file behind it. Workers returns 404 unless told to serve index.html."
+
+// Kept deliberately bare -- the point is to see the component at a phone
+// width, not the lab's chrome around it.
+const IsolatedBlocks = {
+  timeline: () => <DegreeTimeline levels={PROPOSED_LEVELS} />,
+}
+
+const Lab = () => {
+  const Isolated = only && IsolatedBlocks[only]
+  if (Isolated) {
+    // App renders the nav and the footer outside the route, so an isolated
+    // block arrives with 65px of fixed header over it and 986px of footer
+    // under it -- which in a preview frame is almost all of what you see. Both
+    // are hidden here rather than restructured: this path only exists behind
+    // `?only=`, which only exists in the dev-only lab.
+    return (
+      <div className="px-6 py-8">
+        <style>{`#root > header, #root > footer { display: none !important; }`}</style>
+        <Isolated />
+      </div>
+    )
+  }
+  return <LabPage />
+}
+
+const LabPage = () => (
   <div className="px-6 py-24 sm:px-10 lg:px-16">
     <style>{`
       /* @property is what makes an angle interpolable. Without a declared
@@ -574,9 +650,1055 @@ const Lab = () => (
           </div>
         </Labelled>
       </Group>
+
+      <Group
+        title="Case study section layout"
+        note="The same section -- real copy, real diagram -- laid out three ways. What is being judged: whether the empty left third under the heading is a problem worth solving, and whether the diagram wants a frame around it. Every variant renders the diagram at the same width, so the label sizes are finally comparable."
+      >
+        <Labelled label="A · heading rail kept, figure breaks out to full width">
+          <section className="grid w-full gap-6 border-t border-line pt-10 lg:grid-cols-12 lg:gap-12">
+            <h2 className="text-2xl text-ink lg:col-span-3">How it deploys</h2>
+            <div className="flex flex-col gap-6 lg:col-span-8 lg:col-start-5">
+              {moss.deployment.map((paragraph) => (
+                <p key={paragraph.slice(0, 32)} className="max-w-measure text-lg text-ink-muted">
+                  {paragraph}
+                </p>
+              ))}
+            </div>
+            <div className="mt-4 lg:col-span-12">
+              <CaseStudyFigure number={3} caption={DEEP_LINK_CAPTION}>
+                <DeepLinkDiagram />
+              </CaseStudyFigure>
+            </div>
+          </section>
+        </Labelled>
+
+        <Labelled label="A2 · the same, with no panel around the figure">
+          <section className="grid w-full gap-6 border-t border-line pt-10 lg:grid-cols-12 lg:gap-12">
+            <h2 className="text-2xl text-ink lg:col-span-3">How it deploys</h2>
+            <div className="flex flex-col gap-6 lg:col-span-8 lg:col-start-5">
+              {moss.deployment.map((paragraph) => (
+                <p key={paragraph.slice(0, 32)} className="max-w-measure text-lg text-ink-muted">
+                  {paragraph}
+                </p>
+              ))}
+            </div>
+            <div className="mt-6 lg:col-span-12">
+              <CaseStudyFigure number={3} caption={DEEP_LINK_CAPTION} framed={false}>
+                <DeepLinkDiagram />
+              </CaseStudyFigure>
+            </div>
+          </section>
+        </Labelled>
+
+        <Labelled label="B · heading runs full width, no rail at all">
+          <section className="w-full border-t border-line pt-10">
+            <h2 className="text-2xl text-ink">How it deploys</h2>
+            <div className="mt-6 flex flex-col gap-6">
+              {moss.deployment.map((paragraph) => (
+                <p key={paragraph.slice(0, 32)} className="max-w-measure text-lg text-ink-muted">
+                  {paragraph}
+                </p>
+              ))}
+            </div>
+            <div className="mt-10">
+              <CaseStudyFigure number={3} caption={DEEP_LINK_CAPTION}>
+                <DeepLinkDiagram />
+              </CaseStudyFigure>
+            </div>
+          </section>
+        </Labelled>
+
+        <Labelled label="C · prose left, diagram right  (the labels go small again -- that is the point)">
+          <section className="w-full border-t border-line pt-10">
+            <h2 className="text-2xl text-ink">How it deploys</h2>
+            <div className="mt-6 grid gap-10 lg:grid-cols-12">
+              <div className="flex flex-col gap-6 lg:col-span-5">
+                {moss.deployment.map((paragraph) => (
+                  <p key={paragraph.slice(0, 32)} className="text-lg text-ink-muted">
+                    {paragraph}
+                  </p>
+                ))}
+              </div>
+              <div className="lg:col-span-7">
+                <CaseStudyFigure number={3} caption={DEEP_LINK_CAPTION}>
+                  <DeepLinkDiagram />
+                </CaseStudyFigure>
+              </div>
+            </div>
+          </section>
+        </Labelled>
+
+        <Labelled label="D · your idea — prose full width, diagram centred below">
+          <section className="w-full border-t border-line pt-10">
+            <h2 className="text-2xl text-ink">How it deploys</h2>
+            <div className="mt-6 flex flex-col gap-6">
+              {moss.deployment.map((paragraph) => (
+                <p key={paragraph.slice(0, 32)} className="text-lg text-ink-muted">
+                  {paragraph}
+                </p>
+              ))}
+            </div>
+            <div className="mt-10 flex justify-center">
+              <CaseStudyFigure number={3} caption={DEEP_LINK_CAPTION}>
+                <DeepLinkDiagram />
+              </CaseStudyFigure>
+            </div>
+          </section>
+        </Labelled>
+
+        <Labelled label="E · narrow document column, figure breaks out wider and centres">
+          <div className="w-full border-t border-line pt-10">
+            <section className="mx-auto w-full max-w-[46rem]">
+              <h2 className="text-2xl text-ink">How it deploys</h2>
+              <div className="mt-6 flex flex-col gap-6">
+                {moss.deployment.map((paragraph) => (
+                  <p key={paragraph.slice(0, 32)} className="text-lg text-ink-muted">
+                    {paragraph}
+                  </p>
+                ))}
+              </div>
+              {/* The figure is the only thing allowed wider than the text. It
+                  centres on the column rather than the page, which is what
+                  keeps it reading as part of the passage. */}
+              <div className="relative left-1/2 mt-10 w-[min(62rem,calc(100vw-3rem))] -translate-x-1/2">
+                <CaseStudyFigure number={3} caption={DEEP_LINK_CAPTION}>
+                  <DeepLinkDiagram />
+                </CaseStudyFigure>
+              </div>
+            </section>
+          </div>
+        </Labelled>
+
+        <Labelled label="E1 · heading pulled to the left margin, short accent rule under it">
+          <div className="w-full border-t border-line pt-10">
+            <h2 className="text-2xl text-ink">How it deploys</h2>
+            <div className="mt-4 h-px w-14 bg-accent" />
+            <section className="mx-auto mt-10 w-full max-w-[46rem]">
+              <div className="flex flex-col gap-6">
+                {moss.deployment.map((paragraph) => (
+                  <p key={paragraph.slice(0, 32)} className="text-lg text-ink-muted">
+                    {paragraph}
+                  </p>
+                ))}
+              </div>
+              <div className="relative left-1/2 mt-10 w-[min(62rem,calc(100vw-3rem))] -translate-x-1/2">
+                <CaseStudyFigure number={3} caption={DEEP_LINK_CAPTION}>
+                  <DeepLinkDiagram />
+                </CaseStudyFigure>
+              </div>
+            </section>
+          </div>
+        </Labelled>
+
+        <Labelled label="E2 · the same, but the accent rule runs the full width">
+          <div className="w-full border-t border-line pt-10">
+            <h2 className="text-2xl text-ink">How it deploys</h2>
+            <div className="mt-4 h-px w-full bg-accent/60" />
+            <section className="mx-auto mt-10 w-full max-w-[46rem]">
+              <div className="flex flex-col gap-6">
+                {moss.deployment.map((paragraph) => (
+                  <p key={paragraph.slice(0, 32)} className="text-lg text-ink-muted">
+                    {paragraph}
+                  </p>
+                ))}
+              </div>
+              <div className="relative left-1/2 mt-10 w-[min(62rem,calc(100vw-3rem))] -translate-x-1/2">
+                <CaseStudyFigure number={3} caption={DEEP_LINK_CAPTION}>
+                  <DeepLinkDiagram />
+                </CaseStudyFigure>
+              </div>
+            </section>
+          </div>
+        </Labelled>
+
+        <Labelled label="E3 · heading stays at the top of the column, short accent rule under it">
+          <div className="w-full border-t border-line pt-10">
+            <section className="mx-auto w-full max-w-[46rem]">
+              <h2 className="text-2xl text-ink">How it deploys</h2>
+              <div className="mt-4 h-px w-14 bg-accent" />
+              <div className="mt-8 flex flex-col gap-6">
+                {moss.deployment.map((paragraph) => (
+                  <p key={paragraph.slice(0, 32)} className="text-lg text-ink-muted">
+                    {paragraph}
+                  </p>
+                ))}
+              </div>
+              <div className="relative left-1/2 mt-10 w-[min(62rem,calc(100vw-3rem))] -translate-x-1/2">
+                <CaseStudyFigure number={3} caption={DEEP_LINK_CAPTION}>
+                  <DeepLinkDiagram />
+                </CaseStudyFigure>
+              </div>
+            </section>
+          </div>
+        </Labelled>
+
+        <Labelled label="E4 · the homepage's own SectionHeading treatment, reused verbatim">
+          {/* Not a new device. This is the exact rule SectionHeading already
+              draws under every section on the homepage -- border-b in the line
+              colour with a 64px aurora segment at its left end. The case study
+              page is the only page that does not use it, which is why this one
+              reads as having less colour than the rest of the site. */}
+          <div className="w-full">
+            <header className="relative flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 border-b border-line pb-6 after:absolute after:-bottom-px after:left-0 after:h-px after:w-16 after:bg-accent">
+              <h2 className="text-2xl text-ink">How it deploys</h2>
+              <p className="font-mono text-xs tracking-mono text-ink-muted">3 paragraphs</p>
+            </header>
+            <section className="mx-auto mt-10 w-full max-w-[46rem]">
+              <div className="flex flex-col gap-6">
+                {moss.deployment.map((paragraph) => (
+                  <p key={paragraph.slice(0, 32)} className="text-lg text-ink-muted">
+                    {paragraph}
+                  </p>
+                ))}
+              </div>
+              <div className="relative left-1/2 mt-10 w-[min(62rem,calc(100vw-3rem))] -translate-x-1/2">
+                <CaseStudyFigure number={3} caption={DEEP_LINK_CAPTION}>
+                  <DeepLinkDiagram />
+                </CaseStudyFigure>
+              </div>
+            </section>
+          </div>
+        </Labelled>
+      </Group>
+
+      <Group
+        title="About: portrait and facts stacked"
+        note="Right now the prose, the portrait and the facts are three separate columns with a gap between the last two. These stack the portrait and the facts into one column so the prose can have the rest. The last pair is the same layout with and without icons on the fact labels."
+      >
+        <Labelled label="A · current — three columns, portrait and facts apart">
+          <div className="grid w-full gap-8 lg:grid-cols-12 lg:gap-12">
+            <div className="flex flex-col gap-6 lg:col-span-5">
+              {ABOUT.paragraphs.map((paragraph) => (
+                <p key={paragraph.slice(0, 32)} className="text-lg text-ink-muted">
+                  {paragraph}
+                </p>
+              ))}
+            </div>
+            <div className="lg:col-span-3">
+              <Portrait />
+            </div>
+            <div className="lg:col-span-3 lg:col-start-10">
+              <Facts />
+            </div>
+          </div>
+        </Labelled>
+
+        <Labelled label="B · portrait above the facts, prose takes the rest">
+          <div className="grid w-full gap-8 lg:grid-cols-12 lg:gap-12">
+            <div className="flex flex-col gap-6 lg:col-span-7">
+              {ABOUT.paragraphs.map((paragraph) => (
+                <p key={paragraph.slice(0, 32)} className="max-w-measure text-lg text-ink-muted">
+                  {paragraph}
+                </p>
+              ))}
+            </div>
+            <div className="flex flex-col gap-8 lg:col-span-4 lg:col-start-9">
+              <Portrait />
+              <Facts />
+            </div>
+          </div>
+        </Labelled>
+
+        <Labelled label="C · facts above the portrait">
+          <div className="grid w-full gap-8 lg:grid-cols-12 lg:gap-12">
+            <div className="flex flex-col gap-6 lg:col-span-7">
+              {ABOUT.paragraphs.map((paragraph) => (
+                <p key={paragraph.slice(0, 32)} className="max-w-measure text-lg text-ink-muted">
+                  {paragraph}
+                </p>
+              ))}
+            </div>
+            <div className="flex flex-col gap-8 lg:col-span-4 lg:col-start-9">
+              <Facts />
+              <Portrait />
+            </div>
+          </div>
+        </Labelled>
+
+        <Labelled label="D · narrower right column — portrait does not dominate">
+          <div className="grid w-full gap-8 lg:grid-cols-12 lg:gap-12">
+            <div className="flex flex-col gap-6 lg:col-span-8">
+              {ABOUT.paragraphs.map((paragraph) => (
+                <p key={paragraph.slice(0, 32)} className="max-w-measure text-lg text-ink-muted">
+                  {paragraph}
+                </p>
+              ))}
+            </div>
+            <div className="flex flex-col gap-8 lg:col-span-3 lg:col-start-10">
+              <Portrait />
+              <Facts />
+            </div>
+          </div>
+        </Labelled>
+
+        <Labelled label="D-icons · the same, with icons on the fact labels  (the thing being judged)">
+          <div className="grid w-full gap-8 lg:grid-cols-12 lg:gap-12">
+            <div className="flex flex-col gap-6 lg:col-span-8">
+              {ABOUT.paragraphs.map((paragraph) => (
+                <p key={paragraph.slice(0, 32)} className="max-w-measure text-lg text-ink-muted">
+                  {paragraph}
+                </p>
+              ))}
+            </div>
+            <div className="flex flex-col gap-8 lg:col-span-3 lg:col-start-10">
+              <Portrait />
+              <Facts icons />
+            </div>
+          </div>
+        </Labelled>
+
+        <Labelled label="B1 · facts two-up under the portrait  (right column ~734px)">
+          <div className="grid w-full gap-8 lg:grid-cols-12 lg:gap-12">
+            <div className="flex flex-col gap-6 lg:col-span-7">
+              {ABOUT.paragraphs.map((paragraph) => (
+                <p key={paragraph.slice(0, 32)} className="max-w-measure text-lg text-ink-muted">
+                  {paragraph}
+                </p>
+              ))}
+            </div>
+            <div className="flex flex-col gap-8 lg:col-span-4 lg:col-start-9">
+              <Portrait />
+              <Facts cols={2} />
+            </div>
+          </div>
+        </Labelled>
+
+        <Labelled label="B2 · facts as a four-across strip below both  (same shape as the case study figures)">
+          <div className="w-full">
+            <div className="grid gap-8 lg:grid-cols-12 lg:gap-12">
+              <div className="flex flex-col gap-6 lg:col-span-7">
+              {ABOUT.paragraphs.map((paragraph) => (
+                <p key={paragraph.slice(0, 32)} className="max-w-measure text-lg text-ink-muted">
+                  {paragraph}
+                </p>
+              ))}
+              </div>
+              <div className="lg:col-span-4 lg:col-start-9">
+                <Portrait />
+              </div>
+            </div>
+            <div className="mt-12 border-t border-line pt-8">
+              <Facts cols={4} />
+            </div>
+          </div>
+        </Labelled>
+
+        <Labelled label="B3 · facts two-up under the prose, portrait alone on the right">
+          <div className="grid w-full gap-8 lg:grid-cols-12 lg:gap-12">
+            <div className="flex flex-col gap-8 lg:col-span-7">
+              <div className="flex flex-col gap-6">
+                {ABOUT.paragraphs.map((paragraph) => (
+                  <p key={paragraph.slice(0, 32)} className="max-w-measure text-lg text-ink-muted">
+                    {paragraph}
+                  </p>
+                ))}
+              </div>
+              <Facts cols={2} />
+            </div>
+            <div className="lg:col-span-4 lg:col-start-9">
+              <Portrait />
+            </div>
+          </div>
+        </Labelled>
+      </Group>
+
+      <Group
+        title="Skills: laying out the items inside a card"
+        note="The first two tiers are single tokens; the third is full phrases, one of them 54 characters. A single middot-joined run serves the first two and turns the third into a wrapped block of text. Same four cards each time, only the item layout differs."
+      >
+        <Labelled label="A · one run joined by middots  (current)">
+          <dl className="grid w-full gap-4 md:grid-cols-2">
+            {SKILLS.tiers.map((tier) => (
+              <div key={tier.id} className="flex">
+                <TierCard tier={tier} layout="run" />
+              </div>
+            ))}
+          </dl>
+        </Labelled>
+
+        <Labelled label="B · one item per line">
+          <dl className="grid w-full gap-4 md:grid-cols-2">
+            {SKILLS.tiers.map((tier) => (
+              <div key={tier.id} className="flex">
+                <TierCard tier={tier} layout="lines" />
+              </div>
+            ))}
+          </dl>
+        </Labelled>
+
+        <Labelled label="C · two columns inside the card, items flow between them">
+          <dl className="grid w-full gap-4 md:grid-cols-2">
+            {SKILLS.tiers.map((tier) => (
+              <div key={tier.id} className="flex">
+                <TierCard tier={tier} layout="columns" />
+              </div>
+            ))}
+          </dl>
+        </Labelled>
+
+        <Labelled label="D · one per line, hairline between each  (reads as a list of evidence)">
+          <dl className="grid w-full gap-4 md:grid-cols-2">
+            {SKILLS.tiers.map((tier) => (
+              <div key={tier.id} className="flex">
+                <TierCard tier={tier} layout="ruled" />
+              </div>
+            ))}
+          </dl>
+        </Labelled>
+
+        <Labelled label="E · four columns, one tier each, one item per line  (no card is padded to match another)">
+          <dl className="grid w-full gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {SKILLS.tiers.map((tier) => (
+              <div key={tier.id} className="flex">
+                <TierCard tier={tier} layout="lines" />
+              </div>
+            ))}
+          </dl>
+        </Labelled>
+
+        <Labelled label="F · C, but a short tier keeps one column">
+          <dl className="grid w-full gap-4 md:grid-cols-2">
+            {SKILLS.tiers.map((tier) => (
+              <div key={tier.id} className="flex">
+                <TierCard tier={tier} layout="adaptive" />
+              </div>
+            ))}
+          </dl>
+        </Labelled>
+
+        <Labelled label="G · F, and cards size to their own content instead of stretching to the row">
+          <dl className="grid w-full items-start gap-4 md:grid-cols-2">
+            {SKILLS.tiers.map((tier) => (
+              <div key={tier.id} className="flex">
+                <TierCard tier={tier} layout="adaptive" />
+              </div>
+            ))}
+          </dl>
+        </Labelled>
+
+        <Labelled label="H · F, with the gaps tier full width at the end">
+          <dl className="grid w-full gap-4 md:grid-cols-2">
+            {SKILLS.tiers.map((tier) => (
+              <div
+                key={tier.id}
+                className={`flex ${tier.id === "learning" ? "md:col-span-2" : ""}`}
+              >
+                <TierCard tier={tier} layout="adaptive" />
+              </div>
+            ))}
+          </dl>
+        </Labelled>
+
+        <Labelled label="I · pills, all four tiers, equal heights  (watch the 54-character one)">
+          <dl className="grid w-full gap-4 md:grid-cols-2">
+            {SKILLS.tiers.map((tier) => (
+              <div key={tier.id} className="flex">
+                <TierCard tier={tier} layout="pills" />
+              </div>
+            ))}
+          </dl>
+        </Labelled>
+
+        <Labelled label="J · pills · three evidence tiers in a row, the gaps tier full width below">
+          <dl className="grid w-full gap-4 lg:grid-cols-3">
+            {SKILLS.tiers.map((tier) => (
+              <div
+                key={tier.id}
+                className={`flex ${tier.id === "learning" ? "lg:col-span-3" : ""}`}
+              >
+                <TierCard tier={tier} layout="pills" />
+              </div>
+            ))}
+          </dl>
+        </Labelled>
+
+        <Labelled label="K · lines · three evidence tiers in a row, the gaps tier full width below">
+          <dl className="grid w-full gap-4 lg:grid-cols-3">
+            {SKILLS.tiers.map((tier) => (
+              <div
+                key={tier.id}
+                className={`flex ${tier.id === "learning" ? "lg:col-span-3" : ""}`}
+              >
+                <TierCard tier={tier} layout={tier.id === "learning" ? "pills" : "lines"} />
+              </div>
+            ))}
+          </dl>
+        </Labelled>
+
+        <Labelled label="J2 · J at text-sm, with a pill border you can actually see">
+          <dl className="grid w-full gap-4 lg:grid-cols-3">
+            {SKILLS.tiers.map((tier) => (
+              <div
+                key={tier.id}
+                className={`flex ${tier.id === "learning" ? "lg:col-span-3" : ""}`}
+              >
+                <TierCard tier={tier} layout="pills-sm" />
+              </div>
+            ))}
+          </dl>
+        </Labelled>
+
+        <Labelled label="J3 · the same at text-base — pills spread over more rows">
+          <dl className="grid w-full gap-4 lg:grid-cols-3">
+            {SKILLS.tiers.map((tier) => (
+              <div
+                key={tier.id}
+                className={`flex ${tier.id === "learning" ? "lg:col-span-3" : ""}`}
+              >
+                <TierCard tier={tier} layout="pills-base" />
+              </div>
+            ))}
+          </dl>
+        </Labelled>
+
+        <Labelled label="J4 · pills where the items are tokens, lines where they are phrases">
+          {/* The split is by item shape, not by tier. Two tiers hold single
+              words and take pills; the academic tier holds sentences and takes
+              lines, which is also what stops it setting a row height the other
+              two cannot reach. */}
+          <dl className="grid w-full gap-4 lg:grid-cols-3">
+            {SKILLS.tiers.map((tier) => (
+              <div
+                key={tier.id}
+                className={`flex ${tier.id === "learning" ? "lg:col-span-3" : ""}`}
+              >
+                <TierCard
+                  tier={tier}
+                  layout={tier.id === "academic" ? "lines" : "pills-sm"}
+                />
+              </div>
+            ))}
+          </dl>
+        </Labelled>
+      </Group>
+
+      <Group
+        title="Skills: single-word items, and icons on the pills"
+        note="The academic tier rewritten as single tokens -- compounds split, not truncated. What it costs: 'Advanced SQL (views, procedures, triggers, transactions)' becomes 'Advanced SQL', which says nothing a reader can check, and 'SQL' now appears in two tiers. Icons only exist for products; RBAC, CI/CD, Networking, Security, Azure, ORMs and REST API design have no logo, so those pills stay bare."
+      >
+        <Labelled label="L · single-word items, pills, no icons">
+          <dl className="grid w-full gap-4 lg:grid-cols-3">
+            {SHORT_TIERS.map((tier) => (
+              <div
+                key={tier.id}
+                className={`flex ${tier.id === "learning" ? "lg:col-span-3" : ""}`}
+              >
+                <ShortCard tier={tier} withIcons={false} />
+              </div>
+            ))}
+          </dl>
+        </Labelled>
+
+        <Labelled label="M · the same, with a logo on every pill that has one">
+          <dl className="grid w-full gap-4 lg:grid-cols-3">
+            {SHORT_TIERS.map((tier) => (
+              <div
+                key={tier.id}
+                className={`flex ${tier.id === "learning" ? "lg:col-span-3" : ""}`}
+              >
+                <ShortCard tier={tier} withIcons />
+              </div>
+            ))}
+          </dl>
+        </Labelled>
+
+        <Labelled label="N · M, with the lost detail folded into the tier subtitle">
+          <dl className="grid w-full gap-4 lg:grid-cols-3">
+            {SHORT_TIERS.map((tier) => (
+              <div
+                key={tier.id}
+                className={`flex ${tier.id === "learning" ? "lg:col-span-3" : ""}`}
+              >
+                <DetailCard tier={tier} place="note" />
+              </div>
+            ))}
+          </dl>
+        </Labelled>
+
+        <Labelled label="N2 · M, with the detail as a footnote under the pills instead">
+          <dl className="grid w-full gap-4 lg:grid-cols-3">
+            {SHORT_TIERS.map((tier) => (
+              <div
+                key={tier.id}
+                className={`flex ${tier.id === "learning" ? "lg:col-span-3" : ""}`}
+              >
+                <DetailCard tier={tier} place="under" />
+              </div>
+            ))}
+          </dl>
+        </Labelled>
+      </Group>
+
+      <Group
+        title="Skills: only items that carry a logo"
+        note="Every pill has a real mark, so none looks unfinished beside another. Corrections applied: OOP is back inside Java (OOP), Oracle joins the first card since that is where the basic SQL was used, GitHub joins the second and Next.js the last. Removed and needing a home: Advanced SQL with its four clauses, CI/CD, RBAC, Networking, Security, REST API design, ORMs."
+      >
+        <Labelled label="O · logo-only pills, three tiers in a row, gaps tier full width">
+          <dl className="grid w-full gap-4 lg:grid-cols-3">
+            {LOGO_ONLY_TIERS.map((tier) => (
+              <div
+                key={tier.id}
+                className={`flex ${tier.id === "learning" ? "lg:col-span-3" : ""}`}
+              >
+                <LogoCard tier={tier} />
+              </div>
+            ))}
+          </dl>
+        </Labelled>
+
+        <Labelled label="O2 · the same in a 2x2, cards sized to their own content">
+          <dl className="grid w-full items-start gap-4 md:grid-cols-2">
+            {LOGO_ONLY_TIERS.map((tier) => (
+              <div key={tier.id} className="flex">
+                <LogoCard tier={tier} />
+              </div>
+            ))}
+          </dl>
+        </Labelled>
+      </Group>
+
+      <Group
+        title="Education as a horizontal timeline"
+        note="Three levels left to right, oldest first. Each expands on hover, on keyboard focus, and on click -- hover alone would hide every topic from every phone. The topics are where the concepts pulled out of Skills have landed: Advanced SQL and its four clauses, RBAC, networking, security, CI/CD. The mapping of topic to level is inferred from each level's existing description and needs checking."
+      >
+        <Labelled label="P-mobile · the same component in a 375px iframe  (real breakpoints, tap to expand)">
+          <iframe
+            title="Degree timeline at 375px"
+            src="/lab?only=timeline"
+            width="375"
+            height="520"
+            className="rounded-md border border-line bg-ground"
+          />
+        </Labelled>
+
+        <Labelled label="P · one rule, the spark travels and opens the level it is over">
+          <div className="w-full">
+            <DegreeTimeline levels={PROPOSED_LEVELS} />
+            <div className="mt-12 border-t border-line pt-8">
+              <h3 className="font-mono text-xs tracking-caps text-ink-muted uppercase">
+                Certificates
+              </h3>
+              <ul className="mt-4 grid list-none gap-x-8 sm:grid-cols-3">
+                {certificatesData.map((certificate) => (
+                  <CertificateLink key={certificate.id} certificate={certificate} />
+                ))}
+              </ul>
+            </div>
+          </div>
+        </Labelled>
+      </Group>
+
+      <Group
+        title="Skills, with the last three corrections"
+        note="XAMPP added to the degree tier. ORMs and REST APIs back in the gaps tier -- neither has a logo, which is why that tier is shown both ways below."
+      >
+        <Labelled label="Q · gaps tier mixed — two pills with a logo, two without">
+          <dl className="grid w-full gap-4 lg:grid-cols-3">
+            {CORRECTED_TIERS.map((tier) => (
+              <div
+                key={tier.id}
+                className={`flex ${tier.id === "learning" ? "lg:col-span-3" : ""}`}
+              >
+                <LogoOrBareCard tier={tier} bareGaps={false} />
+              </div>
+            ))}
+          </dl>
+        </Labelled>
+
+        <Labelled label="Q2 · gaps tier deliberately icon-free  (it holds concepts, not tools)">
+          <dl className="grid w-full gap-4 lg:grid-cols-3">
+            {CORRECTED_TIERS.map((tier) => (
+              <div
+                key={tier.id}
+                className={`flex ${tier.id === "learning" ? "lg:col-span-3" : ""}`}
+              >
+                <LogoOrBareCard tier={tier} bareGaps />
+              </div>
+            ))}
+          </dl>
+        </Labelled>
+      </Group>
     </div>
   </div>
 )
+
+// Lab only. One tier card, with the item layout swappable -- that is the whole
+// thing being compared.
+const TierCard = ({ tier, layout }) => (
+  <div className={`w-full ${cardSurface({ accented: tier.id === "learning" })}`}>
+    <dt>
+      <span className="text-lg text-ink">{tier.label}</span>
+      <span className="mt-1 block text-sm text-ink-muted">{tier.note}</span>
+    </dt>
+    {layout === "run" && (
+      <dd className="mt-4 font-mono text-sm tracking-mono text-ink-muted">
+        {tier.items.join(" · ")}
+      </dd>
+    )}
+    {layout === "lines" && (
+      <dd className="mt-4 flex flex-col gap-1.5 font-mono text-sm tracking-mono text-ink-muted">
+        {tier.items.map((item) => (
+          <span key={item}>{item}</span>
+        ))}
+      </dd>
+    )}
+    {layout === "columns" && (
+      <dd className="mt-4 columns-2 gap-x-6 font-mono text-sm tracking-mono text-ink-muted">
+        {tier.items.map((item) => (
+          <span key={item} className="mb-1.5 block break-inside-avoid">
+            {item}
+          </span>
+        ))}
+      </dd>
+    )}
+    {/* Same as "columns", except a short tier stays in one. Three items split
+        two-and-one across two columns reads as a layout accident rather than a
+        decision, and the tier that names the gaps is the one that can least
+        afford to look like an afterthought. */}
+    {layout === "adaptive" && (
+      <dd
+        className={`mt-4 gap-x-6 font-mono text-sm tracking-mono text-ink-muted ${
+          tier.items.length > 4 ? "columns-2" : "columns-1"
+        }`}
+      >
+        {tier.items.map((item) => (
+          <span key={item} className="mb-1.5 block break-inside-avoid">
+            {item}
+          </span>
+        ))}
+      </dd>
+    )}
+    {(layout === "pills" || layout === "pills-sm" || layout === "pills-base") && (
+      <dd className="mt-4 flex flex-wrap gap-2">
+        {tier.items.map((item) => (
+          <span
+            key={item}
+            className={`rounded-full border tracking-mono ${
+              layout === "pills-base"
+                ? "px-4 py-1.5 font-mono text-base"
+                : layout === "pills-sm"
+                  ? "px-3.5 py-1.5 font-mono text-sm"
+                  : "px-3 py-1 font-mono text-xs"
+            } ${
+              tier.id === "learning"
+                ? "border-accent/40 text-accent"
+                : layout === "pills"
+                  ? "border-line text-ink-muted"
+                  : // `border-line` measured 1.2:1 against the card fill --
+                    // no visible edge at all. Sampled through a canvas rather
+                    // than computed, because Tailwind's opacity modifiers emit
+                    // oklab() and a naive parse of that returns nonsense.
+                    // ink-muted at 60% lands just past the 3:1 floor for a
+                    // non-text boundary; the faint fill gives the pill a body
+                    // so the edge is not doing all the work.
+                    "border-ink-muted/60 bg-night-600/30 text-ink-muted"
+            }`}
+          >
+            {item}
+          </span>
+        ))}
+      </dd>
+    )}
+    {layout === "ruled" && (
+      <dd className="mt-4 flex flex-col font-mono text-sm tracking-mono text-ink-muted">
+        {tier.items.map((item, index) => (
+          <span
+            key={item}
+            className={index === 0 ? "py-1.5" : "border-t border-line/60 py-1.5"}
+          >
+            {item}
+          </span>
+        ))}
+      </dd>
+    )}
+  </div>
+)
+
+// Lab only. The academic tier rewritten to single tokens -- compounds split
+// rather than truncated, so "pandas & scikit-learn" becomes two pills instead
+// of one shortened phrase. What it still costs is stated in the group note.
+const SHORT_TIERS = SKILLS.tiers.map((tier) =>
+  tier.id === "academic"
+    ? {
+        ...tier,
+        items: [
+          "Java",
+          "OOP",
+          "Python",
+          "pandas",
+          "scikit-learn",
+          "Advanced SQL",
+          "Azure",
+          "CI/CD",
+          "RBAC",
+          "Networking",
+          "Security",
+        ],
+      }
+    : tier,
+)
+
+// Only products have logos. Concepts -- RBAC, CI/CD, Networking, ORMs, REST API
+// design -- have none, and inventing a generic glyph for them is the failure
+// mode this is meant to expose rather than hide.
+const ITEM_ICONS = {
+  HTML: SiHtml5,
+  CSS: SiCss3,
+  JavaScript: SiJavascript,
+  "Tailwind CSS": SiTailwindcss,
+  PHP: SiPhp,
+  MySQL: SiMysql,
+  React: SiReact,
+  Vite: SiVite,
+  "Node.js": SiNodedotjs,
+  Express: SiExpress,
+  MongoDB: SiMongodb,
+  PostgreSQL: SiPostgresql,
+  Git: SiGit,
+  GSAP: SiGreensock,
+  Java: SiOpenjdk,
+  Python: SiPython,
+  pandas: SiPandas,
+  "scikit-learn": SiScikitlearn,
+  TypeScript: SiTypescript,
+}
+
+const IconPills = ({ tier, withIcons }) => (
+  <dd className="mt-4 flex flex-wrap gap-2">
+    {tier.items.map((item) => {
+      const Icon = ITEM_ICONS[item]
+      const accent = tier.id === "learning"
+      return (
+        <span
+          key={item}
+          className={`inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 font-mono text-sm tracking-mono ${
+            accent
+              ? "border-accent/40 text-accent"
+              : "border-ink-muted/60 bg-night-600/30 text-ink-muted"
+          }`}
+        >
+          {withIcons && Icon && <Icon className="size-3.5 shrink-0" aria-hidden />}
+          {item}
+        </span>
+      )
+    })}
+  </dd>
+)
+
+const ShortCard = ({ tier, withIcons }) => (
+  <div className={`w-full ${cardSurface({ accented: tier.id === "learning" })}`}>
+    <dt>
+      <span className="text-lg text-ink">{tier.label}</span>
+      <span className="mt-1 block text-sm text-ink-muted">{tier.note}</span>
+    </dt>
+    <IconPills tier={tier} withIcons={withIcons} />
+  </div>
+)
+
+// Lab only. What the shortened pills dropped, put back as prose. Each clause
+// exists because a pill lost it: "Advanced SQL" lost its parenthetical, Python
+// lost "for data science", and RBAC lost being spelled out for a reader who
+// does not know the acronym.
+const RESTORED_DETAIL = {
+  academic:
+    "The SQL is views, stored procedures, triggers and transactions; the Python is pandas and scikit-learn for data science; the auth work is role-based access control.",
+}
+
+const DetailCard = ({ tier, place }) => {
+  const detail = RESTORED_DETAIL[tier.id]
+  return (
+    <div className={`w-full ${cardSurface({ accented: tier.id === "learning" })}`}>
+      <dt>
+        <span className="text-lg text-ink">{tier.label}</span>
+        <span className="mt-1 block text-sm text-ink-muted">
+          {tier.note}
+          {detail && place === "note" && ` ${detail}`}
+        </span>
+      </dt>
+      <IconPills tier={tier} withIcons />
+      {detail && place === "under" && (
+        <p className="mt-4 border-t border-line pt-3 text-sm text-ink-muted">{detail}</p>
+      )}
+    </div>
+  )
+}
+
+// Lab only. Every item here is a product with a real logo. The concepts that
+// were sharing these cards -- Advanced SQL and its four clauses, CI/CD, RBAC,
+// Networking, Security, REST API design, ORMs -- are deliberately absent,
+// pending somewhere honest to put them. They are evidence and must not simply
+// vanish; this variant only shows what the tiers look like once they hold one
+// kind of thing.
+const LOGO_ONLY_TIERS = [
+  {
+    id: "comfortable",
+    label: "Comfortable",
+    note: "Reach for these without looking things up",
+    // "SQL" left as a bare pill before. It is the basic SQL, and it is what
+    // MySQL and Oracle were driven with -- so the two engines carry it, and
+    // the word does not need its own logo-less pill in a tier where every
+    // other item has one.
+    items: ["HTML", "CSS", "JavaScript", "Tailwind CSS", "PHP", "MySQL", "Oracle"],
+  },
+  {
+    id: "working",
+    label: "Working in",
+    note: "Used on the projects above, still building fluency",
+    items: ["React", "Vite", "Node.js", "Express", "MongoDB", "PostgreSQL", "Git", "GitHub", "GSAP"],
+  },
+  {
+    id: "academic",
+    label: "From the degree, not from a job",
+    note: "Built and graded, never shipped commercially",
+    // OOP is back inside Java, which is where it belonged -- splitting them
+    // made "OOP" a logo-less pill describing how the item beside it was used.
+    items: ["Java (OOP)", "Python", "pandas", "scikit-learn", "Azure"],
+  },
+  {
+    id: "learning",
+    label: "Learning now",
+    note: "The honest gaps, and what I am working through",
+    items: ["TypeScript", "Next.js"],
+  },
+]
+
+const LOGO_ICONS = {
+  HTML: SiHtml5,
+  CSS: SiCss3,
+  JavaScript: SiJavascript,
+  "Tailwind CSS": SiTailwindcss,
+  PHP: SiPhp,
+  MySQL: SiMysql,
+  Oracle: SiOracle,
+  React: SiReact,
+  Vite: SiVite,
+  "Node.js": SiNodedotjs,
+  Express: SiExpress,
+  MongoDB: SiMongodb,
+  PostgreSQL: SiPostgresql,
+  Git: SiGit,
+  GitHub: SiGithub,
+  GSAP: SiGreensock,
+  "Java (OOP)": SiOpenjdk,
+  Python: SiPython,
+  pandas: SiPandas,
+  "scikit-learn": SiScikitlearn,
+  Azure: VscAzure,
+  TypeScript: SiTypescript,
+  "Next.js": SiNextdotjs,
+}
+
+const LogoCard = ({ tier }) => (
+  <div className={`w-full ${cardSurface({ accented: tier.id === "learning" })}`}>
+    <dt>
+      <span className="text-lg text-ink">{tier.label}</span>
+      <span className="mt-1 block text-sm text-ink-muted">{tier.note}</span>
+    </dt>
+    <dd className="mt-4 flex flex-wrap gap-2">
+      {tier.items.map((item) => {
+        const Icon = LOGO_ICONS[item]
+        const accent = tier.id === "learning"
+        return (
+          <span
+            key={item}
+            className={`inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 font-mono text-sm tracking-mono ${
+              accent
+                ? "border-accent/40 text-accent"
+                : "border-ink-muted/60 bg-night-600/30 text-ink-muted"
+            }`}
+          >
+            <Icon className="size-3.5 shrink-0" aria-hidden />
+            {item}
+          </span>
+        )
+      })}
+    </dd>
+  </div>
+)
+
+// Lab only. PROPOSED topic lists. The first line of each comes straight from
+// the level's existing `description` in constants, which is verified. The rest
+// are the items pulled out of the Skills tiers, placed against the level whose
+// description already covers them -- Advanced SQL against Level 5's "database
+// design", networking and security against Level 4's "computer systems,
+// security", Azure and CI/CD against Level 6's "cloud computing". That mapping
+// is inference from the descriptions, not something read off a transcript, and
+// Slav has to confirm it before it ships.
+const PROPOSED_LEVELS = degreeLevels.map((level) => {
+  const topics = {
+    3: [
+      "Web authoring",
+      "Programming basics",
+      "Databases",
+      "Computer systems",
+      "Networking & systems security",
+      "Collaboration tools",
+    ],
+    2: [
+      "Object-oriented programming in Java",
+      "Database design",
+      "Advanced SQL — views, stored procedures, triggers, transactions",
+      "Human-computer interaction",
+      "System analysis",
+      "Data visualisation",
+      "IT project management",
+    ],
+    1: [
+      "Web application development",
+      "Authentication & role-based access control",
+      "Distributed systems",
+      "Cloud computing on Azure",
+      "CI/CD pipelines",
+      "Data mining with pandas & scikit-learn",
+      "Project management",
+    ],
+  }[level.id]
+  return { ...level, topics }
+})
+
+// Skills, with Slav's last three corrections applied: XAMPP into the degree
+// tier, ORMs and REST APIs back into the gaps tier.
+const CORRECTED_TIERS = LOGO_ONLY_TIERS.map((tier) => {
+  if (tier.id === "academic") {
+    return { ...tier, items: [...tier.items, "XAMPP"] }
+  }
+  if (tier.id === "learning") {
+    return { ...tier, items: ["TypeScript", "Next.js", "ORMs", "REST APIs"] }
+  }
+  return tier
+})
+
+const LogoOrBareCard = ({ tier, bareGaps }) => {
+  const accent = tier.id === "learning"
+  const showIcons = !(accent && bareGaps)
+  return (
+    <div className={`w-full ${cardSurface({ accented: accent })}`}>
+      <dt>
+        <span className="text-lg text-ink">{tier.label}</span>
+        <span className="mt-1 block text-sm text-ink-muted">{tier.note}</span>
+      </dt>
+      <dd className="mt-4 flex flex-wrap gap-2">
+        {tier.items.map((item) => {
+          const Icon = showIcons ? { ...LOGO_ICONS, XAMPP: SiXampp }[item] : null
+          return (
+            <span
+              key={item}
+              className={`inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 font-mono text-sm tracking-mono ${
+                accent
+                  ? "border-accent/40 text-accent"
+                  : "border-ink-muted/60 bg-night-600/30 text-ink-muted"
+              }`}
+            >
+              {Icon && <Icon className="size-3.5 shrink-0" aria-hidden />}
+              {item}
+            </span>
+          )
+        })}
+      </dd>
+    </div>
+  )
+}
 
 const Group = ({ title, note, children }) => (
   <section className="flex flex-col gap-8">
@@ -586,6 +1708,42 @@ const Group = ({ title, note, children }) => (
     </div>
     {children}
   </section>
+)
+
+// Lab only. Four glyphs for four facts, which is the thing being judged.
+const FACT_ICONS = [FaLocationDot, FaLanguage, FaBriefcase, FaRegStar]
+
+const Portrait = () => (
+  <img
+    src={portrait}
+    alt=""
+    width={720}
+    height={900}
+    className="w-full rounded-lg border border-line"
+  />
+)
+
+const Facts = ({ icons = false, cols = 1 }) => (
+  <dl
+    className={
+      cols === 1
+        ? "flex flex-col gap-6"
+        : `grid gap-x-8 gap-y-6 ${cols === 2 ? "grid-cols-2" : "grid-cols-2 sm:grid-cols-4"}`
+    }
+  >
+    {ABOUT.facts.map((fact, index) => {
+      const Icon = FACT_ICONS[index]
+      return (
+        <div key={fact.label} className="border-t border-line pt-4">
+          <dt className="flex items-center gap-2 font-mono text-xs tracking-mono text-ink-muted">
+            {icons && <Icon className="size-3.5 shrink-0" aria-hidden />}
+            {fact.label}
+          </dt>
+          <dd className="mt-1 text-ink">{fact.value}</dd>
+        </div>
+      )
+    })}
+  </dl>
 )
 
 const Labelled = ({ label, children }) => (
