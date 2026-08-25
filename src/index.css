@@ -107,6 +107,13 @@
 
   --container-measure: var(--sf-measure);
   --container-wide: 1440px;
+
+  /* The case study width. `wide` is right for the homepage, which is grids and
+     cards; a case study is prose plus figures and wants to be narrower or the
+     text column floats in a page three times its width. Figures are capped to
+     the same value, so a figure fills the article exactly and nothing needs to
+     break out of anything. */
+  --container-article: 62rem;
 }
 
 @layer base {
@@ -313,8 +320,80 @@
   }
 }
 
+/* The degree timeline borrows the tracks' pointer glow. Same mechanism, same
+   custom property, two differences: the glow is wider and softer -- at the
+   tracks' 120px it read as a torch being shone on a line, where the timeline
+   wants the rule lit from within -- and it is drawn on ONE rule spanning the
+   whole component rather than a segment per level, which is what made it
+   appear over all three levels at once. */
+/* Registering the property is what lets it be interpolated. Undeclared, a
+   custom property is a string to the browser: it swaps at the new value rather
+   than travelling to it. That is why the spark trailed the glow -- the spark
+   had `transition: left`, so it eased, while the gradient read the raw
+   variable and jumped. Both now read one animated value and arrive together. */
+@property --sf-timeline-x {
+  syntax: "<length-percentage>";
+  initial-value: 0%;
+  inherits: true;
+}
+
+@layer components {
+  .sf-timeline {
+    /* Parked just before the start of the line, not at the end of it.
+       Parking on the right was the first attempt and it read badly: pointing
+       at the first level sent the spark sliding the full width of the screen
+       to reach it, which is a long journey to answer a small gesture. From
+       here the first level is the nearest thing to it and the move is short.
+
+       The offset is small enough to sit inside the section's own horizontal
+       padding, so nothing pushes past the viewport on a narrow screen. */
+    --sf-timeline-x: -1.25rem;
+
+    /* The transition lives here, on the element the property is set on, so the
+       spark and the glow both read a value that is already mid-flight. Short
+       enough to feel attached to the pointer, long enough that the glide back
+       to the parked position reads as motion rather than a jump. */
+    transition: --sf-timeline-x 120ms ease-out;
+  }
+
+  .sf-timeline-rule {
+    position: relative;
+  }
+
+  .sf-timeline-rule::after {
+    content: "";
+    position: absolute;
+    inset: -5px 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 220ms;
+    background: radial-gradient(
+      200px 6px at var(--sf-timeline-x),
+      var(--sf-aurora-500),
+      transparent 72%
+    );
+  }
+
+  .sf-timeline[data-tracking="true"] .sf-timeline-rule::after {
+    opacity: 0.5;
+  }
+
+  .sf-timeline-spark {
+    left: var(--sf-timeline-x);
+    /* The spark's own tip sits at x=50 in its viewBox, so half its width lands
+       it on the line rather than beside it. -85% lifts it so the tip touches
+       the rule instead of the body sitting across it. */
+    translate: -50% -85%;
+    /* No transition of its own. It moves because the variable it reads is
+       being interpolated; a second transition on `left` here is what made it
+       lag a frame behind the glow. */
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .sf-track-rule::after {
+  .sf-track-rule::after,
+  .sf-timeline-rule::after,
+  .sf-timeline {
     transition: none;
   }
 }

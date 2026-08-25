@@ -1,4 +1,5 @@
 import { Link } from "react-router"
+import CaseStudyFigure from "../../components/CaseStudyFigure"
 import CaseStudySection from "../../components/CaseStudySection"
 import DeepLinkDiagram from "../../components/diagrams/DeepLinkDiagram"
 import ModuleBoundaryDiagram from "../../components/diagrams/ModuleBoundaryDiagram"
@@ -21,14 +22,41 @@ import { mossCaseStudy as moss } from "../../constants/moss"
  */
 // Named in the data, resolved here. Keeping the mapping in the page is what
 // lets the content file stay free of component imports.
+//
+// The caption sits beside the component rather than in the content file for
+// the same reason: it describes the drawing, and it would go stale the moment
+// the drawing changed if it lived a file away from it. Each states the finding
+// rather than naming the parts -- someone who reads only the figures should
+// still come away with the argument.
 const DIAGRAMS = {
-  moduleBoundary: ModuleBoundaryDiagram,
-  themeOrder: ThemeOrderDiagram,
+  moduleBoundary: {
+    Component: ModuleBoundaryDiagram,
+    caption:
+      "Three components, one API module. The swap to a real database is one file, not a hunt.",
+  },
+  themeOrder: {
+    Component: ThemeOrderDiagram,
+    caption:
+      "Read the theme in an effect and the wrong one paints first. Read it before the paint and it does not.",
+  },
+}
+
+// Figure numbers are the page's, not each section's, so a caption can be cited
+// from anywhere on the page. Declared here rather than counted at render time:
+// two of the four decisions carry a diagram, so an index into `decisions` would
+// number them 1 and 3.
+const FIGURE_NUMBERS = {
+  moduleBoundary: 1,
+  themeOrder: 2,
+  deepLink: 3,
 }
 
 const Moss = () => (
   <article className="px-6 py-24 sm:px-10 lg:px-16">
-    <div className="mx-auto max-w-wide">
+    {/* `wide` is the homepage's width and it is wrong here. A case study is a
+        document -- prose and figures -- and at 1440px the text column sat in a
+        page twice its width with nothing beside it. */}
+    <div className="mx-auto max-w-article">
       <Link
         to="/#projects"
         className="font-mono text-xs tracking-mono text-ink-muted transition-colors duration-150 hover:text-ink"
@@ -77,7 +105,7 @@ const Moss = () => (
 
       <div className="mt-12 flex flex-col gap-6">
         {moss.intro.map((paragraph) => (
-          <p key={paragraph.slice(0, 32)} className="max-w-measure text-lg text-ink-muted">
+          <p key={paragraph.slice(0, 32)} className="mx-auto w-full max-w-measure text-lg text-ink-muted">
             {paragraph}
           </p>
         ))}
@@ -95,7 +123,7 @@ const Moss = () => (
       </dl>
 
       <CaseStudySection title="What it does">
-        <ul className="flex max-w-measure list-none flex-col gap-4">
+        <ul className="mx-auto flex w-full max-w-measure list-none flex-col gap-4">
           {moss.built.map((item) => (
             <li key={item.slice(0, 32)} className="text-lg text-ink-muted">
               {item}
@@ -110,20 +138,34 @@ const Moss = () => (
             decision into a third of the page. */}
         <div className="flex flex-col gap-8">
           {moss.decisions.map((decision, index) => {
-            const Diagram = DIAGRAMS[decision.diagram]
+            const figure = DIAGRAMS[decision.diagram]
             return (
               <div
                 key={decision.heading}
                 className={index === 0 ? "" : "border-t border-line pt-8"}
               >
-                <h3 className="text-lg text-ink">{decision.heading}</h3>
-                <p className="mt-2 max-w-measure text-ink-muted">{decision.body}</p>
+                {/* text-lg matches every other passage on the page; this
+                    block was the only one left at the base size. The heading
+                    moves up with it -- at text-lg it would now be the same
+                    size as the paragraph under it and stop reading as a
+                    heading at all. */}
+                <div className="mx-auto w-full max-w-measure">
+                  <h3 className="text-xl text-ink">{decision.heading}</h3>
+                  <p className="mt-3 text-lg text-ink-muted">{decision.body}</p>
+                </div>
                 {/* Only two of the four decisions carry one. A diagram per
                     section would be decoration; these two are the ones a
-                    picture explains faster than the paragraph does. */}
-                {Diagram && (
-                  <div className="mt-6">
-                    <Diagram />
+                    picture explains faster than the paragraph does.
+
+                    The figure is the one thing wider than the prose. It fills
+                    the article, which is what the caption's width is measured
+                    against and why the labels come out the same size on all
+                    three drawings. */}
+                {figure && (
+                  <div className="mt-8">
+                    <CaseStudyFigure number={FIGURE_NUMBERS[decision.diagram]} caption={figure.caption}>
+                      <figure.Component />
+                    </CaseStudyFigure>
                   </div>
                 )}
               </div>
@@ -133,27 +175,34 @@ const Moss = () => (
       </CaseStudySection>
 
       <CaseStudySection title="How it deploys">
-        <div className="flex max-w-measure flex-col gap-6">
+        <div className="mx-auto flex w-full max-w-measure flex-col gap-6">
           {moss.deployment.map((paragraph) => (
             <p key={paragraph.slice(0, 32)} className="text-lg text-ink-muted">
               {paragraph}
             </p>
           ))}
-          <div className="mt-2">
+        </div>
+        <div className="mt-8">
+          <CaseStudyFigure
+            number={FIGURE_NUMBERS.deepLink}
+            caption="A deep link has no file behind it. Workers returns 404 unless told to serve index.html."
+          >
             <DeepLinkDiagram />
-          </div>
+          </CaseStudyFigure>
         </div>
       </CaseStudySection>
 
       <CaseStudySection title="What is not built">
-        <ul className="flex max-w-measure list-none flex-col gap-4">
-          {moss.notBuilt.map((item) => (
-            <li key={item.slice(0, 32)} className="text-lg text-ink-muted">
-              {item}
-            </li>
-          ))}
-        </ul>
-        <p className="mt-8 max-w-measure text-lg text-ink-muted">{moss.next}</p>
+        <div className="mx-auto w-full max-w-measure">
+          <ul className="flex list-none flex-col gap-4">
+            {moss.notBuilt.map((item) => (
+              <li key={item.slice(0, 32)} className="text-lg text-ink-muted">
+                {item}
+              </li>
+            ))}
+          </ul>
+          <p className="mt-8 text-lg text-ink-muted">{moss.next}</p>
+        </div>
       </CaseStudySection>
     </div>
   </article>
