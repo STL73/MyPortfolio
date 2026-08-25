@@ -58,7 +58,10 @@ const Footer = () => (
                   {isSectionLink(link.link) ? (
                     <SectionLink
                       href={link.link}
-                      className="text-sm text-ink-muted transition-colors duration-150 hover:text-ink"
+                      // Muted to near-white was the old hover and it was too
+                      // small a step to register. Same treatment as the links
+                      // beside it, so the whole column behaves alike.
+                      className="text-sm underline-offset-4 transition-colors duration-150 hover:text-accent hover:underline hover:decoration-accent text-ink-muted"
                     >
                       {link.name}
                     </SectionLink>
@@ -68,7 +71,20 @@ const Footer = () => (
                       {...(link.link.startsWith("http")
                         ? { target: "_blank", rel: "noreferrer noopener" }
                         : {})}
-                      className="text-sm text-ink-muted transition-colors duration-150 hover:text-ink"
+                      // The address is the only thing down here anyone is
+                      // meant to act on, and until now the footer's only
+                      // colour was the 28px mark. One accent, on the one link
+                      // that is a call to action rather than navigation.
+                      //
+                      // Its hover was `aurora-400`, which is the same green
+                      // one step lighter -- 15.47 against 14.94, a difference
+                      // nobody can see. An underline appearing is a change you
+                      // cannot miss, and it costs no layout.
+                      className={`text-sm underline-offset-4 transition-colors duration-150 hover:underline ${
+                        link.link.startsWith("mailto:")
+                          ? "text-accent decoration-accent"
+                          : "text-ink-muted hover:text-accent hover:decoration-accent"
+                      }`}
                     >
                       {link.name}
                     </a>
@@ -110,7 +126,7 @@ const Footer = () => (
 
         <SectionLink
           href="#home"
-          className="font-mono text-xs tracking-mono text-ink-muted transition-colors duration-150 hover:text-ink"
+          className="font-mono text-xs tracking-mono text-ink-muted transition-colors duration-150 hover:text-accent"
         >
           Back to top &#8593;
         </SectionLink>

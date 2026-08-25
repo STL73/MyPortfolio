@@ -33,10 +33,18 @@ const Education = () => {
     className="px-6 py-24 sm:px-10 lg:px-16"
   >
     <div className="mx-auto max-w-wide">
+      {/* The mark takes the accent and the rest of the line does not. The
+          design system names "a single figure" as a sanctioned use, and this
+          is the strongest single figure on the site -- it was rendering in the
+          same muted grey as the year beside it. */}
       <SectionHeading
         id="education-heading"
         title="Education"
-        meta="First Class · 77.7% · 2025"
+        meta={
+          <>
+            First Class &#183; <span className="text-accent">77.7%</span> &#183; 2025
+          </>
+        }
       />
 
       <div className="mt-12 grid gap-12 lg:grid-cols-12 lg:gap-16">
