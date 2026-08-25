@@ -83,7 +83,11 @@ export const careerTracks = [
  */
 export const ABOUT = {
   heading: "How I got here",
-  meta: "BSc (Hons) Computing · First Class, 77.7% · 2025",
+  // No meta. It held "BSc (Hons) Computing · First Class, 77.7% · 2025",
+  // which is Education's fact, stated in Education's own meta, and stated a
+  // third time in the third paragraph below. SectionHeading's rule is that
+  // meta is for counts and dates, never for a claim -- a classification is a
+  // claim, and it belongs to the section that owns it.
   paragraphs: [
     "I spent thirteen years in retail and warehouse management — eight of them running a BILLA store in Bulgaria, and a department at KAUFLAND before that. Running a shop is logistics under time pressure: stock that has to be on the shelf, rotas that have to work, and a floor that opens at seven whether or not last night went to plan.",
     "I started the Computing degree at Arden in 2021 and finished it in 2025 with a First at 77.7%, studying in the evenings without taking time off work. I am still working full time, currently as a warehouse operative at Great Bear in Manchester, and building in the hours around it.",
@@ -124,33 +128,44 @@ export const SKILLS = {
       id: "comfortable",
       label: "Comfortable",
       note: "Reach for these without looking things up",
-      items: ["HTML", "CSS", "JavaScript", "Tailwind CSS", "PHP", "MySQL", "SQL"],
+      // "SQL" used to sit here as its own entry. It is the basic SQL and it is
+      // what MySQL and Oracle were driven with, so the two engines carry it --
+      // and it stops the same word appearing in two tiers, where it read as a
+      // contradiction rather than as two different depths of the same thing.
+      items: ["HTML", "CSS", "JavaScript", "Tailwind CSS", "PHP", "MySQL", "Oracle"],
     },
     {
       id: "working",
       label: "Working in",
       note: "Used on the projects above, still building fluency",
-      items: ["React", "Vite", "Node.js", "Express", "MongoDB", "PostgreSQL", "Git", "GSAP"],
+      items: [
+        "React",
+        "Vite",
+        "Node.js",
+        "Express",
+        "MongoDB",
+        "PostgreSQL",
+        "Git",
+        "GitHub",
+        "GSAP",
+      ],
     },
     {
       id: "academic",
       label: "From the degree, not from a job",
       note: "Built and graded, never shipped commercially",
-      items: [
-        "Java (OOP)",
-        "Python for data science",
-        "pandas & scikit-learn",
-        "Advanced SQL (views, procedures, triggers, transactions)",
-        "Azure deployment with CI/CD",
-        "Authentication & role-based access control",
-        "Networking & systems security",
-      ],
+      // What the degree covered in detail is no longer listed here. Advanced
+      // SQL and its four clauses, role-based access control, networking,
+      // security and CI/CD moved into the Education timeline, against the
+      // level that actually taught them -- which is a better home for them
+      // than a tier that has to state them without saying when or where.
+      items: ["Java (OOP)", "Python", "pandas", "scikit-learn", "Azure", "XAMPP"],
     },
     {
       id: "learning",
       label: "Learning now",
       note: "The honest gaps, and what I am working through",
-      items: ["REST API design", "ORMs", "TypeScript"],
+      items: ["TypeScript", "Next.js", "ORMs", "REST APIs"],
     },
   ],
 }

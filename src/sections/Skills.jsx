@@ -1,5 +1,6 @@
 import SectionHeading from "../components/SectionHeading"
 import { cardSurface } from "../lib/surfaceStyles"
+import { SKILL_ICONS } from "../lib/skillIcons"
 import { useSectionReveal } from "../hooks/useSectionReveal"
 import { SKILLS } from "../constants/index"
 
@@ -15,6 +16,24 @@ import { SKILLS } from "../constants/index"
  * The fourth tier names the gaps. It is the most valuable block on the page:
  * it is what makes the other three tiers credible, and it is the answer to a
  * question an interviewer was going to ask anyway.
+ *
+ * Items are pills with brand marks, which is close to the logo wall this
+ * section replaced and is not the same thing: a marquee gave every logo equal
+ * weight and moved so it could not be read, where these sit inside a named
+ * tier that says how well each is known. The mark is an aid to scanning, not
+ * the claim.
+ *
+ * The gaps tier carries no marks at all. Two of its four -- ORMs and REST APIs
+ * -- are concepts with no logo to carry, and a row where half the pills have a
+ * symbol and half do not reads as broken assets. Dropping them from that tier
+ * entirely turns an inconsistency into a distinction: marks mean tools, no
+ * marks mean things being learned.
+ *
+ * Cards stretch to the row rather than sizing to their content, so the four
+ * end level. That is a deliberate trade and it is not free: the gaps tier holds
+ * four items against the others' six to nine, so it carries the slack. Sized to
+ * content instead, the four cards ended at three different heights and the grid
+ * read as ragged -- which was judged the worse of the two.
  */
 const Skills = () => {
   const scope = useSectionReveal({ stagger: 0.06 })
@@ -42,31 +61,47 @@ const Skills = () => {
           one definition -- the difference between the sections comes from
           content and scale, not from each inventing its own container. */}
       <dl className="mt-12 grid gap-4 md:grid-cols-2">
-        {SKILLS.tiers.map((tier) => (
-          <div key={tier.id} data-reveal className="flex">
-            {/* The gaps tier is the accented one. It is the block that makes
-                the other three believable, so it is the block that should draw
-                the eye -- and it is the only one accented, because emphasis on
-                everything is emphasis on nothing. */}
-            <div
-              className={`w-full ${cardSurface({ accented: tier.id === "learning" })}`}
-            >
-              <dt>
-                <span className="text-lg text-ink">{tier.label}</span>
-                <span className="mt-1 block text-sm text-ink-muted">
-                  {tier.note}
-                </span>
-              </dt>
+        {SKILLS.tiers.map((tier) => {
+          // The gaps tier is the accented one. It is the block that makes the
+          // other three believable, so it is the block that should draw the
+          // eye -- and it is the only one accented, because emphasis on
+          // everything is emphasis on nothing.
+          const isGaps = tier.id === "learning"
+          return (
+            <div key={tier.id} data-reveal className="flex">
+              <div className={`w-full ${cardSurface({ accented: isGaps })}`}>
+                <dt>
+                  <span className="text-lg text-ink">{tier.label}</span>
+                  <span className="mt-1 block text-sm text-ink-muted">
+                    {tier.note}
+                  </span>
+                </dt>
 
-              {/* Mono, and separated by middots rather than set as pills. Pills
-                  read as badges -- eight of them look like eight awards, which
-                  is the opposite of what tiering this list is for. */}
-              <dd className="mt-4 font-mono text-sm tracking-mono text-ink-muted">
-                {tier.items.join(" · ")}
-              </dd>
+                <dd className="mt-4 flex flex-wrap gap-2">
+                  {tier.items.map((item) => {
+                    const Icon = isGaps ? null : SKILL_ICONS[item]
+                    return (
+                      <span
+                        key={item}
+                        className={`inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 font-mono text-sm tracking-mono ${
+                          isGaps
+                            ? "border-accent/40 text-accent"
+                            : // border-line measured 1.2:1 against this fill --
+                              // no visible edge at all. This clears the 3:1
+                              // floor for a non-text boundary.
+                              "border-ink-muted/60 bg-night-600/30 text-ink-muted"
+                        }`}
+                      >
+                        {Icon && <Icon className="size-3.5 shrink-0" aria-hidden />}
+                        {item}
+                      </span>
+                    )
+                  })}
+                </dd>
+              </div>
             </div>
-          </div>
-        ))}
+          )
+        })}
       </dl>
     </div>
   </section>
