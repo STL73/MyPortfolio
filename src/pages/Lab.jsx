@@ -33,6 +33,7 @@ import DeepLinkDiagram from "../components/diagrams/DeepLinkDiagram"
 import ModuleBoundaryDiagram from "../components/diagrams/ModuleBoundaryDiagram"
 import ThemeOrderDiagram from "../components/diagrams/ThemeOrderDiagram"
 import ProjectStatus from "../components/ProjectStatus"
+import SectionHeading from "../components/SectionHeading"
 import { primaryAction, secondaryAction } from "../lib/actionStyles"
 import { cardSurface } from "../lib/surfaceStyles"
 import portrait from "../assets/images/slav-portrait.webp"
@@ -68,6 +69,32 @@ import { mossCaseStudy as moss } from "../constants/moss"
 const only = new URLSearchParams(window.location.search).get("only")
 
 const secondary = projectsData.slice(1)
+
+// Lab only. The three case-study layout variants need a little scaffolding
+// each: a section index for the rail, a margin note per decision, and a pull
+// quote for the sections that have no figure to sit beside them. All three are
+// real sentences from the case study rather than placeholders -- the whole
+// question being judged is whether a layout survives contact with this
+// content, and lorem would answer it wrongly.
+const RAIL_SECTIONS = [
+  "What it does",
+  "Decisions worth explaining",
+  "How it deploys",
+  "What is not built",
+]
+
+const MARGIN_NOTES = [
+  { label: "Swap cost", value: "One file. Every component asks lib/api.js, so the mock catalogue comes out without touching a component." },
+  { label: "Comes free", value: "Shareable, bookmarkable, and the back button undoes the filter instead of leaving the page." },
+]
+
+// Indexed to match the decision it sits beside, not written in reading order
+// -- decision 0 carries a diagram and needs no quote, so slot 0 is never read.
+const PULL_QUOTES = [
+  null,
+  "A filtered view of a shop is a thing people send each other.",
+  "The cart works, remembers itself and totals correctly, and then stops. Nothing takes money.",
+]
 
 // Shared by the four layout variants below so the only thing differing
 // between them is the layout.
@@ -1317,6 +1344,178 @@ const LabPage = () => (
               </div>
             ))}
           </dl>
+        </Labelled>
+      </Group>
+
+      <Group
+        title="Case study layout — filling the frame"
+        note="Measured first: every homepage section leaves 0px of dead space on the right, because every one of them is a multi-column grid. The Moss case study leaves 401px beside a diagram and 801px beside plain text — 55% of the frame — because it is one column. These three fill it differently. Each is built from the real Moss content, so what is being judged is the layout and not a placeholder. All three show the same two sections: 'Decisions worth explaining', the page's longest, and 'What is not built', the page's emptiest."
+      >
+        <Labelled label="A · sticky rail (facts and section index) + document  — CHOSEN, now live on /projects/moss">
+          <div className="w-full">
+            <div className="grid gap-10 lg:grid-cols-12">
+              <div className="lg:col-span-3">
+                <div className="sticky top-24 flex flex-col gap-6">
+                  <div className="flex items-baseline gap-3">
+                    <ProjectStatus status={moss.status} />
+                    <span className="font-mono text-xs tracking-mono text-ink-muted">
+                      {moss.year}
+                    </span>
+                  </div>
+                  <dl className="flex flex-col gap-4">
+                    {moss.figures.map((fact) => (
+                      <div key={fact.label} className="border-t border-line pt-3">
+                        <dt className="font-mono text-xs tracking-mono text-ink-muted">
+                          {fact.label}
+                        </dt>
+                        <dd className="mt-1 text-sm text-ink">{fact.value}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                  <nav className="flex flex-col gap-2 border-t border-line pt-4">
+                    <span className="font-mono text-xs tracking-caps text-ink-muted uppercase">
+                      On this page
+                    </span>
+                    {RAIL_SECTIONS.map((name, index) => (
+                      <span
+                        key={name}
+                        className={`text-sm ${index === 1 ? "text-accent" : "text-ink-muted"}`}
+                      >
+                        {name}
+                      </span>
+                    ))}
+                  </nav>
+                </div>
+              </div>
+
+              <div className="lg:col-span-9">
+                <SectionHeading title="Decisions worth explaining" />
+                <div className="mt-10 flex flex-col gap-12">
+                  {moss.decisions.slice(0, 2).map((decision) => (
+                    <div key={decision.heading}>
+                      <h3 className="text-ink">{decision.heading}</h3>
+                      <p className="mt-3 max-w-measure text-ink-muted">{decision.body}</p>
+                      {decision.diagram === "moduleBoundary" && (
+                        <div className="mt-6">
+                          <CaseStudyFigure number={1} caption="Three components, one API module.">
+                            <ModuleBoundaryDiagram />
+                          </CaseStudyFigure>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-16">
+                  <SectionHeading title="What is not built" />
+                  <ul className="mt-10 flex list-none flex-col gap-4">
+                    {moss.notBuilt.map((item) => (
+                      <li key={item.slice(0, 24)} className="max-w-measure text-ink-muted">
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Labelled>
+
+        <Labelled label="B · margin notes — prose left, the facts pulled out beside the paragraph they belong to">
+          <div className="w-full">
+            <SectionHeading title="Decisions worth explaining" />
+            <div className="mt-10 flex flex-col gap-12">
+              {moss.decisions.slice(0, 2).map((decision, index) => (
+                <div key={decision.heading} className="grid gap-8 lg:grid-cols-12">
+                  <div className="lg:col-span-7">
+                    <h3 className="text-ink">{decision.heading}</h3>
+                    <p className="mt-3 text-ink-muted">{decision.body}</p>
+                  </div>
+                  <aside className="lg:col-span-4 lg:col-start-9">
+                    <div className="border-t border-line pt-3">
+                      <span className="font-mono text-xs tracking-caps text-ink-muted uppercase">
+                        {MARGIN_NOTES[index].label}
+                      </span>
+                      <p className="mt-2 text-sm text-ink-muted">{MARGIN_NOTES[index].value}</p>
+                    </div>
+                  </aside>
+                  {decision.diagram === "moduleBoundary" && (
+                    <div className="lg:col-span-12">
+                      <CaseStudyFigure number={1} caption="Three components, one API module.">
+                        <ModuleBoundaryDiagram />
+                      </CaseStudyFigure>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-16">
+              <SectionHeading title="What is not built" />
+              <div className="mt-10 grid gap-8 lg:grid-cols-12">
+                <ul className="flex list-none flex-col gap-4 lg:col-span-7">
+                  {moss.notBuilt.map((item) => (
+                    <li key={item.slice(0, 24)} className="text-ink-muted">
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+                <aside className="lg:col-span-4 lg:col-start-9">
+                  <div className="border-t border-line pt-3">
+                    <span className="font-mono text-xs tracking-caps text-ink-muted uppercase">
+                      Next
+                    </span>
+                    <p className="mt-2 text-sm text-ink-muted">{moss.next}</p>
+                  </div>
+                </aside>
+              </div>
+            </div>
+          </div>
+        </Labelled>
+
+        <Labelled label="C · two-up — prose left, its figure beside it at the same height">
+          <div className="w-full">
+            <SectionHeading title="Decisions worth explaining" />
+            <div className="mt-10 flex flex-col gap-14">
+              {moss.decisions.slice(0, 2).map((decision, index) => (
+                <div key={decision.heading} className="grid items-start gap-10 lg:grid-cols-12">
+                  <div className="lg:col-span-5">
+                    <h3 className="text-ink">{decision.heading}</h3>
+                    <p className="mt-3 text-ink-muted">{decision.body}</p>
+                  </div>
+                  <div className="lg:col-span-7">
+                    {decision.diagram === "moduleBoundary" ? (
+                      <CaseStudyFigure number={1} caption="Three components, one API module.">
+                        <ModuleBoundaryDiagram />
+                      </CaseStudyFigure>
+                    ) : (
+                      <blockquote className={`${cardSurface()} w-full`}>
+                        <p className="text-lg text-ink">{PULL_QUOTES[index]}</p>
+                      </blockquote>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-16">
+              <SectionHeading title="What is not built" />
+              <div className="mt-10 grid items-start gap-10 lg:grid-cols-12">
+                <ul className="flex list-none flex-col gap-4 lg:col-span-5">
+                  {moss.notBuilt.map((item) => (
+                    <li key={item.slice(0, 24)} className="text-ink-muted">
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+                <div className="lg:col-span-7">
+                  <blockquote className={`${cardSurface()} w-full`}>
+                    <p className="text-lg text-ink">{PULL_QUOTES[2]}</p>
+                  </blockquote>
+                </div>
+              </div>
+            </div>
+          </div>
         </Labelled>
       </Group>
     </div>

@@ -21,8 +21,11 @@ import SectionHeading from "./SectionHeading"
  * was dead space for the whole height of the section -- so every section had a
  * column of nothing down its left side.
  */
-const CaseStudySection = ({ title, meta, children }) => (
-  <section className="mt-20">
+const CaseStudySection = ({ id, title, meta, children }) => (
+  // The id is what the rail's index links to and what its observer watches, so
+  // scroll-margin has to clear the fixed header -- otherwise jumping to a
+  // section parks its heading underneath the nav.
+  <section id={id} className="mt-20 scroll-mt-24">
     <SectionHeading title={title} meta={meta} />
     <div className="mt-10">{children}</div>
   </section>
