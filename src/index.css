@@ -356,6 +356,16 @@
     transition: --sf-timeline-x 120ms ease-out;
   }
 
+  /* One column per level, however many there are. Written as a variable
+     rather than a `md:grid-cols-N` utility because the level count is data:
+     the foundation year turned a three-stop timeline into a four-stop one,
+     and a hardcoded column count would have silently stacked the fourth. */
+  @media (width >= 48rem) {
+    .sf-timeline-track {
+      grid-template-columns: repeat(var(--sf-timeline-count, 3), minmax(0, 1fr));
+    }
+  }
+
   .sf-timeline-rule {
     position: relative;
   }

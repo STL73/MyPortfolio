@@ -197,7 +197,7 @@ export const educationData = [
 ]
 
 /**
- * The three levels of the Arden degree.
+ * The four levels of the Arden degree.
  *
  * Renamed from `experienceData`, which was actively misleading: it reads as
  * employment history and contains none, and the site went years without
@@ -207,6 +207,44 @@ export const educationData = [
  * Ordered newest first. The levels are a real sequence -- Level 6 cannot
  * happen before Level 4 -- which is the one place on this site where ordinal
  * labels carry information rather than decorate a list.
+ *
+ * SOURCED FROM THE ACTUAL COURSEWORK, not from memory and not from the module
+ * titles. Two passes were needed. The first read the transcript this site
+ * already serves at `public/certificates/results.pdf`, which fixed the level
+ * each module belongs to and added Level 3 -- the degree ran 25/10/2021 to
+ * 24/11/2025 and the site claimed "2021 - 2025" while showing only 2022
+ * onward, so a reader who counted lost a year. The second read the submitted
+ * assignments themselves in `D:/My Files/ARDEN`, which is the only thing that
+ * could say what was built inside each module, and it contradicted four
+ * claims that had looked safe:
+ *
+ *   - Web Authoring had NO JavaScript. Eight pages of hand-written HTML and
+ *     CSS, flexbox and media queries. The site had claimed JavaScript.
+ *   - Distributed and Cloud Computing has NO CI/CD. The one mention of CI/CD
+ *     anywhere in four years is a single recommending sentence inside the
+ *     System Analysis report -- a suggestion in a design document, not
+ *     something built. What the module does have is a real Azure
+ *     architecture, which is the stronger claim anyway.
+ *   - Data Analysis and Visualisation was Excel, not Python. Python belongs
+ *     to Data Mining, a year later.
+ *   - Oracle WAS used, and the report is the wrong place to look. Its prose
+ *     is deliberately DBMS-agnostic; the screenshots inside it are not, and
+ *     they show Oracle APEX 22.2.1 for Introduction to Databases and
+ *     phpMyAdmin on MySQL for Advanced Databases. A text search found
+ *     nothing because the evidence was never text.
+ *
+ * The rule this settles: a module title tells you the subject, never the
+ * work -- and a submission is not only its prose. Three passes were needed,
+ * and each tier of evidence looked complete until the next one contradicted
+ * it: transcript, then report text, then the screenshots and source inside
+ * the report.
+ *
+ * Where a line names a technology after an em dash, that is what the
+ * assignment actually used -- a recruiter scanning for "Java" or "Azure"
+ * finds nothing in a list of academic module titles.
+ *
+ * No `description` field any more. The topics replaced it and nothing
+ * rendered both.
  */
 export const degreeLevels = [
   {
@@ -214,27 +252,55 @@ export const degreeLevels = [
     period: "Level 6 (2024-2025)",
     type: "Specialisation",
     title: "Advanced Development & Cloud",
-    institution: "Arden University",
-    description:
-      "Web application development, distributed systems, cloud computing, data mining, and project management.",
+    topics: [
+      "Computing Project \u2014 the Manchester Event Portal: 125 PHP files in MVC, PDO, bcrypt",
+      "Web Application Development \u2014 WorldQuiz: PHP and MySQL, user and admin roles",
+      "Distributed and Cloud Computing \u2014 Azure App Service, MySQL Flexible Server, private VNet",
+      "Data Mining \u2014 Python, pandas and scikit-learn: regression and Random Forest",
+      "Managing Innovation and Change \u2014 IoT in third-party logistics, FMEA risk assessment",
+    ],
   },
   {
     id: 2,
     period: "Level 5 (2023-2024)",
     type: "Core Skills",
     title: "Software Engineering & Data",
-    institution: "Arden University",
-    description:
-      "Object-oriented programming, database design, HCI, system analysis, data visualisation, and IT project management.",
+    topics: [
+      "Object-Oriented Programming \u2014 Java, modelled in UML first",
+      "Advanced Databases \u2014 MySQL: EERD, indexes, views, stored procedures, triggers",
+      "System Analysis and Design \u2014 use cases and data-flow diagrams to level 2",
+      "Data Analysis and Visualisation \u2014 Excel: cleaning, validation, pivots, distributions",
+      "Human Computer Interaction \u2014 personas, prototype, Nielsen heuristics, think-aloud tests",
+      "IT Project Management \u2014 PRINCE2: business case, work breakdown, critical path",
+    ],
   },
   {
     id: 3,
     period: "Level 4 (2022-2023)",
     type: "Foundations",
     title: "Web & Programming Fundamentals",
-    institution: "Arden University",
-    description:
-      "Web authoring, databases, programming basics, computer systems, security, and collaboration tools.",
+    topics: [
+      "Introduction to Web Authoring \u2014 an eight-page site in hand-written HTML and CSS",
+      "Introduction to Programming \u2014 Java, from algorithm to pseudocode to code",
+      "Introduction to Databases \u2014 ERD to third normal form, then SQL in Oracle APEX",
+      "Introduction to Computer Systems and Security \u2014 architecture, network models, threats",
+      "Productivity and Collaboration Tools for Learning and Work",
+      "Introduction to Academic Skills and Professional Development",
+    ],
+  },
+  {
+    id: 4,
+    period: "Level 3 (2021-2022)",
+    type: "Entry",
+    title: "Study Skills & Business Context",
+    topics: [
+      "Using Numeracy, Data and IT \u2014 ratios, percentages, descriptive statistics",
+      "Technology in Organisations \u2014 cloud service models, security and privacy",
+      "The Structure of Business",
+      "Values, Ethics and Working Collaboratively",
+      "Research Skills and Using Information",
+      "Developing Academic Skills",
+    ],
   },
 ]
 
@@ -285,7 +351,7 @@ export const projectsData = [
     year: "2026",
     title: "WorldQuiz",
     description:
-      "A geography quiz built deliberately in vanilla PHP and MySQLi rather than a framework — 46 landmarks, a token economy, server-side progress that survives the session, and role-gated admin dashboards for managing questions and users. Runs locally under XAMPP; not deployed.",
+      "A geography quiz over 46 landmarks, with a token economy, server-side progress that survives the session, and role-gated admin dashboards for managing questions and users. It started as my Level 6 Web Application Development coursework in PHP and MySQL, deployed on the university's hosting. I am rebuilding it now — it already looks nothing like the submitted version, and the stack may not stay the same either.",
     technologies: ["PHP", "MySQLi", "JavaScript", "CSS"],
     image: null,
     status: "wip",
@@ -297,8 +363,8 @@ export const projectsData = [
     year: "2025",
     title: "Manchester Event Portal",
     description:
-      "Final-year Computing project: an events portal with event CRUD, ticketing status, user management, contact handling and an admin statistics dashboard, written in PHP against MySQL. Graded First Class. Repository is private because it is assessed coursework.",
-    technologies: ["PHP", "MySQL", "Tailwind", "XAMPP"],
+      "Final-year project, graded First Class: an events portal for visitors, organisers and admins, each with their own dashboard. 125 PHP files in a strict controller/model/view split, every query a prepared PDO statement, bcrypt at cost 12, and hardened sessions with regeneration and a 30-minute timeout. Favourites, notifications, audit logs, and a scheduled job that emails you before an event you saved. Tested rather than assumed — Lighthouse scores 100 on accessibility, 84 on performance, with zero layout shift.",
+    technologies: ["PHP", "MySQL", "PDO", "Tailwind v4", "PHPMailer"],
     image: null,
     status: "private",
     liveUrl: null,

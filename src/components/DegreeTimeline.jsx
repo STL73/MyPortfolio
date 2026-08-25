@@ -1,7 +1,13 @@
 import { useRef, useState } from "react"
 
 /**
- * The three degree levels, as one horizontal timeline.
+ * The degree levels, as one horizontal timeline.
+ *
+ * Four of them since the transcript was read: the foundation year was missing
+ * from the site while the degree still claimed to start in 2021. The column
+ * count is therefore data, not a layout constant -- it is passed to CSS as
+ * `--sf-timeline-count` rather than written as a `md:grid-cols-3` utility,
+ * which would have quietly stacked the fourth level on top of the third.
  *
  * Ordinal labels earn their keep here in a way they would not anywhere else on
  * this site: Level 6 genuinely cannot precede Level 4, so left-to-right carries
@@ -65,7 +71,7 @@ const DegreeTimeline = ({ levels }) => {
     if (!box) return
     const ratio = Math.min(Math.max((event.clientX - box.left) / box.width, 0), 1)
     root.current.style.setProperty("--sf-timeline-x", `${(ratio * 100).toFixed(2)}%`)
-    // Which third the spark is over. `min` guards the exact right-hand edge,
+    // Which level the spark is over. `min` guards the exact right-hand edge,
     // where ratio is 1 and the floor would index past the last level.
     setActiveIndex(Math.min(Math.floor(ratio * inOrder.length), inOrder.length - 1))
   }
@@ -81,6 +87,7 @@ const DegreeTimeline = ({ levels }) => {
       onPointerMove={handlePointerMove}
       onPointerLeave={handlePointerLeave}
       data-tracking={activeIndex !== null}
+      style={{ "--sf-timeline-count": inOrder.length }}
       className="sf-timeline relative md:pt-10"
     >
       {/* One rule, full width. Horizontal only -- stacked, each level
@@ -100,7 +107,7 @@ const DegreeTimeline = ({ levels }) => {
         <path d="M50 18 Q50 31 61.26 37.5 Q50 31 38.74 37.5 Q50 31 50 18 Z" />
       </svg>
 
-      <ol className="grid list-none md:grid-cols-3">
+      <ol className="sf-timeline-track grid list-none">
         {inOrder.map((level, index) => {
           const isOpen = openId === level.id || activeIndex === index
           return (
@@ -119,6 +126,25 @@ const DegreeTimeline = ({ levels }) => {
                 onClick={() => setOpenId(openId === level.id ? null : level.id)}
                 className="w-full cursor-pointer pt-6 pr-4 pb-6 text-left"
               >
+                {/* Stacked only. The spark is what says "these open" on a wide
+                    screen, and it is hidden below `md` -- which left four
+                    titles on a phone with their modules behind a tap and
+                    nothing at all to suggest the tap existed. A chevron is the
+                    cheapest honest signpost; it rotates rather than swapping
+                    glyph, so nothing reflows. */}
+                <svg
+                  aria-hidden
+                  focusable="false"
+                  viewBox="0 0 10 6"
+                  className={`absolute top-7 right-0 size-2.5 stroke-ink-muted transition-transform duration-300 md:hidden ${
+                    isOpen ? "rotate-180" : ""
+                  }`}
+                  fill="none"
+                  strokeWidth="1.5"
+                >
+                  <path d="M1 1.25 5 4.75 9 1.25" />
+                </svg>
+
                 <span className="block font-mono text-xs tracking-mono text-ink-muted">
                   {level.period}
                 </span>

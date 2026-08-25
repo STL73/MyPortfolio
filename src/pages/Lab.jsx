@@ -77,7 +77,7 @@ const DEEP_LINK_CAPTION =
 // Kept deliberately bare -- the point is to see the component at a phone
 // width, not the lab's chrome around it.
 const IsolatedBlocks = {
-  timeline: () => <DegreeTimeline levels={PROPOSED_LEVELS} />,
+  timeline: () => <DegreeTimeline levels={degreeLevels} />,
 }
 
 const Lab = () => {
@@ -1274,7 +1274,7 @@ const LabPage = () => (
 
         <Labelled label="P · one rule, the spark travels and opens the level it is over">
           <div className="w-full">
-            <DegreeTimeline levels={PROPOSED_LEVELS} />
+            <DegreeTimeline levels={degreeLevels} />
             <div className="mt-12 border-t border-line pt-8">
               <h3 className="font-mono text-xs tracking-caps text-ink-muted uppercase">
                 Certificates
@@ -1617,46 +1617,10 @@ const LogoCard = ({ tier }) => (
   </div>
 )
 
-// Lab only. PROPOSED topic lists. The first line of each comes straight from
-// the level's existing `description` in constants, which is verified. The rest
-// are the items pulled out of the Skills tiers, placed against the level whose
-// description already covers them -- Advanced SQL against Level 5's "database
-// design", networking and security against Level 4's "computer systems,
-// security", Azure and CI/CD against Level 6's "cloud computing". That mapping
-// is inference from the descriptions, not something read off a transcript, and
-// Slav has to confirm it before it ships.
-const PROPOSED_LEVELS = degreeLevels.map((level) => {
-  const topics = {
-    3: [
-      "Web authoring",
-      "Programming basics",
-      "Databases",
-      "Computer systems",
-      "Networking & systems security",
-      "Collaboration tools",
-    ],
-    2: [
-      "Object-oriented programming in Java",
-      "Database design",
-      "Advanced SQL — views, stored procedures, triggers, transactions",
-      "Human-computer interaction",
-      "System analysis",
-      "Data visualisation",
-      "IT project management",
-    ],
-    1: [
-      "Web application development",
-      "Authentication & role-based access control",
-      "Distributed systems",
-      "Cloud computing on Azure",
-      "CI/CD pipelines",
-      "Data mining with pandas & scikit-learn",
-      "Project management",
-    ],
-  }[level.id]
-  return { ...level, topics }
-})
-
+// The proposed topic lists that lived here are gone. They were inferred from
+// each level's prose description and had to be confirmed before shipping; the
+// transcript at `public/certificates/results.pdf` confirmed them, corrected two
+// facts and added a fourth level, and they now live in `degreeLevels` itself.
 // Skills, with Slav's last three corrections applied: XAMPP into the degree
 // tier, ORMs and REST APIs back into the gaps tier.
 const CORRECTED_TIERS = LOGO_ONLY_TIERS.map((tier) => {
