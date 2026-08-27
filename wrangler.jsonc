@@ -1,0 +1,45 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+
+	// Must match the Worker in the Cloudflare dashboard exactly. This one
+	// already exists -- it has served the placeholder holding page on
+	// spireforge.co.uk since 2026-05-18 -- and the custom domain is already
+	// attached to it. Deploying here takes the domain over in place, with no
+	// DNS change and no window where the domain points at nothing. Workers
+	// Builds fails the build outright if this name and the connected Worker
+	// differ, rather than quietly deploying over the wrong one.
+	"name": "spireforge",
+
+	// The date whose Workers runtime behaviour this deploy is pinned to.
+	// Raising it opts into later runtime changes; leaving it alone means a
+	// future Cloudflare release cannot change how this site behaves.
+	"compatibility_date": "2026-08-27",
+
+	"assets": {
+		// Relative to this file, which sits at the repo root -- the Workers
+		// Builds root directory. `npm run build` writes here.
+		"directory": "./dist",
+
+		// The whole reason this file exists. This is a single-page app: only
+		// index.html exists on disk, and /projects/moss is drawn by React
+		// Router in the browser. Without this line, typing that URL into the
+		// address bar -- or reloading it, or following a shared link --
+		// returns a 404, because there is no file at that path. Verified on
+		// the live domain before this deploy: /projects/moss returned 404
+		// while the root returned 200.
+		//
+		// Cloudflare Pages inferred this from the absence of a top-level
+		// 404.html. Workers static assets does not infer it; it has to be
+		// said. `public/_redirects` was the Pages mechanism and is replaced by
+		// this, not complemented by it.
+		"not_found_handling": "single-page-application"
+	},
+
+	// There is no `main`. This Worker serves static assets and nothing else --
+	// the site has no backend, and the contact form posts straight to
+	// Formspree from the browser.
+
+	"observability": {
+		"enabled": true
+	}
+}

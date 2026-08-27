@@ -5,7 +5,7 @@ that carries the whole story in one scroll, plus one project case study.
 
 ---
 
-> **Status: redesigned, builds clean, not deployed.**
+> **Status: redesigned, builds clean, deploying to `spireforge.co.uk` as a Cloudflare Worker.**
 >
 > As of 24 August 2026 the site is rebuilt against the [Spireforge design system](DESIGN.md), which
 > is copied into this repository as the contract it builds to. The retired STL Media identity is
@@ -81,18 +81,37 @@ form renders as email-only.
 
 ## Deploying
 
-**Not done yet, and the plan changed.** `vite.config.js` now sets `base: "/"` and every URL points
-at `spireforge.co.uk`, so the site is ready for a root domain.
+**Cloudflare Worker serving static assets, built by Workers Builds from this repo.** Not Pages:
+Cloudflare no longer creates Pages projects from the dashboard, and the sibling
+[Moss](https://github.com/STL73/Moss) project already deploys this way.
 
-The intended target was Cloudflare Pages, and `public/_redirects` was added for SPA routing. That is
-probably wrong: Cloudflare no longer creates Pages projects from the dashboard, and the sibling
-[Moss](https://github.com/STL73/Moss) project deploys as a **Worker serving static assets** instead.
-That route needs a `wrangler.jsonc` with `not_found_handling: "single-page-application"` — without
-it every deep link 404s while in-app navigation works, which passes a casual smoke test and breaks
-every shared link. It also needs a pinned Node version, because Cloudflare's builder still defaults
-to 18.
+Configured by [`wrangler.jsonc`](wrangler.jsonc). Two lines in it are load-bearing:
 
-`_redirects` stays until that switch is made rather than leaving nothing in place.
+- `not_found_handling: "single-page-application"` — without it every deep link 404s while in-app
+  navigation works, which passes a casual smoke test and breaks every shared link. Confirmed against
+  the live domain before the switch: `/projects/moss` returned 404 while `/` returned 200.
+- `name: "spireforge"` — the Worker that has served the placeholder holding page since May 2026, and
+  the one the custom domain is already attached to. Deploying into it takes the domain over in place,
+  with no DNS change and no window where the domain resolves to nothing.
+
+`.node-version` pins Node 22. Cloudflare's builder still defaults to 18 and Vite 7 needs 20.19+, so
+without the pin the build fails rather than degrades.
+
+`VITE_FORMSPREE_ID` must be set as a build variable in the Workers Builds settings. It is not a
+secret, but the build inlines it, so an unset value ships a contact form that renders as email-only.
+
+`public/_redirects` was the Cloudflare **Pages** mechanism for the same job and is replaced by
+`not_found_handling`, not complemented by it.
+
+### Two files in `public/` that exist only for the old placeholder site
+
+Both were live on `spireforge.co.uk` before this site took the domain, and both are referenced from
+outside this repo, so removing them breaks things nothing in this codebase mentions:
+
+| File | Why it must stay |
+| --- | --- |
+| `sig-mark.png` | **Hot-linked by the email signature** (`MY-BRAND/OUTPUTS/05-EMAIL-AND-DOCS/`), which points at `https://spireforge.co.uk/sig-mark.png`. Every email already sent renders a broken image the moment it 404s. |
+| `og-card.png` | The placeholder's link-preview image. Anything shared to LinkedIn or X before the switch cached this URL. This site's own card is `og-image.png`; the old file is kept so existing shares keep resolving. Removable once nothing links to the old previews. |
 
 ## Known gaps
 
