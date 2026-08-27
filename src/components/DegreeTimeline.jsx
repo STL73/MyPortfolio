@@ -57,6 +57,10 @@ const DegreeTimeline = ({ levels }) => {
   // Pinned open by click or keyboard -- the interactions the pointer cannot
   // express. Kept separate from the hover index so a click survives the
   // pointer moving away.
+  //
+  // This is now the ONLY thing that opens a panel besides hover. It used to
+  // share the job with a `group-focus-within` class, and the two disagreed:
+  // see `handleFocus`.
   const [openId, setOpenId] = useState(null)
   // Which level the spark is currently over, or null when it is parked.
   const [activeIndex, setActiveIndex] = useState(null)
@@ -67,6 +71,14 @@ const DegreeTimeline = ({ levels }) => {
   const inOrder = [...levels].reverse()
 
   const handlePointerMove = (event) => {
+    // A tap is not a hover. Touch fires `pointermove`, and below `md` the
+    // levels are stacked -- so mapping x to a level index, which is the whole
+    // point of this handler, means nothing there. Measured on a 327px stacked
+    // component: a touch move at 90% of the width opened level 4 whatever was
+    // actually under the finger. The spark this positions is hidden below `md`
+    // anyway, so on touch there is nothing here worth tracking.
+    if (event.pointerType === "touch") return
+
     const box = root.current?.getBoundingClientRect()
     if (!box) return
     const ratio = Math.min(Math.max((event.clientX - box.left) / box.width, 0), 1)
@@ -74,6 +86,24 @@ const DegreeTimeline = ({ levels }) => {
     // Which level the spark is over. `min` guards the exact right-hand edge,
     // where ratio is 1 and the floor would index past the last level.
     setActiveIndex(Math.min(Math.floor(ratio * inOrder.length), inOrder.length - 1))
+  }
+
+  // Keyboard focus reveals a level. A click must not.
+  //
+  // This replaces a `group-focus-within:grid-rows-[1fr]` class that was a real
+  // bug. A click focuses the button, so the panel was held open by focus no
+  // matter what the state said: clicking a second time flipped `openId` and
+  // rotated the chevron, but the content stayed put, and `aria-expanded` went
+  // to `false` while the panel was still on screen -- the button telling a
+  // screen reader the opposite of what a sighted user could see. Only clicking
+  // a *different* level moved focus away and collapsed the first.
+  //
+  // `:focus-visible` is the distinction that fixes it. Browsers do not apply it
+  // to a button focused by pointer, so this fires on Tab and stays out of the
+  // way of a click -- which leaves `isOpen` as the single source of truth for
+  // whether a panel is open.
+  const handleFocus = (event, id) => {
+    if (event.target.matches(":focus-visible")) setOpenId(id)
   }
 
   const handlePointerLeave = () => {
@@ -111,7 +141,7 @@ const DegreeTimeline = ({ levels }) => {
         {inOrder.map((level, index) => {
           const isOpen = openId === level.id || activeIndex === index
           return (
-            <li key={level.id} className="group relative border-t border-line md:border-t-0">
+            <li key={level.id} className="relative border-t border-line md:border-t-0">
               {/* A stop on the line, marking where each level begins. Quiet --
                   the accent on this component is the spark, and a row of
                   aurora dots underneath it would be competing with it. */}
@@ -124,6 +154,7 @@ const DegreeTimeline = ({ levels }) => {
                 type="button"
                 aria-expanded={isOpen}
                 onClick={() => setOpenId(openId === level.id ? null : level.id)}
+                onFocus={(event) => handleFocus(event, level.id)}
                 className="w-full cursor-pointer pt-6 pr-4 pb-6 text-left"
               >
                 {/* Stacked only. The spark is what says "these open" on a wide
@@ -164,7 +195,7 @@ const DegreeTimeline = ({ levels }) => {
                     separate blocks on this site. */}
                 <span
                   data-open={isOpen}
-                  className="mt-4 grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-out group-focus-within:grid-rows-[1fr] data-[open=true]:grid-rows-[1fr] motion-reduce:transition-none"
+                  className="mt-4 grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-out data-[open=true]:grid-rows-[1fr] motion-reduce:transition-none"
                 >
                   <span className="min-h-0 overflow-hidden">
                     <span className="flex flex-col gap-1.5 pb-1 text-sm text-ink-muted">
