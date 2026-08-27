@@ -86,7 +86,16 @@ const Moss = () => (
           <CaseStudyRail figures={moss.figures} sections={SECTIONS} />
         </div>
 
-        <div className="order-1 lg:order-2 lg:col-span-9">
+        {/* `min-w-0` is load-bearing, not tidying. A grid item's automatic
+            minimum size is its content, so the moment the figures inside were
+            given a 48rem floor this column grew to fit them and took the page
+            with it -- measured 467px of horizontal overflow on a phone, with
+            the diagram happily not scrolling because its scroll container had
+            been handed all the width it asked for. Zeroing the minimum lets
+            the column stay at its track width and puts the overflow back
+            inside `CaseStudyFigure`, which is the only place equipped to
+            scroll it. */}
+        <div className="order-1 min-w-0 lg:order-2 lg:col-span-9">
           {/* The header sits in the document column, not across the frame, so
               the rail starts level with the title instead of a block below it.
               Two-up inside that: the name and what it is on the left, the two
@@ -130,13 +139,21 @@ const Moss = () => (
                   Stretched, a 323px "Source" button claimed the same weight as
                   the sentence beside it; sized to content the two came out
                   ragged against each other. One width for both, text centred,
-                  is the only version where they read as a pair. */}
+                  is the only version where they read as a pair.
+
+                  That width is now `w-48` at every breakpoint. It used to be
+                  `w-full sm:w-48`, which meant the same argument was made on a
+                  laptop and abandoned on a phone: measured at 375px both
+                  buttons came out 327px edge to edge, so a secondary "Source"
+                  link carried the full width of the page and read as the
+                  primary action. 192px is wide enough for the longest label
+                  and narrow enough that the pair still looks like a pair. */}
               <div className="flex flex-col items-start gap-3 sm:col-span-4 sm:items-end sm:justify-end">
                 <a
                   href={moss.liveUrl}
                   target="_blank"
                   rel="noreferrer noopener"
-                  className={`${primaryAction("sm")} w-full text-center sm:w-48`}
+                  className={`${primaryAction("sm")} w-48 text-center`}
                 >
                   Visit the site &#8594;
                 </a>
@@ -144,7 +161,7 @@ const Moss = () => (
                   href={moss.githubUrl}
                   target="_blank"
                   rel="noreferrer noopener"
-                  className={`${secondaryAction("sm")} w-full text-center sm:w-48`}
+                  className={`${secondaryAction("sm")} w-48 text-center`}
                 >
                   Source &#8594;
                 </a>
