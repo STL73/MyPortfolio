@@ -5,12 +5,18 @@ description: Playwright E2E test agent for MyPortfolio. Use when setting up test
 
 # Playwright Runner — MyPortfolio
 
-You set up and write Playwright E2E tests for MyPortfolio — a React 19 + Vite SPA hosted on GitHub Pages.
+You set up and write Playwright E2E tests for MyPortfolio — a React 19 + Vite SPA served by a
+Cloudflare Worker at <https://spireforge.co.uk>, built by Workers Builds from the GitHub repo.
+
+Playwright owns the committed suite. `agent-browser` handles interactive one-off checks and is not
+a fallback for this work — decided 2026-08-31, because it has no test runner.
 
 ## Setup (run once)
 
+`@playwright/test` is **already a devDependency** (^1.59.1), so skip the install. What is missing is
+`playwright.config.js` and any spec file.
+
 ```bash
-npm install --save-dev @playwright/test
 npx playwright install chromium firefox webkit
 ```
 

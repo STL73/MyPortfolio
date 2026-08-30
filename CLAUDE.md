@@ -49,7 +49,10 @@ across, never hand-edit them here. Nothing of the STL Media identity remains.
 - Backend: none
 - Database: none
 - Auth: none
-- Testing: `@playwright/test` **is installed** (^1.59.1) but no test file has been written yet.
+- Testing: **Playwright** for committed specs, **`agent-browser`** for interactive one-off browser
+  checks. Neither is the other's fallback — decided 2026-08-31, because `agent-browser` has no test
+  runner. `@playwright/test` **is installed** (^1.59.1) but no spec file or config exists yet. See
+  [testing.md](.claude/rules/testing.md).
   *This line previously said "none installed yet"; checked against `package.json` 2026-08-24.*
 - Deployment: **not deployed**, but ready for a root domain — `base` is `"/"` as of 2026-08-24 and
   every URL points at `spireforge.co.uk`. Target is a **Cloudflare Worker serving static assets**,
