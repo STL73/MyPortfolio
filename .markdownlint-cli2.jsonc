@@ -8,9 +8,13 @@
   // `npx markdownlint-cli2 "**/*.md"` ended up linting all of node_modules.
   //
   // Added 2026-08-31.
+  // `**/`-prefixed so they match at any depth. A bare `node_modules/**` only
+  // matches a root-level folder; in the moss monorepo that silently let 20,334
+  // errors through from client/ and server/. This repo has only a root
+  // node_modules today, so the prefix is insurance rather than a fix.
   "ignores": [
-    "node_modules/**",
-    "dist/**",
-    "graphify-out/**"
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/graphify-out/**"
   ]
 }
