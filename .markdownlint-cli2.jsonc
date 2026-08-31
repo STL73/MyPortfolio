@@ -1,0 +1,16 @@
+{
+  // Runner config for markdownlint-cli2, separate from .markdownlint.jsonc.
+  //
+  // The split is not cosmetic. `.markdownlint.jsonc` holds RULES and is what
+  // the VS Code DavidAnson.vscode-markdownlint extension reads. `ignores` and
+  // `globs` are RUNNER options and only take effect here — put them in
+  // .markdownlint.jsonc and they are silently discarded, which is how
+  // `npx markdownlint-cli2 "**/*.md"` ended up linting all of node_modules.
+  //
+  // Added 2026-08-31.
+  "ignores": [
+    "node_modules/**",
+    "dist/**",
+    "graphify-out/**"
+  ]
+}

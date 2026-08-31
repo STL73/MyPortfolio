@@ -1,65 +1,62 @@
 ---
 name: deploy-helper
-description: GitHub Pages deployment assistant for MyPortfolio. Use when preparing a deployment or diagnosing a broken production build.
+description: Post-deploy verification and Workers Builds failure diagnosis for MyPortfolio. Use after a push to main, or when a Cloudflare build fails.
 ---
 
 # Deploy Helper — MyPortfolio
 
-You guide the deployment process for MyPortfolio. Current host is GitHub Pages. Vercel is the recommended upgrade path when custom domain or SSR is needed.
+The site is live at <https://spireforge.co.uk>, served by the Cloudflare Worker `spireforge` and
+rebuilt by Workers Builds on every push to `main`. **There is no manual deploy step.** Pushing is
+deploying, so your job is what happens either side of that: checking the result, and reading a
+failed build.
 
-## Critical Config Facts
+> [!important] Config values live in one place
+> Every setting — Worker name, `not_found_handling`, `directory`, the Node pin, `VITE_FORMSPREE_ID` —
+> is documented in [deployment.md](../rules/deployment.md). **Read it, do not restate it here.**
+> This file duplicated those values until 2026-08-31 and drifted four days behind a host change,
+> ending up telling people to set `base` back to `/my-portfolio/`, which would have broken the live
+> site. One source, or this happens again.
 
-- **Vite base path:** Must stay `base: '/my-portfolio/'` in `vite.config.js` for GitHub Pages.
-- **404.html:** Already present in `/public/` — handles SPA client-side routing on GitHub Pages. Do not remove it.
-- **dist/ is git-ignored** — never commit the dist folder.
-- **Resume and certificates** live in `/public/resume/` and `/public/certificates/` — they must be present in the build output. Verify after every build.
+## After a deploy
 
-## GitHub Pages Deployment Checklist
+Run these against the live URL, not against a local preview.
 
-Before every deployment:
-
-1. [ ] `npm run build` completes without errors
-2. [ ] `dist/` folder exists and contains `index.html`
-3. [ ] `dist/resume/` and `dist/certificates/` are present
-4. [ ] `dist/404.html` is present (copied from `/public/`)
-5. [ ] All lazy-loaded chunks are in `dist/assets/`
-6. [ ] No `.env` files or secrets in the build output
-7. [ ] `vite.config.js` base path is `/my-portfolio/` (not `/`)
-
-## Deployment Steps (gh-pages branch method)
+1. **A deep link returns 200.** Request `https://spireforge.co.uk/projects/moss` directly.
+   `deployment.md` is emphatic about this: in-app navigation works even when the SPA fallback is
+   broken, so clicking through from the homepage proves nothing.
+2. **The CV downloads as a real PDF**, not an HTML error page wearing a `.pdf` name. Check the
+   content type, not just the status.
+3. **`/sig-mark.png` and `/og-card.png` still resolve.** Neither is referenced by this codebase, both
+   are linked from outside it — the email signature and cached link previews. `deployment.md`
+   forbids deleting them.
+4. **Assets load.** No 404s on the hashed files under `/assets/`.
 
 ```bash
-# 1. Build
-npm run build
-
-# 2. Deploy to gh-pages branch using gh-pages package
-# (Install once: npm install --save-dev gh-pages)
-npx gh-pages -d dist
-
-# 3. Verify live URL
-# https://slavlambov.github.io/my-portfolio/
+curl -s -o /dev/null -w "%{http_code} %{content_type}\n" https://spireforge.co.uk/projects/moss
+curl -s -o /dev/null -w "%{http_code} %{content_type}\n" https://spireforge.co.uk/sig-mark.png
 ```
 
-## Diagnosing a Broken Deployment
+For anything interactive beyond a status code, use `agent-browser`. For a check that should still
+run next month, write it as a Playwright spec — see [testing.md](../rules/testing.md).
 
-| Symptom | Likely Cause | Fix |
-|---------|-------------|-----|
-| Blank page / white screen | Wrong base path in vite.config.js | Set `base: '/my-portfolio/'` |
-| 404 on direct URL access | 404.html missing from dist | Verify `/public/404.html` exists |
-| Assets 404 (CSS/JS not loading) | Base path mismatch | Check vite.config.js base |
-| Resume link broken | `/public/resume/` not copied | Check file exists in `/public/resume/` |
-| Old version still showing | GitHub Pages CDN cache | Hard refresh or wait 5–10 mins |
+## When a Workers Builds run fails
 
-## Vercel Migration Path (future)
+| Symptom | Likely cause | Where the fix is documented |
+| --- | --- | --- |
+| Build fails on a Vite or Node version error | Cloudflare's builder defaults to Node 18; Vite 7 needs 20.19+ | The `.node-version` pin, `deployment.md` |
+| Build fails immediately, name mismatch | Worker name in `wrangler.jsonc` must match the dashboard exactly | `deployment.md` |
+| Deploys, but every deep link 404s | `not_found_handling` missing | `deployment.md` |
+| Contact form renders as email-only | `VITE_FORMSPREE_ID` unset; it is inlined at build time | `deployment.md`, Workers Builds env vars |
 
-When ready to move off GitHub Pages:
+## Still true regardless of host
 
-1. Create Vercel account and connect GitHub repo
-2. Change `base` in `vite.config.js` from `/my-portfolio/` to `/`
-3. Add `vercel.json` with SPA rewrite rule:
-   ```json
-   { "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }] }
-   ```
-4. Delete `public/404.html` (not needed on Vercel)
-5. Set custom domain in Vercel dashboard if applicable
-6. Update `og:url` and canonical link in `index.html` to new domain
+- **`dist/` is git-ignored.** Never commit it.
+- **`/public/resume/` and `/public/certificates/` must survive into the build output.** Verify after
+  a build; they are the point of the site.
+
+## Do not
+
+- Do not add `public/_redirects`. It is the Cloudflare **Pages** mechanism, does nothing on a Worker,
+  and was removed deliberately.
+- Do not change `base` in `vite.config.js`. It is `"/"` because the site serves from a root domain.
+- Do not add `public/404.html`. The Worker's `not_found_handling` does that job.

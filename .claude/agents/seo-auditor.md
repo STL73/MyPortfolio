@@ -15,7 +15,8 @@ Check for:
 - `<title>` — specific, under 60 chars, includes name + role (e.g. "Slav Lambov — Frontend Developer")
 - `<meta name="description">` — 120–160 chars, includes location, skills, target audience
 - `<meta name="keywords">` — optional but check if present and relevant
-- `<link rel="canonical">` — should point to the live GitHub Pages URL
+- `<link rel="canonical">` — must point to `https://spireforge.co.uk`, the live Cloudflare Worker
+  URL. *Said "the live GitHub Pages URL" until 2026-08-31; the site has never been on Pages.*
 - `<html lang="en">` — must be present
 
 ### 2. Open Graph Tags
@@ -47,7 +48,10 @@ Flag potential issues:
 Check for:
 - `robots.txt` in `/public` — should allow all crawlers
 - `sitemap.xml` in `/public` — optional but recommended
-- `404.html` configured correctly for GitHub Pages SPA routing (already exists — verify it's correct)
+- SPA deep links resolve. There is **no `404.html`** and there should not be: the Worker's
+  `not_found_handling: "single-page-application"` does that job. Verify by requesting a deep link
+  directly, not by clicking through. *This line described a GitHub Pages `404.html` until
+  2026-08-31; no such file exists.*
 - No `noindex` meta tag accidentally present
 
 ### 6. Portfolio-Specific Signals

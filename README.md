@@ -115,12 +115,18 @@ outside this repo, so removing them breaks things nothing in this codebase menti
 
 ## Known gaps
 
-Measured on 24 August 2026.
+Measured on 24 August 2026, rechecked 31 August 2026.
 
-- **Not deployed.** `spireforge.co.uk` still serves the Spireforge placeholder page.
-- **No `og:image`.** The old one was an SVG in the retired palette quoting a dead URL, and X,
-  Facebook and LinkedIn do not render SVG, so no preview card has ever worked. A 1200×630 PNG
-  replaces it once the headline copy is settled.
+Two gaps listed here have since closed, and are recorded rather than deleted so the dates stay
+readable:
+
+- ~~**Not deployed.**~~ **Live since 27 August 2026** at <https://spireforge.co.uk>, served by the
+  Cloudflare Worker `spireforge`. Verified by a 200 on the live URL.
+- ~~**No `og:image`.**~~ **Shipped.** `public/og-image.png`, 1200×630 PNG, declared in `index.html`
+  with matching `og:image:width` and `og:image:height`, and `canonical` agrees with `og:url`.
+
+Still open:
+
 - **Motion stops at the hero.** The hero has one orchestrated page-load sequence built inside
   `gsap.matchMedia`. Nothing else animates. That is deliberate for now — a considered pass beats
   scattered scroll reveals — but it is unfinished.

@@ -9,7 +9,7 @@ decision.
 Decided 2026-08-31. Neither is the other's fallback.
 
 | Job | Tool |
-|---|---|
+| --- | --- |
 | Committed and repeatable: spec files, assertions, fixtures, retries, trace viewer, CI | Playwright |
 | Interactive and one-off: check a deep link, read console errors, screenshot, Core Web Vitals, diff against a baseline | `agent-browser` |
 

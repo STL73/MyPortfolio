@@ -32,7 +32,7 @@ Skills are invoked via the Skill tool: e.g. `/frontend-patterns` or `/seo`.
 
 | Skill | Invoke When |
 |-------|------------|
-| `deployment-patterns` | Designing CI/CD pipeline — GitHub Actions → Vercel or GitHub Pages |
+| `deployment-patterns` | Changing how the site builds or ships. Current pipeline is push to `main` → Cloudflare Workers Builds → the `spireforge` Worker |
 
 ---
 

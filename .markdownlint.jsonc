@@ -1,0 +1,41 @@
+{
+  // Markdown lint rules for this repo.
+  //
+  // Deliberately self-contained rather than `"extends"` of the machine-global
+  // config at C:\Users\slavi\.markdownlint.jsonc. This repo is public: an
+  // absolute path into a home directory would break on clone and leak the
+  // path. Keep the two in sync by hand; they are short.
+  //
+  // It lives at the repo root because markdownlint-cli2 walks up from each
+  // linted file but stops at the working directory. A config above the repo
+  // is therefore only found when you run from above the repo, which is not
+  // how anyone runs it. Added 2026-08-31.
+
+  "default": true,
+
+  // Line length: not enforced. Prose wraps naturally, tables are wide, and
+  // long URLs break the rule without any benefit.
+  "MD013": false,
+
+  // Inline HTML: allowed. <details>, <br>, <kbd> and friends earn their place
+  // in a README.
+  "MD033": false,
+
+  // Duplicate headings: only flag siblings at the same level. "Setup" under
+  // two different sections is fine.
+  "MD024": { "siblings_only": true },
+
+  // Trailing punctuation in headings: keep the default set minus "?", since
+  // question-style headings are a legitimate documentation pattern.
+  "MD026": { "punctuation": ".,;:!" },
+
+  // First-line H1: Claude Code agent and skill files use YAML frontmatter
+  // with a `description:` as their title, not a `# Heading`.
+  "MD041": { "front_matter_title": "^\\s*(title|description)\\s*[:=]" }
+
+  // No `ignores` key here on purpose. `ignores` is a markdownlint-cli2 RUNNER
+  // option, not a rules option, and is silently discarded from this file.
+  // It lives in .markdownlint-cli2.jsonc beside this one. Tested 2026-08-31:
+  // with `ignores` here, `markdownlint-cli2 "**/*.md"` linted every file in
+  // node_modules.
+}

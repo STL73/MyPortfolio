@@ -54,11 +54,13 @@ across, never hand-edit them here. Nothing of the STL Media identity remains.
   runner. `@playwright/test` **is installed** (^1.59.1) but no spec file or config exists yet. See
   [testing.md](.claude/rules/testing.md).
   *This line previously said "none installed yet"; checked against `package.json` 2026-08-24.*
-- Deployment: **not deployed**, but ready for a root domain — `base` is `"/"` as of 2026-08-24 and
-  every URL points at `spireforge.co.uk`. Target is a **Cloudflare Worker serving static assets**,
-  following `Moss`, *not* Pages: Cloudflare no longer creates Pages projects from the dashboard, and
-  a Worker needs `not_found_handling: "single-page-application"` in `wrangler.jsonc` or every deep
-  link 404s. `public/_redirects` is the Pages mechanism and stays only until that switch is made.
+- Deployment: **live at <https://spireforge.co.uk> since 2026-08-27**, served by the Cloudflare
+  Worker `spireforge` and rebuilt by Workers Builds on every push to `main`. `base` is `"/"`,
+  `wrangler.jsonc` carries `not_found_handling: "single-page-application"`, and `public/_redirects`
+  has been removed. Config detail and the post-deploy checks live in
+  [deployment.md](.claude/rules/deployment.md) — do not restate values here.
+  *This line said "**not deployed**" until 2026-08-31, four days after it went live. Verified
+  against a 200 from the live URL, `vite.config.js` and `wrangler.jsonc`.*
 - Package manager: npm
 
 ---
@@ -127,5 +129,6 @@ Connected at account level — no `.mcp.json` config needed:
 | **Figma** | Pull design mockups directly into component code |
 | **21st Magic** | Generate React UI components from a prompt |
 | **Context7** | Live docs for React 19, GSAP 3, Tailwind v4 — **avoids outdated API usage from training data** |
-| **Vercel** | Deployment workflow when moving off GitHub Pages |
+| **Cloudflare** | The live host. Worker `spireforge`, D1/KV/R2 if the site ever needs state |
+| **Vercel** | Not used. This site was never on Vercel and is not moving there |
 | **GitHub** | Already configured in `.mcp.json` — PR, issues, branch management |
