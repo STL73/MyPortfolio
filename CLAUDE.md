@@ -36,7 +36,7 @@ Visual system: [[My Brand]] (Spireforge). **Rebuilt 2026-08-20 — the descripti
 identities out of date.** One chevron carrying a trimmed tip with a three-point spark above it, every
 angle derived from a single 26/28 slope; Night `#100A28` ground, aurora green `#5BFFB0`, near-white
 `#EDE9FF` ink; Fraunces display, Inter Tight body, IBM Plex Mono code. Manrope is retired. The
-canonical spec is `MY-BRAND\OUTPUTS\08-GUIDELINES\design-system_2026-08-20_v1.md` — copy it to this
+canonical spec is `my-brand\outputs\08-GUIDELINES\design-system_2026-08-20_v1.md` — copy it to this
 repo root as `DESIGN.md`. It **is now applied** — copied to the repo root as `DESIGN.md` and to
 `src/styles/tokens.css` on 2026-08-24. Both are verbatim copies: change them in the kit and copy
 across, never hand-edit them here. Nothing of the STL Media identity remains.

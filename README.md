@@ -110,7 +110,7 @@ outside this repo, so removing them breaks things nothing in this codebase menti
 
 | File | Why it must stay |
 | --- | --- |
-| `sig-mark.png` | **Hot-linked by the email signature** (`MY-BRAND/OUTPUTS/05-EMAIL-AND-DOCS/`), which points at `https://spireforge.co.uk/sig-mark.png`. Every email already sent renders a broken image the moment it 404s. |
+| `sig-mark.png` | **Hot-linked by the email signature** (`my-brand/outputs/05-EMAIL-AND-DOCS/`), which points at `https://spireforge.co.uk/sig-mark.png`. Every email already sent renders a broken image the moment it 404s. |
 | `og-card.png` | The placeholder's link-preview image. Anything shared to LinkedIn or X before the switch cached this URL. This site's own card is `og-image.png`; the old file is kept so existing shares keep resolving. Removable once nothing links to the old previews. |
 
 ## Known gaps

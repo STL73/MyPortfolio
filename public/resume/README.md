@@ -7,8 +7,8 @@ button and the footer. The browser saves it as `Slav_Lambov_CV.pdf`.
 
 It is generated. The source of truth lives in the Cowork project, not here:
 
-- Content: `Claude Cowork\MY-CV\OUTPUTS\junior-dev-cv_<date>_v<n>.md`
-- Print layout: `Claude Cowork\MY-CV\OUTPUTS\junior-dev-cv_<date>_v<n>.html`
+- Content: `Claude Cowork\my-cv\outputs\junior-dev-cv_<date>_v<n>.md`
+- Print layout: `Claude Cowork\my-cv\outputs\junior-dev-cv_<date>_v<n>.html`
 
 To regenerate, render the HTML with headless Chrome and copy the result here:
 

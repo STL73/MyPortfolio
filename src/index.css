@@ -6,7 +6,7 @@
    Spireforge theme layer.
 
    tokens.css is the canonical brand artefact, copied verbatim from
-   MY-BRAND/OUTPUTS/07-CODE/ and never hand-edited here. This block
+   my-brand/outputs/07-CODE/ and never hand-edited here. This block
    only teaches Tailwind the names, so `bg-ground` and `text-accent`
    compile to the same custom properties the brand already defines.
 
