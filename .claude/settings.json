@@ -2,7 +2,7 @@
   "permissions": {
     "allow": [
       "Read(**)",
-      "Write(**)",
+      "Edit(**)",
       "Bash(npm run *)",
       "Bash(git status)",
       "Bash(git diff *)",
